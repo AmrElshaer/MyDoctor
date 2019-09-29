@@ -1,0 +1,48 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<CutomPropertiy> SignInManager
+@inject UserManager<CutomPropertiy> UserManager
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var user = UserManager.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
+    var imagepath = user.ImagePath == null ? "Defulat.jpg" : user.ImagePath;
+
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="~/images/@imagepath" style="max-width: 50px;" alt="" class="circle responsive-img">
+            </div>
+            <div class="col-sm-10">
+
+
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <button type="submit" class="btn btn-default navbar-btn navbar-link">Logout</button>
+
+            </div>
+        </div>
+
+    </form>
+}
+else
+{
+    <div class="row navbar-right">
+        
+        <div class="col-sm-12">
+            <a class="btn btn-default" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="btn btn-default"  asp-area="Identity" asp-page="/Account/Login">Login</a>
+
+
+        </div>
+    </div>
+   
+    
+}

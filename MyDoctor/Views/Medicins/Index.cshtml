@@ -1,0 +1,78 @@
+﻿@model IQueryable<MyDoctor.ViewModels.Medicngroup>
+
+@{
+    Layout = "~/Views/Shared/_MedicinLayoutcshtml.cshtml";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#txtEmpName").keyup(function () {
+            let valueoftxt = $(this).val();
+            
+            $.ajax({
+                type: "GET",
+                url: "/Medicins/Search?searchparam="+valueoftxt,
+
+                success: function (data) {
+                    
+                    $("#data").html(" ");
+                   
+                    $.each(data, function (index, value) {
+                        $("#data").append( "<a href='/Medicins/Details?id="+value.id+"'>"+value.name+"</a><br/><hr/>");
+                    });
+                   
+                },
+                error: function (request,status,error) {
+                    $("#data").html(" ");
+                    $("#data").append("NO Resuilt");
+                }
+            });
+        });
+    });
+
+
+</script>
+
+
+
+
+<div class="row">
+    
+    <div class="searchbox col-sm-12" style="margin:auto">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Search</span>
+            </div>
+            <a asp-action='Details' asp-route-id=''></a>
+            <input type="text" id="txtEmpName" class="form-control" />
+        </div>
+        <div id="data" style="text-align:center;z-index: 1;border: 1px solid #ada7a7;border-radius: 5px;">
+
+        </div>
+    </div>
+    
+    <div class="containtofdiseases col-sm-12">
+        <h2>According To Disease</h2>
+        <hr />
+        @foreach (var item in Model)
+        {
+            <div style="margin-bottom:2%; border: 1px solid #ada7a7;box-shadow: -2px 10px #eee;
+    padding: 1%;
+    border-radius: 5px;
+    cursor: pointer;" class="itemmodel"><a asp-action="AllDiseaseRelative" asp-controller="Medicins" asp-route-diseasename="@item.id">@item.id</a></div>
+}
+    </div>
+
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('.itemmodel').on("click", function () {
+
+            var hreftodetails = $(this).children()[0].getAttribute("href");
+
+            location.href = hreftodetails;
+        });
+
+    });
+</script>

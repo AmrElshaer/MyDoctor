@@ -1,0 +1,36 @@
+﻿@model IEnumerable<MyDoctor.Models.Medicin>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+           
+            <td>
+               
+                <a asp-action="Details" asp-route-id="@item.id">Go >></a> 
+              
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

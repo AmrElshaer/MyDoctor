@@ -1,0 +1,18 @@
+﻿@model MyDoctor.Models.Medicin
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+
+    
+    <table border="1">
+        <tr ><td colspan="2" style="text-align:center"><h1 style="color:#03A9F4">@Html.DisplayFor(model => model.name)</h1> </td></tr>
+        <tr style="background-color:#eee"><td> @Html.DisplayNameFor(model => model.price)</td><td>  @Html.DisplayFor(model => model.price)</td></tr>
+        <tr><td>  @Html.DisplayNameFor(model => model.affects)</td><td> @Html.DisplayFor(model => model.affects)</td></tr>
+        <tr style="background-color:#eee"><td>   @Html.DisplayNameFor(model => model.indications)</td><td>  @Html.DisplayFor(model => model.indications)</td></tr>
+    </table>
+
+

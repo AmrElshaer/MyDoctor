@@ -1,0 +1,104 @@
+﻿@model MyDoctor.Models.Posts
+
+@{
+    ViewData["Title"] = "Create";
+}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<h2>Create</h2>
+
+<h4>Posts</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Department" class="control-label"></label>
+                <select asp-for="Department" id="Department"  class="form-control">
+                    <option value="0">Choose...</option>
+                    <option value="1">HealthAndMedicin</option>
+                    <option value="2">HealthAndBeaty</option>
+                    <option value="3">pregnancy and birth</option>
+                    
+                </select>
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="specific" class="control-label"></label>
+                <select asp-for="specific" id="specific" class="form-control" >
+
+                    </select>
+                <span asp-validation-for="specific" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none;">
+                <label asp-for="doctorid" class="control-label"></label>
+                <input asp-for="doctorid" name="doctorid" value="@ViewData["Id"]" class="form-control" />
+                <span asp-validation-for="doctorid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#Department").on("change", function () {
+            var item = document.getElementById("Department");
+            var valueofdepartment = item.options[item.selectedIndex].value;
+            
+            if (valueofdepartment == "1") {
+                $.ajax(
+                    {
+                        url: "/Diseases/actionResulttogetalldisease",
+                        type:"Get"
+                        ,
+                        success: function (resuilt) {
+
+                            $.each(resuilt, function (index, value) {
+                                var contains = "<option value='"+value.diseaseName+"'>"+value.diseaseName + "</option> ";
+                                $("#specific").append(contains);
+                            });
+                           
+                        }
+                    }
+                );
+                
+            }
+            else if (valueofdepartment == "2") {
+                 $.ajax(
+                    {
+                        url: "/BeatyandHealthies/Indexincreatepost",
+                        type:"Get"
+                        ,
+                         success: function (resuilt) {
+                             $("#specific").html(" ");
+                             $.each(resuilt, function (index, value) {
+                                 var contains = "<option value='" + value.catagory + "'>" + value.catagory + "</option> ";
+                                $("#specific").append(contains);
+                            });
+                           
+                         }
+
+                    }
+                );
+            }
+            else if (valueofdepartment == "2") {
+                var contains = "<option value='1'>pressure</option>";
+                $("#specific").html(contains);
+            }
+            else {
+                 var contains = "<option value='0'>You must detect the department</option>";
+                $("#specific").html(contains);
+            }
+        });
+    });
+</script>
+
+

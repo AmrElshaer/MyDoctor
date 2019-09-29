@@ -1,0 +1,58 @@
+﻿@model MyDoctor.Models.RelativeofBeatyandhealthy
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>RelativeofBeatyandhealthy</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ImageOrvideo" class="control-label"></label>
+                <input asp-for="ImageOrvideo" class="form-control" />
+                <span asp-validation-for="ImageOrvideo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="subject" class="control-label"></label>
+                <input asp-for="subject" class="form-control" />
+                <span asp-validation-for="subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BeatyId" class="control-label"></label>
+                <select asp-for="BeatyId" class="form-control">
+
+
+                    <option value="1">الرياضة والرشاقة</option>
+                    <option value="2">الريجيم وتخفيف الوزن</option>
+                    <option value="3">التغذية السليمة</option>
+                    <option value="4">الحياة الزوجية</option>
+                    <option value="5">العناية بالشعر</option>
+                    <option value="6">العناية بالبشرة والجمال</option>
+                    <option value="7">جودة الحياة</option>
+                    <option value="8">الجيل الذهبي</option>
+                    <option value="9">وصفات صحيه</option>
+                    <option value="10">القيم الغذائية للمأكولات</option>
+                </select>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

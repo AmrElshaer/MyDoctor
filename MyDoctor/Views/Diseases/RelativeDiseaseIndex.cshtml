@@ -1,0 +1,70 @@
+﻿@model string
+<style>
+   .RelativeDisease .card{
+       margin-bottom:20px;
+   }
+
+</style>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<div>
+   
+
+<input style="display:none" class="DiseaseName" value="@Model" />
+    
+<div class="RelativeDisease lead ">
+
+</div>
+</div>
+<script>
+    var jqueryfunction;
+    
+    function gethref(data) {
+
+        jqueryfunction(data);
+      
+    }
+    $(document).ready(function () {
+        
+        jqueryfunction=function (hrefdata) {
+         
+            $('#panel').load('https://localhost:5001' + hrefdata, function () { });
+        };
+        var DiseaseName = $(".DiseaseName").val();
+        console.log("i am relative" + DiseaseName);
+        $.ajax({
+            url: "/RelativeDiseases/Index?" + "DiseaseName" + "=" + DiseaseName,
+            method: 'Get'
+            , success: function (Data) {
+
+                $.each(Data, function (index, value) {
+                    console.log(value);
+                    $(".RelativeDisease").append("<div  id='relative'  class='card card-panel hoverable' ><div class='card-body'>" + "<iframe   scrolling='no'  frameborder='0' class='img-responsive' border='0' cellspacing='0'style='border-style: none; 'src='" + value.imageOrvideo + "'" + "  /></iframe ></div ><div class= 'card-footer'><p onclick='gethref(this.id)'  id='/Diseases/RelativeDetails?id=" + value.id + "''>" + value.diseaseAddress + "</p>" + "</div>" + " </div>"
+                    )
+                });
+
+            },
+            complete: function (jqerxhr) {
+                if (jqerxhr.status == '200') {
+                    $(".load").toggle();
+
+                }
+
+            }
+
+        })
+
+        $(".AllComments").on("click", function () {
+
+            var vl = $(this).html();
+            if (vl == "Show Comments") {
+                $(this).html("Hidden Comments");
+            }
+            else {
+                $(this).html("Show Comments");
+            }
+            $(".RelativeDisease").fadeToggle();
+        });
+       
+    });
+</script>
+

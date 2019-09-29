@@ -1,0 +1,108 @@
+﻿@model IEnumerable<MyDoctor.Models.Doctor>
+
+@{
+    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <style>
+       .AllDoctors div.col-sm-4{
+           margin-top:5%;
+         
+       }
+      .AllDoctors div.col-sm-4 .row{
+            background-color: cornflowerblue;
+    /* border-radius: 2px; */
+    border: 1px solid white;
+    border-radius: 61px 2px;
+    color: white;
+      }
+    </style>
+    
+    <div class="container lead">
+        <div id="SearchforDoctor" class="SearchforDoctor row">
+            <div class="form-group col-sm-4">
+                <label class="control-label">Special</label>
+                <select id="special" class="form-control"><option value="">اختر...</option><option value="التوليد وأمراض النساء">التوليد وأمراض النساء</option><option value="الأطفال">الأطفال</option><option value="طب عام">طب عام</option><option value="الطب الباطني">الطب الباطني</option><option value="طب الأسنان">طب الأسنان</option><option value="طب وجراحة العظام">طب وجراحة العظام</option><option value="أنف, أذن وحنجرة وجراحة الرأس والرقبة">أنف, أذن وحنجرة وجراحة الرأس والرقبة</option><option value="الأمراض الجلدية والتناسليه">الأمراض الجلدية والتناسليه</option><option value="أمراض القلب">أمراض القلب</option><option value="امراض الصدرية والجهاز التنفسي">امراض الصدرية والجهاز التنفسي</option><option value="جراحة التجميل">جراحة التجميل</option><option value="طب وجراحة العيون">طب وجراحة العيون</option><option value="طب الكلى وارتفاع ضغط الدم">طب الكلى وارتفاع ضغط الدم</option><option value="الجهاز الهضمي">الجهاز الهضمي</option><option value="طب العائلة (طب الاسرة)">طب العائلة (طب الاسرة)</option><option value="امراض المفاصل والروماتيزم">امراض المفاصل والروماتيزم</option><option value="جراحة القلب">جراحة القلب</option><option value="الطب النفسي">الطب النفسي</option><option value="طب الأعصاب">طب الأعصاب</option><option value="مرض السكري والغدد الصماء">مرض السكري والغدد الصماء</option><option value="طب  الأورام (السرطان)">طب  الأورام (السرطان)</option><option value="امراض واورام الدم">امراض واورام الدم</option><option value="جراحة الأطفال">جراحة الأطفال</option><option value="علم النفس- Psychology">علم النفس- Psychology</option><option value="التغذية والحمية">التغذية والحمية</option><option value="الأعشاب">الأعشاب</option><option value="العلاج الطبيعي">العلاج الطبيعي</option><option value="صيدلة">صيدلة</option><option value="جراحة المخ والأعصاب">جراحة المخ والأعصاب</option><option value="علم الأشعة (Radiology)">علم الأشعة (Radiology)</option><option value="أمراض الكبد">أمراض الكبد</option><option value="طب الألم (التخدير)">طب الألم (التخدير)</option><option value="الحساسية والمناعة">الحساسية والمناعة</option><option value="طب الطوارىء">طب الطوارىء</option><option value="جراحة الصدر والرئتين">جراحة الصدر والرئتين</option><option value="اخصائي بصريات">اخصائي بصريات</option><option value="المسالك البولية">المسالك البولية</option><option value="التخدير">التخدير</option><option value="جراحة">جراحة</option><option value="الطب النفسي للأطفال">الطب النفسي للأطفال</option><option value="طب الشيخوخة">طب الشيخوخة</option><option value="الطب النووي (إشعاعي)">الطب النووي (إشعاعي)</option><option value="اخصائية تجميل وعناية بالبشرة">اخصائية تجميل وعناية بالبشرة</option><option value="مختبرات طبية">مختبرات طبية</option></select>
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="control-label">Country</label>
+                <input id="country" type="text" class="form-control"  />
+            </div>
+            <div class="form-group col-sm-4">
+                <label class="control-label">City</label>
+                <input id="city" class="form-control" />
+            </div>
+
+        </div>
+        <div id="Search">
+            <button class="btn btn-danger" style="margin-left: 50%;" id="search">Search</button>
+        </div>
+        <div class="row AllDoctors">
+            @{
+                foreach (var item in Model)
+                {
+                    <div class="col-sm-4" id="@item.Id" onclick="gotodoctor(this.id)">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                @{
+                                    if (item.Kind == "Male")
+                                    {
+
+
+                                        <img class="img img-responsive img-circle img-thumbnail " style="max-height: 200px;" src="https://image.freepik.com/free-vector/doctor-character-background_1270-84.jpg" />
+
+                                    }
+                                    else
+                                    {
+
+
+                                        <img class="img img-responsive img-circle img-thumbnail " style="max-height: 200px;" src="https://image.freepik.com/free-vector/smiley-female-doctor-with-clipboard-stethoscope_23-2147657762.jpg" />
+
+                                    }
+                                }
+                            </div>
+                            <div class="col-sm-4">
+                                <p>@item.Name</p>
+                                <hr />
+                                <p>@item.Specials</p>
+                                <p>@item.Country/@item.City</p>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+
+                }
+            }
+
+
+        </div>
+
+    </div>
+    <script>
+        function gotodoctor(id)
+        {
+            location.href = "/Doctors/Details/" + id;
+        }
+        $(document).ready(function () {
+            $("#search").on('click', function () {
+                var special = $('#special').val();
+                var country = $('#country').val();
+                var city = $('#city').val();
+                location.href = "https://localhost:5001/Doctors/Index?country="+country+"&city="+city+"&special="+special;
+            });
+
+        });
+    </script>
+</body>
+</html>

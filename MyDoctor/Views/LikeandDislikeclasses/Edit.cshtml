@@ -1,0 +1,41 @@
+﻿@model MyDoctor.Models.LikeandDislikeclass
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>LikeandDislikeclass</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Like" class="control-label"></label>
+                <input asp-for="Like" class="form-control" />
+                <span asp-validation-for="Like" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DisLike" class="control-label"></label>
+                <input asp-for="DisLike" class="form-control" />
+                <span asp-validation-for="DisLike" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiseaseName" class="control-label"></label>
+                <input asp-for="DiseaseName" class="form-control" />
+                <span asp-validation-for="DiseaseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

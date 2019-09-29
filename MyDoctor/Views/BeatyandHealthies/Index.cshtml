@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MyDoctor.Models.BeatyandHealthy>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .HealthAndBeautyindex {
+     
+       
+    }
+    .HealthAndBeautyindex img{
+    
+    }
+</style>
+
+
+
+<div class="container">
+
+
+   
+        
+            
+<div class="row">
+    @foreach (var item in Model)
+    {
+        if (item.Id!=11) { 
+    <div class="card-panel hoverable col HealthAndBeautyindex" id="@item.Id" onclick="gotoindex(this.id)">
+        <p>@Html.DisplayFor(modelItem => item.Catagory)</p>
+
+        <img class="img-responsive img-thumbnail" src="@Html.DisplayFor(modelItem => item.Image)" />
+
+
+    </div>
+    
+    }
+        
+    }
+
+    </div>
+             
+       </div>     
+        
+<script type="text/javascript">
+    function gotoindex(id) {
+        window.location.href = "https://localhost:5001/BeatyandHealthies/Details?id=" + id;
+    }
+
+</script>
+@*<td>
+        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+    </td>*@

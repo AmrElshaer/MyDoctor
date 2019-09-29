@@ -1,0 +1,25 @@
+﻿@model MyDoctor.Models.RelativeDisease
+@{
+    Layout = null;
+}
+
+<div class="" id="panel">
+
+
+    <div class="panel-heading">
+        <h2>@Model.DiseaseAddress</h2>
+
+    </div>
+    <div class="panel-body">
+        <iframe scrolling='no'  frameborder='0' border='0' cellspacing='0'style='border-style: none; ' src="@Model.ImageOrvideo"  ></iframe>
+
+    </div>
+    <div class="panel-footer">
+        <h1>Subject</h1>
+        <p>@Model.subject</p>
+        <hr />
+       
+
+       
+    </div>
+</div>

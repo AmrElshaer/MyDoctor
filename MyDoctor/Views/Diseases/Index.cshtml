@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MyDoctor.Models.Disease>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    div.newitem
+    {
+        display:inline-block;
+        margin-right:10%;
+        width:250px;
+        height:250px;
+       margin-bottom:15%;
+    }
+ 
+    div#inside
+    {
+          width:250px;
+        height:250px;
+    }
+    
+    div.newitem #inside button:hover
+        {
+         
+
+        }
+ #inside a
+    {
+       color: white;
+    font-size: x-large;
+    text-decoration: none;
+        
+    }
+ #inside a:hover
+ {
+     color: white;
+    font-size: x-large;
+    text-decoration: none;
+ }
+</style>
+<div class="container">
+
+
+
+    
+  
+ 
+        @foreach (var item in Model)
+        {
+    <div class=" card-panel hoverable"  style="background-image:url('@item.Image');background-position: center;
+                background-size: cover;
+               
+                background-repeat: no-repeat;" >
+        <div id="inside">
+            <button class="btn "> <a asp-action="Edit" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.DiseaseName)</a> </button>
+
+        </div>
+            
+     
+
+    </div>
+
+    
+
+   
+        
+        
+  
+}
+  
+        </div>
+      
+       

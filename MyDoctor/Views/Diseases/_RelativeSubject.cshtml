@@ -1,0 +1,38 @@
+﻿@model string
+    
+
+<style>
+    #_RelativeSubject div:nth-child(odd){
+        background-color:#eee;
+        min-height:300px;
+    }
+</style>
+<input type="text" value="@Model" style="display:none" id="diseasename" />
+
+    <div id="_RelativeSubject">
+        
+    </div>
+
+<script>
+    function relativesubject(id) {
+        location.href = "/Posts/Details?id=" + id;
+    }
+    $(document).ready(function () {
+        var diseasename = document.getElementById('diseasename').value;
+
+        $.ajax({
+            url: "/GetRelativeSubject/Index?relativeitem=" + diseasename,
+            type: "Get",
+            success: function (resuilt) {
+                
+                $.each(resuilt, function (index, value) {
+                    $("#_RelativeSubject").append("<div class='card-panel hoverable' onclick='relativesubject(this.id)' id='" + value.id + "' class='col-sm-3 panel relativesubjectitem'><div>"+value.description+"</div></div>");
+
+                });
+            }
+        });
+      
+
+    });
+
+</script>

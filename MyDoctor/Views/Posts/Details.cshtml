@@ -1,0 +1,86 @@
+﻿@model MyDoctor.Models.Posts
+
+@{
+    ViewData["Title"] = "Details";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+ <style>
+       a:hover{
+         text-decoration:none;
+        }
+ </style>
+ <div class="container">
+
+
+     <input type="text" id="postid" style="display:none" value="@Model.Id" />
+    
+     <div class="row">
+         <div class="col s12 m6">
+             <div class="card blue-grey darken-1">
+                 <div class="card-content white-text">
+                    
+                     <p>
+                         @Html.DisplayFor(model => model.specific)
+                     </p>
+                 </div>
+                 <div class="card-action">
+                     <a> @Html.DisplayFor(model => model.Description)</a> 
+                 </div>
+             </div>
+         </div>
+     </div>
+     <table class="row">
+         <tr>
+             <td colspan="2">
+                 <button class="btn btn-primary"><a style="color:white" asp-route-doctorid="@Model.doctorid" asp-action="Create" asp-route-id="@Model.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
+             </td>
+             <td colspan="2"> <button id="loadcomment" class="btn btn-primary">Show Comment</button></td>
+         </tr>
+     </table>
+
+     <div class="comments row">
+
+     </div>
+ </div>
+<script>
+    $(document).ready(function () {
+
+
+        $("#loadcomment").on("click", function () {
+            var inputvalue = $("#postid").val();
+            console.log(inputvalue);
+            $(this).hide();
+            $.ajax({
+                url: "/Commentfordoctorposts/Details/" + inputvalue,
+                type: "Get",
+                success: function (resuilt) {
+
+                    $.each(resuilt, function (index, value) {
+                        $.ajax({
+                            url: "/Users/GetUser?id=" + value.userid,
+                            success: function (user) {
+                                var divelement = document.createElement("div");
+                                var innerhtml = "<div><img class='img-circle img-responsive' style='max-width:60px' src='https://localhost:5001/images/" + user.imagePath + "' /><h2>" + user.userName + "</h2><h4>" + value.containt + "</h4></div>";
+                                divelement.innerHTML += innerhtml;
+                                $(".comments").append(divelement);
+                            }
+                        });
+                        console.log(resuilt);
+
+                    });
+
+
+
+
+
+                },
+                Error: function () {
+                    $(".comments").append(eval("<div>Error</div>"));
+                }
+            });
+
+        });
+
+    });
+</script>

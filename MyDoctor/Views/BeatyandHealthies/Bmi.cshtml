@@ -1,0 +1,115 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-sm-6">
+        <table class="flow-text" style="text-align: center;">
+            <tr class="form-group">
+                <td>
+                    <label class="label-control">كتله بكيلو جرام </label>
+                </td>
+                <td>
+                    <input type="number" placeholder="كتله بكيلو جرام " id="kg" class="form-control" />
+                </td>
+            </tr>
+            <tr class="form-group">
+                <td>
+                    <label class="label-control">طول ب متر </label>
+                </td>
+                <td>
+                    <input type="number" placeholder="طول ب متر " id="mtr" class="form-control" />
+                </td>
+
+
+
+            </tr>
+            <tr>
+                <td><button type="button" class="btn btn-primary" id="calc">احسب</button></td>
+                <td id="resuilt">Resuilt:</td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <table class="flow-text" border="1" style="text-align: center;">
+
+            <tbody>
+                <tr>
+                    <th>
+                        التصنيف
+                    </th>
+                    <th>
+                        مؤشر كتلة الجسم – كغ/م<sup>2</sup>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        نقص حاد جدا
+                    </td>
+                    <td>
+                        أقل من 15
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        نقص حاد
+                    </td>
+                    <td>
+                        من 15 إلى 16
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        نقص في الوزن
+                    </td>
+                    <td>
+                        من 16 إلى 18.5
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        وزن طبيعي
+                    </td>
+                    <td>
+                        من 18.5 إلى 25
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        زيادة في الوزن
+                    </td>
+                    <td>
+                        من 25 إلى 30
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        سمنة خفيفة (سمنة من الدرجة الأولى)
+                    </td>
+                    <td>
+                        من 30 إلى 35
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        سمنة متوسطة (سمنة من الدرجة الثانية)
+                    </td>
+                    <td>
+                        من 35 إلى 40
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        سمنة مفرطة (سمنة من الدرجة الثالثة)
+                    </td>
+                    <td>
+                        أكثر من 40
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

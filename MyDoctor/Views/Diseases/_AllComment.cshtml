@@ -1,0 +1,60 @@
+﻿@model string
+
+<div>
+    <div class="lead">
+        <button class="btn btn-primary AllComments" >Show Comments</button>
+        <input style="display:none"  class="DiseaseName" value="@Model"/>
+    </div>
+    <div class="Comments lead" style="display:none;overflow:scroll">
+        <div class="load lead" >
+            Load...
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        var DiseaseName = $(".DiseaseName").val();
+   
+            $.ajax({
+                url: "/Diseases/AllComment?" + "DiseaseName" + "=" + DiseaseName,
+                method: 'Get'
+                , success: function (Data) {
+                    var length = Data.length;
+                    $.each(Data, function (index, value) {
+                        console.log(value);
+                        $(".Comments").append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4' >" +
+                            "<img src='/images/"+value.imagePath+"'"+"style='height:100px'  /></div><div class='col-md-8'>"+
+                                "<h1>"+value.userName+"</h1>"+
+                               " <p>"+value.commment+"</p>"
+                          +"  </div>"+" </div>"
+                        )
+                    });
+                    
+                },
+                complete: function (jqerxhr) {
+                    if (jqerxhr.status == '200') {
+                        $(".load").toggle();
+                        
+                    }
+                    
+                }
+
+            })
+
+        $(".AllComments").on("click", function () {
+
+            var vl = $(this).html();
+            if (vl == "Show Comments") {
+                $(this).html("Hidden Comments");
+            }
+            else {
+                 $(this).html("Show Comments");
+                 }
+            $(".Comments").fadeToggle();
+        });
+    });
+</script>

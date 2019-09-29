@@ -1,0 +1,249 @@
+﻿@model MyDoctor.Models.Doctor
+
+@{
+    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <style>
+        .SearchDoctor ul li img {
+        }
+
+        .SearchDoctor ul li.header {
+            text-align: center;
+            color: #233cc8;
+            margin-top: 5%;
+            margin-bottom: 2%;
+            border: dashed 1px blue;
+            padding: 5%;
+        }
+    </style>
+    <div class="container SearchDoctor">
+        <div class="row">
+            <div class="col-sm-3">
+                <ul>
+                    <li class="btn-block btn-info btn" style="margin-top:50%;margin-bottom:20%">
+                        <a asp-action="Create" asp-controller="Posts" asp-route-id="@Model.Id">Add Post</a>
+                    </li>
+
+
+                </ul>
+            </div>
+            <div class="col-sm-5">
+                @{
+                    List<Posts> posts = ViewData["Posts"] as List<Posts>;
+                }
+                @{
+                    if (posts != null)
+                    {
+                        foreach (var item in posts)
+                        {
+                            <input type="text" id="postid" style="display:none" value="@item.Id" />
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    @item.specific
+                                </div>
+                                <div class="panel-body">
+                                    @item.Description
+                                </div>
+                                <div class="panel-footer">
+
+
+                                    <button class="btn btn-danger"><a class="btn-danger" asp-route-doctorid="@item.doctorid" asp-action="Create" asp-route-id="@item.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
+
+                                    <button class="btn btn-primary"><a class="btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="Posts">Show Comment</a> </button>
+
+                                </div>
+
+
+
+                            </div>
+
+
+                        }
+                    }
+                    else
+                    {
+                        <h2 class="alert alert-info"> NO Posts</h2>
+                    }
+
+                }
+            </div>
+            <div class="col-sm-4">
+                <ul style="list-style:none">
+                    @{
+                        if (Model.Kind == "Male")
+                        {
+                            <li>
+                                <h1>Hi Doctor @Html.DisplayFor(model => model.Name) </h1>
+                                <img class="img img-responsive " src="https://image.freepik.com/free-vector/doctor-character-background_1270-84.jpg" />
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <p>Hi Doctor @Html.DisplayFor(model => model.Name) </p>
+                                <img class="img img-responsive" src="https://image.freepik.com/free-vector/smiley-female-doctor-with-clipboard-stethoscope_23-2147657762.jpg" />
+                            </li>
+                        }
+                    }
+
+
+                    <li class="header">
+                        @Html.DisplayNameFor(model => model.Specials)
+                    </li>
+                    <li>
+                        @Html.DisplayFor(model => model.Specials)
+                    </li>
+                    <li class="header">
+                        @Html.DisplayNameFor(model => model.Country)
+                    </li>
+                    <li>
+                        @Html.DisplayFor(model => model.Country)
+                    </li>
+                    <li class="header">
+                        @Html.DisplayNameFor(model => model.City)
+                    </li>
+                    <li>
+                        @Html.DisplayFor(model => model.City)
+                    </li>
+                    <li class="header">
+                        @Html.DisplayNameFor(model => model.Telephone)
+                    </li>
+                    <li>
+                        @Html.DisplayFor(model => model.Telephone)
+                    </li>
+                    <li class="header">
+                        @Html.DisplayNameFor(model => model.Others)
+                    </li>
+                    <li>
+                        @Html.DisplayFor(model => model.Others)
+                    </li>
+                    <li>
+                        <button  id="@Model.Id" class="btn btn-default Sendmessage">SEND MESSAGE</button>
+                    </li>
+                    <li style="display:none" id="formtosendmessage">
+                        <form name="myform" autocomplete="off">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Email</span>
+                                </div>
+
+                                <input type="email" id="email" name="email" class="form-control" />
+                                <div style="display:none" class="alert alert-danger" id="expectmark">Email Must Contain @@ </div>
+                                <div style="display:none" id="expectgmailcom" class="alert alert-danger">Email Must Containt gmail.com</div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Password</span>
+                                </div>
+
+                                <input type="password" id="password" class="form-control" />
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Message</span>
+                                </div>
+
+                                <input type="text" id="test" class="form-control" />
+                            </div>
+                            <div style="margin:auto">
+                                <button class="btn btn-primary" type="button" id="submitmessage" disabled>Send</button>
+                            </div>
+                            <div id="responseformmessagesuccess" class="alert alert-success" style="text-align:center;display:none">
+                                Success
+                            </div>
+                            <div id="responseformmessageerror" class="alert alert-danger" style="text-align:center;display:none">
+                                Please Enter Password or Email Correct
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+
+
+    </div>
+    <div>
+        <a asp-action="Details" asp-controller="Doctors" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $(".Sendmessage").on("click", function () {
+                $("#formtosendmessage").slideToggle();
+                console.log();
+                if ($(this)[0].innerHTML == "SEND MESSAGE") {
+                    $(this)[0].innerHTML = "Cancel";
+                }
+                else {
+                    $(this)[0].innerHTML = "SEND MESSAGE";
+                }
+
+            });
+            $("#email").keyup(function () {
+                console.log("enter");
+                var emailvalue = document.forms["myform"]["email"].value;
+                if (emailvalue != null) {
+                         if (emailvalue.indexOf("@@") == -1) {
+                             $("#expectmark").slideDown();
+                             $("#submitmessage").attr("disabled","disabled");
+
+                         }
+                     else {
+                             $("#expectmark").slideUp();
+                             $("#submitmessage").removeAttr("disabled");
+                     }
+                    if (emailvalue.indexOf("@@") != -1) {
+                        
+                        if (emailvalue.split("@@")[1] != "gmail.com") {
+                            $("#expectgmailcom").slideDown();
+                            $("#submitmessage").attr("disabled","disabled");
+                        }
+                        else {
+                           
+                            $("#expectgmailcom").slideUp();
+                            $("#submitmessage").removeAttr("disabled");
+                        }
+                }
+                }
+                
+               
+               
+
+            });
+            $("#submitmessage").on("click", function () {
+                var email = $("#email").val();
+                var password = $("#password").val();
+                var body = $("#test").val();
+                $.ajax({
+                    url: "/Doctors/messagetogmail?Body=" + body + "&From=" + email + "&password=" + password,
+                    type: "GET",
+                    success: function (resuilt) {
+                        console.log("success");
+                        $("#responseformmessagesuccess").show();
+                        $("#responseformmessagesuccess").hide(5000);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error");
+                        $("#responseformmessageerror").show();
+                        $("#responseformmessageerror").hide(5000);
+
+                    }
+                });
+
+            });
+        });
+
+    </script>
+</body>
+</html>

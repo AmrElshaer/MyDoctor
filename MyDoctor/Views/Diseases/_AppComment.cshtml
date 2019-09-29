@@ -1,0 +1,92 @@
+﻿
+@model MyDoctor.Models.Disease
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<hr />
+
+  
+       
+            <div class="form-inline row">
+
+                <form class="form-group col-lg-6">
+                     
+                    <input name="Commment"  class="Commment form-control" type="text" value="" />
+                    <input name="DiseaseName" style="display:none" value="@Model.DiseaseName" class="DiseaseName form-control" type="text" />
+
+                </form>
+
+
+
+                <div class="col-lg-3">  <input type="submit" value="Create" class="Create btn btn-default" /></div>
+
+            </div>
+
+
+    
+
+
+    <script>
+        $(document).ready(function () {
+            $(".Create").on("click", function () {
+                var Comment = $(".Commment").val();
+                
+              
+                var DiseaseName = $(".DiseaseName").val();
+
+                $.ajax({
+                    url: "/Diseases/AppComment?" + "Commment" + "=" + Comment + "&" + "DiseaseName" + "=" + DiseaseName,
+                    method: 'Post'
+                    , success: function () {
+                        console.log("Success");
+                    },
+                    complete: function (jqerxhr) {
+                        if (jqerxhr.status == '401') {
+                            console.log('No comment');
+                        }
+                        else {
+                            $(".Commment").val("");
+
+                           
+                            $(".Comments").load("/Diseases/AllComment?" + "DiseaseName" + "=" + DiseaseName, function (response, status, xhr) {
+                if (status == "error") {
+                    console.log("error");
+                }
+                else {
+                    console.log($(".Comments").html());
+                    var comments = jQuery.parseJSON($(".Comments").html());
+
+                    $(".Comments").html("");
+                    $.each(comments, function (index, value) {
+                       
+                        $(".Comments").append(
+                            "<div class='row'>" +
+                            "<div class='col-md-4' >" +
+                            "<img src='/images/" + value.imagePath + "'" + "style='height:100px'  /></div><div class='col-md-8'>" +
+                            "<h1>" + value.userName + "</h1>" +
+                            " <p>" + value.commment + "</p>"
+                            + "  </div>" + " </div>"
+                        );
+                    });
+                }
+
+
+            });
+
+                        }
+                    }
+
+                });
+              
+       
+            
+
+            
+
+
+        
+
+            }
+
+
+            );
+        });
+    </script>

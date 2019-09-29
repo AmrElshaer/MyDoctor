@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyDoctor</title>
+
+    <environment include="Development">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+        <link rel="stylesheet" href="~/css/site.css" />
+
+    </environment>
+    <environment exclude="Development">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <style>
+        a:hover{
+         text-decoration:none;
+        }
+      @@media(max-width:760px){
+          .titleofapp{
+              display:none;
+          }
+       
+      }
+    </style>
+    <nav>
+        <div class="row">
+            <div class="col-sm-4 titleofapp">
+                <p>MYDOC</p>
+            </div>
+            <div class="col-sm-8 logincontainer">
+                <partial name="_LoginPartial" />
+            </div>
+
+        </div>
+    </nav>
+
+
+
+
+
+
+    <hr />
+
+    <div class="row">
+        <div class="menu col-sm-2 card-panel hoverable" style="margin-left: 5%;
+    margin-right: 1%;">
+            <button style="    margin-bottom: 17%;" onclick="change(this)" class=" MedicinAndHealth btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="diseases" style="color:white"> Medicin/Health</a></button>
+            <button style="    margin-bottom: 17%;" onclick="change(this)" class="HealthAndBeauty btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="BeatyandHealthies" style="color:white"> Health/Beauty</a></button>
+            <button style="    margin-bottom: 17%;" class="SearchMedicin btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Medicins" style="color:white"> SearchforMedicin</a></button>
+
+            <button style="    margin-bottom: 17%;" class="SearchDoctor btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Doctors" style="color:white"> SearchforDoctor</a></button>
+            <button style="    margin-bottom: 17%;" id="bmi" class="btn-block waves-effect waves-light btn-large"><a asp-action="Bmi" style="color:white" asp-controller="BeatyandHealthies">Bmi</a>  </button>
+            <button style="    margin-bottom: 17%;" id="Heart" class="btn-block waves-effect waves-light btn-large"><a asp-action="HeartBlus" style="color:white" asp-controller="BeatyandHealthies">HeartPlus</a></button>
+        </div>
+        <div class="secondmenu" style="float:right;display:none;z-index:1">
+            <button class="btn-floating btn-large waves-effect waves-light red" id="showmodilemenu">click</button>
+            <div class="menuformodile   card-panel hoverable" style="max-width:300px; margin-left: 5%;margin-right: 1%;display:none">
+                <button style="    margin-bottom: 17%;" onclick="change(this)" class=" MedicinAndHealth btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="diseases" style="color:white"> Medicin/Health</a></button>
+                <button style="    margin-bottom: 17%;" onclick="change(this)" class="HealthAndBeauty btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="BeatyandHealthies" style="color:white"> Health/Beauty</a></button>
+                <button style="    margin-bottom: 17%;" class="SearchMedicin btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Medicins" style="color:white"> SearchforMedicin</a></button>
+
+                <button style="    margin-bottom: 17%;" class="SearchDoctor btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Doctors" style="color:white"> SearchforDoctor</a></button>
+                <button style="    margin-bottom: 17%;" id="bmi" class="btn-block waves-effect waves-light btn-large"><a asp-action="Bmi" style="color:white" asp-controller="BeatyandHealthies">Bmi</a>  </button>
+                <button style="    margin-bottom: 17%;" id="Heart" class="btn-block waves-effect waves-light btn-large"><a asp-action="HeartBlus" style="color:white" asp-controller="BeatyandHealthies">HeartPlus</a></button>
+            </div>
+        </div>
+        <div class="col-sm-8 card-panel hoverable flow-text" style="    margin-left: 1%;">
+            @RenderBody()
+        </div>
+
+
+    </div>
+
+  
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Footer Content</h5>
+                        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">Links</h5>
+                        <ul>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © 2014 Copyright Text
+                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                </div>
+            </div>
+        </footer>
+   
+   
+
+
+
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>
+<script>
+   
+
+ 
+
+
+    $(document).ready(function () {
+        setInterval(function () {
+            console.log("time");
+ if ($(window).width() <= 1400) {
+
+            $(".menu").hide();
+            $(".secondmenu").show();
+
+        }
+        else {
+            $(".menu").show();
+            $(".secondmenu").hide();
+        }
+        },1000);
+        $("#showmodilemenu").on("click", function () { $(".menuformodile").slideToggle() });
+       
+       
+       
+
+        $('#Heart').on('click', function () {
+            console.log("heart");
+            $('.content').load("/BeatyandHealthies/HeartBlus");
+
+        });
+       
+        $('#bmi').on('click', function () {
+            $('.content').load("/BeatyandHealthies/Bmi");
+
+         });
+         
+        $('#calc').on('click', function () {
+            var kg = $('#kg').val();
+            var mtr = $('#mtr').val();
+          var resuilt= (kg / (mtr * mtr));
+            $('#resuilt').html('Resuilt:'+resuilt);
+           
+
+
+
+        });
+    });
+</script>
