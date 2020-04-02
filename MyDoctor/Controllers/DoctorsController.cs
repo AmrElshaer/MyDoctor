@@ -143,7 +143,7 @@ namespace MyDoctor.Controllers
             return View(doctor);
         }
 
-        // GET: Doctors/Edit/5
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
