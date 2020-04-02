@@ -10,16 +10,21 @@ using MyDoctor.Models;
 using System.Web;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyDoctor.Controllers
 {
+    
     public class DoctorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<CutomPropertiy> _userManager;
 
-        public DoctorsController(ApplicationDbContext context)
+        public DoctorsController(ApplicationDbContext context,UserManager<CutomPropertiy> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
        
         // GET: Doctors
@@ -72,7 +77,7 @@ namespace MyDoctor.Controllers
 
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }
@@ -112,12 +117,29 @@ namespace MyDoctor.Controllers
         public async Task<IActionResult> Create([Bind("Id,Name,Specials,Country,City,Telephone,Others,Email,Password,ConfirmPassword")] Doctor doctor)
         {
             if (ModelState.IsValid)
+
             {
+               
+                var user = new CutomPropertiy { UserName = doctor.Email, Email = doctor.Email };
+                var result = await _userManager.CreateAsync(user, doctor.Password);
+
+                if (result.Succeeded)
+                {
+                    _context.Add(doctor);
+                    await _context.SaveChangesAsync();
+                    await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(doctor.Email), "Doctor");
                 
-                _context.Add(doctor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                    
+                    return RedirectToAction(nameof(Index));
+                  
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
+          
             return View(doctor);
         }
 

@@ -1,54 +1,85 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
+    <style>
+        #accordionSidebar {
+            display: none;
+        }
+    </style>
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block">
 
-<h2>@ViewData["Title"]</h2>
-
-<div class="row">
-    <div class="col-md-4">
-        <form enctype="multipart/form-data" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ImagePath"></label>
-                <div class="custom-file">
-                    <input asp-for="Input.ImagePath" class="form-control custom-file-input" />
-                    <label class="custom-file-label">Choose Image..</label>
+                    <img src="~/Content/img/63572996-health-logo-template.jpg" style="max-width: 350px;" />
                 </div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Register</h1>
+                        </div>
+                        <form class="user"  id="Register" enctype="multipart/form-data" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group row">
 
-                <span asp-validation-for="Input.ImagePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
 
+                                <input asp-for="Input.Email" class="form-control form-control-user" placeholder="Email" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="custom-file">
+                                
+                                    <input asp-for="Input.ImagePath" class="form-control custom-file-input" />
+                                    <label class="custom-file-label">Choose Image..</label>
+                                </div>
+
+                                <span asp-validation-for="Input.ImagePath" class="text-danger"></span>
+                             
+
+                            </div>
+                            <div class="form-group">
+
+                                <input asp-for="Input.Password" class="form-control form-control-user" placeholder="Password" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <input asp-for="Input.ConfirmPassword" class="form-control form-control-user" placeholder="ConfirmPassword" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+
+                            </div>
+
+                            <a href="javascript:document.getElementById('Register').submit()" class="btn btn-primary btn-user btn-block">
+                                 Register
+                            </a>
+                            <hr />
+                          
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function () {
             $(".custom-file-input").on("change", function () {
-                var filename = $(this).val().split('//').pop();
-                $(this).next('custom-file-label').html(filename)
+              
+                var filename = $(this).val().split('\\').pop();
+           
+               
+                $(this).next('.custom-file-label').html(filename)
+               
             })
         });
     </script>

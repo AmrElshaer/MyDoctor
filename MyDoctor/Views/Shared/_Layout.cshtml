@@ -1,196 +1,313 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<CutomPropertiy> SignInManager
+@inject UserManager<CutomPropertiy> UserManager
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MyDoctor</title>
 
-    <environment include="Development">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <title>MyDoctor</title>
+    <!-- Custom styles for this page -->
+    <link href="/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Custom fonts for this template-->
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    </environment>
-    <environment exclude="Development">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Custom styles for this template-->
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
 
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
 </head>
-<body>
-    <style>
-        a:hover{
-         text-decoration:none;
-        }
-      @@media(max-width:760px){
-          .titleofapp{
-              display:none;
-          }
-       
-      }
-    </style>
-    <nav>
-        <div class="row">
-            <div class="col-sm-4 titleofapp">
-                <p>MYDOC</p>
+
+<body id="page-top" >
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <img src="~/Content/img/63572996-health-logo-template.jpg" style="max-width:50px;" />
+                </div>
+                <div class="sidebar-brand-text mx-3">MyDoctor <sup>2</sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
             </div>
-            <div class="col-sm-8 logincontainer">
-                <partial name="_LoginPartial" />
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Medicin/Health</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Medicin/Health</h6>
+                        <a asp-action="index" asp-controller="diseases" class="collapse-item">Medicin/Health</a>
+                        <a class="collapse-item" asp-action="Create" asp-controller="diseases">AddDisease</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsethree" aria-expanded="true" aria-controls="collapsethree">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Health /Beauty</span>
+                </a>
+                <div id="collapsethree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Health/Beauty</h6>
+                        <a asp-action="index" asp-controller="BeatyandHealthies" class="collapse-item">Health/Beauty</a>
+                        <a asp-action="Create" asp-controller="BeatyandHealthies" class="collapse-item">Add Catagory</a>
+                        <a asp-action="Create" asp-controller="updateRelativeBeatyandHealthies" class="collapse-item">Add Relative Subject</a>
+
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefour" aria-expanded="true" aria-controls="collapsefour">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>SearchforMedicin</span>
+                </a>
+                <div id="collapsefour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">SearchforMedicin</h6>
+                        <a asp-action="Index" asp-controller="Medicins" class="collapse-item">SearchforMedicin</a>
+                        <a asp-action="Create" asp-controller="Medicins" class="collapse-item">Add Medicin</a>
+
+
+                    </div>
+                </div>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefive" aria-expanded="true" aria-controls="collapsefive">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>SearchforDoctor</span>
+                </a>
+                <div id="collapsefive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">SearchforDoctor</h6>
+                        <a asp-action="Index" asp-controller="Doctors" class="collapse-item">SearchforDoctor</a>
+                        <a asp-action="Create" asp-controller="Doctors" class="collapse-item">Add Doctor</a>
+
+
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/Posts" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Posts</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <a class="collapse-item" href="/Posts">All Posts</a>
+
+                    </div>
+                </div>
+            </li>
+
+
+
+
+    
+
+        
+
+        </ul>
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content" >
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                      
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                var user = UserManager.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
+                                var imagepath = user.ImagePath == null ? "Defulat.jpg" : user.ImagePath;
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hello @UserManager.GetUserName(User)!</span>
+                                    <img class="img-profile rounded-circle" src="~/images/@imagepath">
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">UserInfo</span>
+                                </a>
+
+                            }
+
+
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                              
+                                @if (!SignInManager.IsSignedIn(User))
+                                {
+                                    <a class="dropdown-item" href="/Identity/Account/Register">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Register
+                                    </a>
+                                    <a class="dropdown-item" href="/Identity/Account/Login">
+                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Login
+                                    </a>
+                                }
+                                <div class="dropdown-divider"></div>
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
+                                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Logout
+                                        </a>
+
+                                    </form>
+                                }
+                                else
+                                {
+
+                                }
+
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                   
+
+                 
+
+                    <!-- Content Row -->
+                    <div>
+                        @RenderBody()
+                    </div>
+                   
+
+                </div>
+                <!-- /.container-fluid -->
+
             </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2018</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
-    </nav>
-
-
-
-
-
-
-    <hr />
-
-    <div class="row">
-        <div class="menu col-sm-2 card-panel hoverable" style="margin-left: 5%;
-    margin-right: 1%;">
-            <button style="    margin-bottom: 17%;" onclick="change(this)" class=" MedicinAndHealth btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="diseases" style="color:white"> Medicin/Health</a></button>
-            <button style="    margin-bottom: 17%;" onclick="change(this)" class="HealthAndBeauty btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="BeatyandHealthies" style="color:white"> Health/Beauty</a></button>
-            <button style="    margin-bottom: 17%;" class="SearchMedicin btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Medicins" style="color:white"> SearchforMedicin</a></button>
-
-            <button style="    margin-bottom: 17%;" class="SearchDoctor btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Doctors" style="color:white"> SearchforDoctor</a></button>
-            <button style="    margin-bottom: 17%;" id="bmi" class="btn-block waves-effect waves-light btn-large"><a asp-action="Bmi" style="color:white" asp-controller="BeatyandHealthies">Bmi</a>  </button>
-            <button style="    margin-bottom: 17%;" id="Heart" class="btn-block waves-effect waves-light btn-large"><a asp-action="HeartBlus" style="color:white" asp-controller="BeatyandHealthies">HeartPlus</a></button>
-        </div>
-        <div class="secondmenu" style="float:right;display:none;z-index:1">
-            <button class="btn-floating btn-large waves-effect waves-light red" id="showmodilemenu">click</button>
-            <div class="menuformodile   card-panel hoverable" style="max-width:300px; margin-left: 5%;margin-right: 1%;display:none">
-                <button style="    margin-bottom: 17%;" onclick="change(this)" class=" MedicinAndHealth btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="diseases" style="color:white"> Medicin/Health</a></button>
-                <button style="    margin-bottom: 17%;" onclick="change(this)" class="HealthAndBeauty btn-block waves-effect waves-light btn-large"> <a asp-action="index" asp-controller="BeatyandHealthies" style="color:white"> Health/Beauty</a></button>
-                <button style="    margin-bottom: 17%;" class="SearchMedicin btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Medicins" style="color:white"> SearchforMedicin</a></button>
-
-                <button style="    margin-bottom: 17%;" class="SearchDoctor btn-block waves-effect waves-light btn-large"> <a asp-action="Index" asp-controller="Doctors" style="color:white"> SearchforDoctor</a></button>
-                <button style="    margin-bottom: 17%;" id="bmi" class="btn-block waves-effect waves-light btn-large"><a asp-action="Bmi" style="color:white" asp-controller="BeatyandHealthies">Bmi</a>  </button>
-                <button style="    margin-bottom: 17%;" id="Heart" class="btn-block waves-effect waves-light btn-large"><a asp-action="HeartBlus" style="color:white" asp-controller="BeatyandHealthies">HeartPlus</a></button>
-            </div>
-        </div>
-        <div class="col-sm-8 card-panel hoverable flow-text" style="    margin-left: 1%;">
-            @RenderBody()
-        </div>
-
+        <!-- End of Content Wrapper -->
 
     </div>
+    <!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-  
-        <footer class="page-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col l6 s12">
-                        <h5 class="white-text">Footer Content</h5>
-                        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-                    </div>
-                    <div class="col l4 offset-l2 s12">
-                        <h5 class="white-text">Links</h5>
-                        <ul>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-copyright">
-                <div class="container">
-                    © 2014 Copyright Text
-                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-                </div>
-            </div>
-        </footer>
    
-   
+    
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Core plugin JavaScript-->
+    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
 
+    <!-- Custom scripts for all pages-->
+    <script src="~/Content/js/sb-admin-2.min.js"></script>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    <!-- Page level plugins -->
+    <script src="~/Content/vendor/chart.js/Chart.min.js"></script>
 
+    <!-- Page level custom scripts -->
+    <script src="~/Content/js/demo/chart-area-demo.js"></script>
+    <script src="~/Content/js/demo/chart-pie-demo.js"></script>
     @RenderSection("Scripts", required: false)
-
 </body>
+
 </html>
-<script>
-   
-
- 
 
 
-    $(document).ready(function () {
-        setInterval(function () {
-            console.log("time");
- if ($(window).width() <= 1400) {
-
-            $(".menu").hide();
-            $(".secondmenu").show();
-
-        }
-        else {
-            $(".menu").show();
-            $(".secondmenu").hide();
-        }
-        },1000);
-        $("#showmodilemenu").on("click", function () { $(".menuformodile").slideToggle() });
-       
-       
-       
-
-        $('#Heart').on('click', function () {
-            console.log("heart");
-            $('.content').load("/BeatyandHealthies/HeartBlus");
-
-        });
-       
-        $('#bmi').on('click', function () {
-            $('.content').load("/BeatyandHealthies/Bmi");
-
-         });
-         
-        $('#calc').on('click', function () {
-            var kg = $('#kg').val();
-            var mtr = $('#mtr').val();
-          var resuilt= (kg / (mtr * mtr));
-            $('#resuilt').html('Resuilt:'+resuilt);
-           
-
-
-
-        });
-    });
-</script>

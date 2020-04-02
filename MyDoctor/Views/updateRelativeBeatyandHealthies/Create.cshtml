@@ -4,54 +4,91 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>updateRelativeBeatyandHealthy</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ImageOrvideo" class="control-label"></label>
-                <input asp-for="ImageOrvideo" class="form-control" />
-                <span asp-validation-for="ImageOrvideo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="subject" class="control-label"></label>
-                <input asp-for="subject" class="form-control" />
-                <span asp-validation-for="subject" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BeatyId" class="control-label"></label>
-                <select asp-for="BeatyId" class="form-control">
 
 
-                    <option value="1">الرياضة والرشاقة</option>
-                    <option value="2">الريجيم وتخفيف الوزن</option>
-                    <option value="3">التغذية السليمة</option>
-                    <option value="4">الحياة الزوجية</option>
-                    <option value="5">العناية بالشعر</option>
-                    <option value="6">العناية بالبشرة والجمال</option>
-                    <option value="7">جودة الحياة</option>
-                    <option value="8">الجيل الذهبي</option>
-                    <option value="9">وصفات صحيه</option>
-                    <option value="10">القيم الغذائية للمأكولات</option>
-                </select>
+
+
+
+
+
+
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block">
+
+                    <img src="~/Content/img/63572996-health-logo-template.jpg" style="max-width: 350px;" />
+                </div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Create Catagory</h1>
+                        </div>
+                        <form class="user" asp-action="Create" id="CreateCatagory">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group row">
+
+
+                                <input asp-for="Address" class="form-control form-control-user" placeholder="Address" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+
+
+
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="subject" class="form-control " placeholder="subject"></textarea>
+                                
+                                <span asp-validation-for="subject" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+
+
+                                <select asp-for="BeatyId" class="form-control">
+
+
+                                    <option value="1">الرياضة والرشاقة</option>
+                                    <option value="2">الريجيم وتخفيف الوزن</option>
+                                    <option value="3">التغذية السليمة</option>
+                                    <option value="4">الحياة الزوجية</option>
+                                    <option value="5">العناية بالشعر</option>
+                                    <option value="6">العناية بالبشرة والجمال</option>
+                                    <option value="7">جودة الحياة</option>
+                                    <option value="8">الجيل الذهبي</option>
+                                    <option value="9">وصفات صحيه</option>
+                                    <option value="10">القيم الغذائية للمأكولات</option>
+                                </select>
+
+
+
+
+                            </div>
+                            <div class="form-group">
+
+                                <input asp-for="ImageOrvideo" class="form-control form-control-user" placeholder="ImageOrvideo" />
+                                <span asp-validation-for="ImageOrvideo" class="text-danger"></span>
+
+                            </div>
+                           
+                            <a href="javascript:document.getElementById('CreateCatagory').submit()" class="btn btn-primary btn-user btn-block">
+                                Add Relative Articals
+                            </a>
+                            <hr />
+                            <a href="/BeatyandHealthies/Index" class="btn btn-primary btn-user btn-block">
+                                All  Artical &rarr;
+                            </a>
+                        </form>
+
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+
 

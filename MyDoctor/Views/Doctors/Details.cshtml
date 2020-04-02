@@ -1,249 +1,131 @@
 ﻿@model MyDoctor.Models.Doctor
-
 @{
-    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
+    List<Posts> posts = ViewData["Posts"] as List<Posts>;
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <style>
-        .SearchDoctor ul li img {
-        }
-
-        .SearchDoctor ul li.header {
-            text-align: center;
-            color: #233cc8;
-            margin-top: 5%;
-            margin-bottom: 2%;
-            border: dashed 1px blue;
-            padding: 5%;
-        }
-    </style>
-    <div class="container SearchDoctor">
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
         <div class="row">
-            <div class="col-sm-3">
-                <ul>
-                    <li class="btn-block btn-info btn" style="margin-top:50%;margin-bottom:20%">
-                        <a asp-action="Create" asp-controller="Posts" asp-route-id="@Model.Id">Add Post</a>
-                    </li>
+            <div class="col-lg-5 d-none d-lg-block">
+
+               
+                <img src="~/Content/img/63572996-health-logo-template.jpg" style="max-width: 350px;" />
 
 
-                </ul>
+
+
             </div>
-            <div class="col-sm-5">
-                @{
-                    List<Posts> posts = ViewData["Posts"] as List<Posts>;
-                }
-                @{
-                    if (posts != null)
-                    {
-                        foreach (var item in posts)
-                        {
-                            <input type="text" id="postid" style="display:none" value="@item.Id" />
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    @item.specific
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">@Model.Name</h1>
+                    </div>
+                    <form class="user" asp-action="Create" id="CreateCatagory">
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Specific</span>
                                 </div>
-                                <div class="panel-body">
-                                    @item.Description
-                                </div>
-                                <div class="panel-footer">
-
-
-                                    <button class="btn btn-danger"><a class="btn-danger" asp-route-doctorid="@item.doctorid" asp-action="Create" asp-route-id="@item.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
-
-                                    <button class="btn btn-primary"><a class="btn-primary" asp-action="Details" asp-route-id="@item.Id" asp-controller="Posts">Show Comment</a> </button>
-
-                                </div>
-
-
-
+                                <input type="text" class="form-control" readonly placeholder="Username" value="@Model.Specials" aria-label="Username" aria-describedby="basic-addon1">
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Description</span>
+                                </div>
+                                <input type="text" class="form-control" readonly placeholder="Username" value="@Model.Others" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Country</span>
+                                </div>
+                                <input type="text" class="form-control" readonly placeholder="Username" value="@Model.Country" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div> <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">City</span>
+                                </div>
+                                <input type="text" class="form-control" readonly placeholder="Username" value="@Model.City" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Telephone Number</span>
+                                </div>
+                                <input type="text" class="form-control" readonly placeholder="Username" value="@Model.Telephone" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Email</span>
+                                </div>
+                                <input type="email" class="form-control" readonly placeholder="Username" value="@Model.Email" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        @if (User.Identity.Name == Model.Email)
+                        {
+                            <a asp-action="Create" asp-controller="Posts" asp-route-id="@Model.Id" class="btn btn-primary btn-user btn-block">Add Post</a>
                         }
-                    }
-                    else
-                    {
-                        <h2 class="alert alert-info"> NO Posts</h2>
-                    }
 
-                }
+
+
+                    </form>
+
+                </div>
             </div>
-            <div class="col-sm-4">
-                <ul style="list-style:none">
-                    @{
-                        if (Model.Kind == "Male")
-                        {
-                            <li>
-                                <h1>Hi Doctor @Html.DisplayFor(model => model.Name) </h1>
-                                <img class="img img-responsive " src="https://image.freepik.com/free-vector/doctor-character-background_1270-84.jpg" />
-                            </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <p>Hi Doctor @Html.DisplayFor(model => model.Name) </p>
-                                <img class="img img-responsive" src="https://image.freepik.com/free-vector/smiley-female-doctor-with-clipboard-stethoscope_23-2147657762.jpg" />
-                            </li>
-                        }
-                    }
+        </div>
+    </div>
+</div>
+<div class="row">
+    @foreach (var item in posts)
+    {
+        <div class="col-lg-4 mb-4">
+
+            <!-- Illustrations -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@item.specific</h6>
+                </div>
+                <div class="card-body">
 
 
-                    <li class="header">
-                        @Html.DisplayNameFor(model => model.Specials)
-                    </li>
-                    <li>
-                        @Html.DisplayFor(model => model.Specials)
-                    </li>
-                    <li class="header">
-                        @Html.DisplayNameFor(model => model.Country)
-                    </li>
-                    <li>
-                        @Html.DisplayFor(model => model.Country)
-                    </li>
-                    <li class="header">
-                        @Html.DisplayNameFor(model => model.City)
-                    </li>
-                    <li>
-                        @Html.DisplayFor(model => model.City)
-                    </li>
-                    <li class="header">
-                        @Html.DisplayNameFor(model => model.Telephone)
-                    </li>
-                    <li>
-                        @Html.DisplayFor(model => model.Telephone)
-                    </li>
-                    <li class="header">
-                        @Html.DisplayNameFor(model => model.Others)
-                    </li>
-                    <li>
-                        @Html.DisplayFor(model => model.Others)
-                    </li>
-                    <li>
-                        <button  id="@Model.Id" class="btn btn-default Sendmessage">SEND MESSAGE</button>
-                    </li>
-                    <li style="display:none" id="formtosendmessage">
-                        <form name="myform" autocomplete="off">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Email</span>
-                                </div>
+                    <p>@item.Description</p>
 
-                                <input type="email" id="email" name="email" class="form-control" />
-                                <div style="display:none" class="alert alert-danger" id="expectmark">Email Must Contain @@ </div>
-                                <div style="display:none" id="expectgmailcom" class="alert alert-danger">Email Must Containt gmail.com</div>
-                            </div>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Password</span>
-                                </div>
-
-                                <input type="password" id="password" class="form-control" />
-                            </div>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Message</span>
-                                </div>
-
-                                <input type="text" id="test" class="form-control" />
-                            </div>
-                            <div style="margin:auto">
-                                <button class="btn btn-primary" type="button" id="submitmessage" disabled>Send</button>
-                            </div>
-                            <div id="responseformmessagesuccess" class="alert alert-success" style="text-align:center;display:none">
-                                Success
-                            </div>
-                            <div id="responseformmessageerror" class="alert alert-danger" style="text-align:center;display:none">
-                                Please Enter Password or Email Correct
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-                
+                    <a asp-route-doctorid="@item.doctorid" asp-action="Create" asp-route-id="@item.Id" asp-controller="Commentfordoctorposts">Add Comment</a>
+                    <hr />
+                    <a  asp-action="Details" asp-route-id="@item.Id" asp-controller="Posts">Show Comment</a>
+                </div>
             </div>
+
+
+
         </div>
 
 
-    </div>
-    <div>
-        <a asp-action="Details" asp-controller="Doctors" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>
-    <script>
-        $(document).ready(function () {
 
-            $(".Sendmessage").on("click", function () {
-                $("#formtosendmessage").slideToggle();
-                console.log();
-                if ($(this)[0].innerHTML == "SEND MESSAGE") {
-                    $(this)[0].innerHTML = "Cancel";
-                }
-                else {
-                    $(this)[0].innerHTML = "SEND MESSAGE";
-                }
 
-            });
-            $("#email").keyup(function () {
-                console.log("enter");
-                var emailvalue = document.forms["myform"]["email"].value;
-                if (emailvalue != null) {
-                         if (emailvalue.indexOf("@@") == -1) {
-                             $("#expectmark").slideDown();
-                             $("#submitmessage").attr("disabled","disabled");
 
-                         }
-                     else {
-                             $("#expectmark").slideUp();
-                             $("#submitmessage").removeAttr("disabled");
-                     }
-                    if (emailvalue.indexOf("@@") != -1) {
-                        
-                        if (emailvalue.split("@@")[1] != "gmail.com") {
-                            $("#expectgmailcom").slideDown();
-                            $("#submitmessage").attr("disabled","disabled");
-                        }
-                        else {
-                           
-                            $("#expectgmailcom").slideUp();
-                            $("#submitmessage").removeAttr("disabled");
-                        }
-                }
-                }
-                
-               
-               
 
-            });
-            $("#submitmessage").on("click", function () {
-                var email = $("#email").val();
-                var password = $("#password").val();
-                var body = $("#test").val();
-                $.ajax({
-                    url: "/Doctors/messagetogmail?Body=" + body + "&From=" + email + "&password=" + password,
-                    type: "GET",
-                    success: function (resuilt) {
-                        console.log("success");
-                        $("#responseformmessagesuccess").show();
-                        $("#responseformmessagesuccess").hide(5000);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("error");
-                        $("#responseformmessageerror").show();
-                        $("#responseformmessageerror").hide(5000);
 
-                    }
-                });
 
-            });
-        });
+    }
+</div>
 
-    </script>
-</body>
-</html>
+
+
+
+@section Scripts
+{
+  
+}
+
+

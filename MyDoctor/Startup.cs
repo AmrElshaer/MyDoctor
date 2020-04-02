@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyDoctor.Models;
 using Microsoft.AspNetCore.Http.Features;
+using MyDoctor.Helper;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using MyDoctor.Areas.Identity.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MyDoctor
 {
@@ -29,8 +33,9 @@ namespace MyDoctor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.Configure<CookiePolicyOptions>(options =>
-            {
+            { 
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -43,9 +48,12 @@ namespace MyDoctor
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<CutomPropertiy>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<CutomPropertiy, IdentityRole>()
+           .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddTransient<IEmailSender, EmailSender>();
             
+             services.ConfigureApplicationCookie(o => o.LoginPath = "/identity/Account/Login");
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -53,10 +61,13 @@ namespace MyDoctor
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public  void Configure(IApplicationBuilder app, IHostingEnvironment env,UserManager<CutomPropertiy> userManager,RoleManager<IdentityRole>roleManager)
         {
+             SeedData.AddRoles(roleManager);
+             SeedData.AddUsers(userManager);
             if (env.IsDevelopment())
             {
+               
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -70,6 +81,7 @@ namespace MyDoctor
             app.UseStaticFiles();
             app.UseCookiePolicy();
             
+
             app.UseAuthentication();
 
             app.UseMvc(routes =>

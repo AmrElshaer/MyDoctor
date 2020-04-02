@@ -23,7 +23,7 @@ namespace MyDoctor.Controllers
         }
        
         // GET: RelativeofBeatyandhealthies
-        public async Task<IActionResult> Index(int id)
+        public IActionResult Index(int id)
         {
            var data= _context.RelativeofBeatyandhealthy.Where(a=>a.BeatyId==id);
             return Json(data);
@@ -60,7 +60,7 @@ namespace MyDoctor.Controllers
         // more details see 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageOrvideo,subject,Address,BeatyId")] RelativeofBeatyandhealthy relativeofBeatyandhealthy)
+        public IActionResult Create([Bind("Id,ImageOrvideo,subject,Address,BeatyId")] RelativeofBeatyandhealthy relativeofBeatyandhealthy)
         {
             if (ModelState.IsValid)
             {

@@ -1,8 +1,6 @@
 ﻿@model IQueryable<MyDoctor.ViewModels.Medicngroup>
 
-@{
-    Layout = "~/Views/Shared/_MedicinLayoutcshtml.cshtml";
-}
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -18,7 +16,21 @@
                     $("#data").html(" ");
                    
                     $.each(data, function (index, value) {
-                        $("#data").append( "<a href='/Medicins/Details?id="+value.id+"'>"+value.name+"</a><br/><hr/>");
+                        $("#data").append(
+                            `
+ <div class="card border-left-primary shadow mb-4  py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Medicin Name</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><a href="/Medicins/Details/${value.id}" >${ value.name }</a></div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+`
+                  );
                     });
                    
                 },
@@ -37,29 +49,45 @@
 
 
 <div class="row">
-    
-    <div class="searchbox col-sm-12" style="margin:auto">
+
+    <div class="searchbox col-sm-6 mb-5">
+        <!-- Topbar Search -->
+
         <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Search</span>
+            <input type="text" id="txtEmpName" class="form-control bg-light border-0 small" placeholder="Search for Medicin..." aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
             </div>
-            <a asp-action='Details' asp-route-id=''></a>
-            <input type="text" id="txtEmpName" class="form-control" />
         </div>
-        <div id="data" style="text-align:center;z-index: 1;border: 1px solid #ada7a7;border-radius: 5px;">
+
+        <div id="data">
 
         </div>
+
+
     </div>
-    
-    <div class="containtofdiseases col-sm-12">
-        <h2>According To Disease</h2>
-        <hr />
+    <hr />
+    <div class="containtofdiseases col-sm-6">
+        <p>All Disease</p>
+
         @foreach (var item in Model)
         {
-            <div style="margin-bottom:2%; border: 1px solid #ada7a7;box-shadow: -2px 10px #eee;
-    padding: 1%;
-    border-radius: 5px;
-    cursor: pointer;" class="itemmodel"><a asp-action="AllDiseaseRelative" asp-controller="Medicins" asp-route-diseasename="@item.id">@item.id</a></div>
+    <div class="card border-left-primary shadow mb-4  py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Disease Name</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><a asp-action="AllDiseaseRelative" asp-controller="Medicins" asp-route-diseasename="@item.id">@item.id</a></div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+           
 }
     </div>
 

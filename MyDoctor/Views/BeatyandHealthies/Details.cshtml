@@ -1,65 +1,125 @@
 ﻿@model MyDoctor.Models.BeatyandHealthy
-    <script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 @{
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
 
-<div class="container">
-    <input style="display:none" class="BeatyandHealthyId" value="@Model.Id" />
-    <input style="display:none" id="BeatyandHealthyCatagory" value="@Model.Catagory" />
-    <div class="row">
-        <div class="col-sm-8 card-panel hoverable">
-            <h2>@Model.Catagory</h2>
-            <img  src="@Model.Image" class='img-responsive'  />
-        </div>
-        <div class="col-sm-4">
-            <div class="column small">
+<input style="display:none" class="BeatyandHealthyId" value="@Model.Id" />
+<input style="display:none" id="BeatyandHealthyCatagory" value="@Model.Catagory" />
+<div class="row">
+    <div class="col-lg-8 mb-4">
 
-                <div class="list">
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=2" title="أهم مواضيع وادوات الريجيم وتخفيف الوزن" أهم="" مواضيع="" وادوات="" الريجيم="" وتخفيف="" الوزن""="">الريجيم وتخفيف الوزن</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=3" title="التغذية السليمة، التغذية الصحية" التغذية="" السليمة،="" الصحية""="">التغذية السليمة</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=1" title="الرياضة والرشاقة، تمارين رياضية ونصائح لتحافظوا على رشاقتكم" الرياضة="" والرشاقة،="" تمارين="" رياضية="" ونصائح="" لتحافظوا="" على="" رشاقتكم""="">الرياضة والرشاقة</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=4" title="الحياة الزوجية العلاقة الاسرية" الحياة="" الزوجية="" العلاقة="" الاسرية""="">الحياة الزوجية</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=5" title="العناية بالشعر - الرجيم والجمال على ويب طب" العناية="" بالشعر="" -="" الرجيم="" والجمال="" على="" ويب="" طب""="">العناية بالشعر</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=6" title="الصحة والجمال | الرجيم والجمال من ويب طب" الصحة="" والجمال="" |="" الرجيم="" من="" ويب="" طب""="">العناية بالبشرة والجمال</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=7" title="قسم جودة الحياة، لحياة افضل مع ويب طب" قسم="" جودة="" الحياة،="" لحياة="" افضل="" مع="" ويب="" طب""="">جودة الحياة</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=8" title="الجيل الذهبي، كيف نعتاشه بصحة وحيوية؟" الجيل="" الذهبي،="" كيف="" نعتاشه="" بصحة="" وحيوية؟""="">الجيل الذهبي</a>
-                    <a class="btn btn-default card-panel hoverable" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=9" title="وصفات صحية" وصفات="" صحية""="">
-                        وصفات صحية</p class="btn>
-                        <a class="btn btn-default" style="min-width:200px" data-ref="navigator" href="https://localhost:5001/BeatyandHealthies/Details?id=10" title="اكتشفوا القيمة الغذائية والسعرات الحرارية لاشهر الاطعمة الغذائية" اكتشفوا="" القيمة="" الغذائية="" والسعرات="" الحرارية="" لاشهر="" الاطعمة="" الغذائية""="">القيم الغذائية للمأكولات</a>
+        <!-- Illustrations -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@Model.Catagory</h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="@Model.Image" alt="">
                 </div>
 
             </div>
         </div>
+
+
+
     </div>
-    <hr />
-    <div class="row RelativeBeatyandHealthies">
-    </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <h2>Relative Subject</h2>
-    <div id="RelativeSubjecttoHealthyandbeaty">
+    <div class="col-lg-4 mb-4">
+
+        <div class="list">
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=2" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">الريجيم وتخفيف الوزن</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=3" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">التغذية السليمة</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=1" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">الرياضة والرشاقة</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=4" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">الحياة الزوجية</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=5" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">العناية بالشعر</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=6" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">العناية بالبشرة والجمال</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=7" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">جودة الحياة</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=8" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">الجيل الذهبي</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=9" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">وصفات صحية</span>
+            </a>
+            <div class="my-2"></div>
+            <a href="/BeatyandHealthies/Details?id=10" class="btn btn-secondary btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+                <span class="text">القيم الغذائية للمأكولات</span>
+            </a>
+         
+        </div>
+
+
 
     </div>
 </div>
 
+<div class="row RelativeBeatyandHealthies">
+
+</div>
+
+<h2>Relative Subject</h2>
+<div class="row" id="RelativeSubjecttoHealthyandbeaty">
+
+</div>
 <script>
-    function searchforrelativesubject(id) {
-        location.href = "/Posts/Details?id=" + id;
-    }
-    function gethref(id) {
-        var host = location.host;
-        var protcol = location.protocol;
-        console.log(host + protcol);
-        window.location.href = protcol + '//' + host + '/updateRelativeBeatyandHealthies/Details/' + id
-    }
+
     $(document).ready(function () {
 
-         var DiseaseName = $(".BeatyandHealthyId").val();
+        var DiseaseName = $(".BeatyandHealthyId").val();
         $.ajax({
             url: "/updateRelativeBeatyandHealthies/Index?" + "id" + "=" + DiseaseName,
             method: 'Get'
@@ -71,8 +131,28 @@
                         $(".RelativeBeatyandHealthies").append("<div class='card-panel hoverable'>No RelativeData</div>");
                     }
                     else {
-                        $(".RelativeBeatyandHealthies").append("<div   onclick='gethref(this.id)' id='" + value.id + "' class='col-sm-4 card-panel hoverable' >" + "<iframe class='img-responsive'   scrolling='no'  frameborder='0' border='0' cellspacing='0'style='border-style: none; 'src='" + value.imageOrvideo + "'" + "  /></iframe ><p>" + value.address + "</p>" + "</div>" + " </div>")
-                    }
+                        $(".RelativeBeatyandHealthies").append(
+                            ` <div class="col-lg-4 mb-4">
+
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">@Model.Catagory</h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${ value.imageOrvideo}" alt="">
+                   <p>${value.address}</p>
+                </div>
+                <a href="/updateRelativeBeatyandHealthies/Details/${value.id}">See More &rarr;</a>
+            </div>
+        </div>
+
+
+
+    </div>`
+
+                        );}
 
                 });
 
@@ -89,14 +169,33 @@
             url: "/GetRelativeSubject/Index?relativeitem=" + Beatyandhealthcatagory,
             type: "Get",
             success: function (resuilt) {
-                
-                $.each(resuilt, function (index, value) {
-                    $("#RelativeSubjecttoHealthyandbeaty").append("<div class='card-panel hoverable' onclick='searchforrelativesubject(this.id)' id='" + value.id + "' class='col-sm-3 panel '><div>"+value.description+"</div></div>");
 
-                });
+                $.each(resuilt, function (index, value) {
+                    $("#RelativeSubjecttoHealthyandbeaty").append(
+                         ` <div class="col-lg-4 mb-4">
+
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"></h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                  
+                   <p>${value.description}</p>
+                </div>
+                <a href="/Posts/Details/${value.id}">See More &rarr;</a>
+            </div>
+        </div>
+
+
+
+    </div>`
+
+                )});
             }
         });
 
     });
-   
+
 </script>

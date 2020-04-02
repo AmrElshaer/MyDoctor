@@ -1,108 +1,114 @@
 ﻿@model IEnumerable<MyDoctor.Models.Doctor>
 
-@{
-    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
-}
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-5 d-none d-lg-block">
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <style>
-       .AllDoctors div.col-sm-4{
-           margin-top:5%;
-         
-       }
-      .AllDoctors div.col-sm-4 .row{
-            background-color: cornflowerblue;
-    /* border-radius: 2px; */
-    border: 1px solid white;
-    border-radius: 61px 2px;
-    color: white;
-      }
-    </style>
-    
-    <div class="container lead">
-        <div id="SearchforDoctor" class="SearchforDoctor row">
-            <div class="form-group col-sm-4">
-                <label class="control-label">Special</label>
-                <select id="special" class="form-control"><option value="">اختر...</option><option value="التوليد وأمراض النساء">التوليد وأمراض النساء</option><option value="الأطفال">الأطفال</option><option value="طب عام">طب عام</option><option value="الطب الباطني">الطب الباطني</option><option value="طب الأسنان">طب الأسنان</option><option value="طب وجراحة العظام">طب وجراحة العظام</option><option value="أنف, أذن وحنجرة وجراحة الرأس والرقبة">أنف, أذن وحنجرة وجراحة الرأس والرقبة</option><option value="الأمراض الجلدية والتناسليه">الأمراض الجلدية والتناسليه</option><option value="أمراض القلب">أمراض القلب</option><option value="امراض الصدرية والجهاز التنفسي">امراض الصدرية والجهاز التنفسي</option><option value="جراحة التجميل">جراحة التجميل</option><option value="طب وجراحة العيون">طب وجراحة العيون</option><option value="طب الكلى وارتفاع ضغط الدم">طب الكلى وارتفاع ضغط الدم</option><option value="الجهاز الهضمي">الجهاز الهضمي</option><option value="طب العائلة (طب الاسرة)">طب العائلة (طب الاسرة)</option><option value="امراض المفاصل والروماتيزم">امراض المفاصل والروماتيزم</option><option value="جراحة القلب">جراحة القلب</option><option value="الطب النفسي">الطب النفسي</option><option value="طب الأعصاب">طب الأعصاب</option><option value="مرض السكري والغدد الصماء">مرض السكري والغدد الصماء</option><option value="طب  الأورام (السرطان)">طب  الأورام (السرطان)</option><option value="امراض واورام الدم">امراض واورام الدم</option><option value="جراحة الأطفال">جراحة الأطفال</option><option value="علم النفس- Psychology">علم النفس- Psychology</option><option value="التغذية والحمية">التغذية والحمية</option><option value="الأعشاب">الأعشاب</option><option value="العلاج الطبيعي">العلاج الطبيعي</option><option value="صيدلة">صيدلة</option><option value="جراحة المخ والأعصاب">جراحة المخ والأعصاب</option><option value="علم الأشعة (Radiology)">علم الأشعة (Radiology)</option><option value="أمراض الكبد">أمراض الكبد</option><option value="طب الألم (التخدير)">طب الألم (التخدير)</option><option value="الحساسية والمناعة">الحساسية والمناعة</option><option value="طب الطوارىء">طب الطوارىء</option><option value="جراحة الصدر والرئتين">جراحة الصدر والرئتين</option><option value="اخصائي بصريات">اخصائي بصريات</option><option value="المسالك البولية">المسالك البولية</option><option value="التخدير">التخدير</option><option value="جراحة">جراحة</option><option value="الطب النفسي للأطفال">الطب النفسي للأطفال</option><option value="طب الشيخوخة">طب الشيخوخة</option><option value="الطب النووي (إشعاعي)">الطب النووي (إشعاعي)</option><option value="اخصائية تجميل وعناية بالبشرة">اخصائية تجميل وعناية بالبشرة</option><option value="مختبرات طبية">مختبرات طبية</option></select>
+                <img src="~/Content/img/63572996-health-logo-template.jpg" style="max-width: 350px;" />
             </div>
-            <div class="form-group col-sm-4">
-                <label class="control-label">Country</label>
-                <input id="country" type="text" class="form-control"  />
-            </div>
-            <div class="form-group col-sm-4">
-                <label class="control-label">City</label>
-                <input id="city" class="form-control" />
-            </div>
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4"> Search For Doctor</h1>
+                    </div>
+                    <form class="user">
+                        <div class="form-group row">
 
-        </div>
-        <div id="Search">
-            <button class="btn btn-danger" style="margin-left: 50%;" id="search">Search</button>
-        </div>
-        <div class="row AllDoctors">
-            @{
-                foreach (var item in Model)
-                {
-                    <div class="col-sm-4" id="@item.Id" onclick="gotodoctor(this.id)">
-                        <div class="row">
-                            <div class="col-sm-8">
-                                @{
-                                    if (item.Kind == "Male")
-                                    {
+                            <select id="special" class="form-control"><option value="">اختر...</option><option value="التوليد وأمراض النساء">التوليد وأمراض النساء</option><option value="الأطفال">الأطفال</option><option value="طب عام">طب عام</option><option value="الطب الباطني">الطب الباطني</option><option value="طب الأسنان">طب الأسنان</option><option value="طب وجراحة العظام">طب وجراحة العظام</option><option value="أنف, أذن وحنجرة وجراحة الرأس والرقبة">أنف, أذن وحنجرة وجراحة الرأس والرقبة</option><option value="الأمراض الجلدية والتناسليه">الأمراض الجلدية والتناسليه</option><option value="أمراض القلب">أمراض القلب</option><option value="امراض الصدرية والجهاز التنفسي">امراض الصدرية والجهاز التنفسي</option><option value="جراحة التجميل">جراحة التجميل</option><option value="طب وجراحة العيون">طب وجراحة العيون</option><option value="طب الكلى وارتفاع ضغط الدم">طب الكلى وارتفاع ضغط الدم</option><option value="الجهاز الهضمي">الجهاز الهضمي</option><option value="طب العائلة (طب الاسرة)">طب العائلة (طب الاسرة)</option><option value="امراض المفاصل والروماتيزم">امراض المفاصل والروماتيزم</option><option value="جراحة القلب">جراحة القلب</option><option value="الطب النفسي">الطب النفسي</option><option value="طب الأعصاب">طب الأعصاب</option><option value="مرض السكري والغدد الصماء">مرض السكري والغدد الصماء</option><option value="طب  الأورام (السرطان)">طب  الأورام (السرطان)</option><option value="امراض واورام الدم">امراض واورام الدم</option><option value="جراحة الأطفال">جراحة الأطفال</option><option value="علم النفس- Psychology">علم النفس- Psychology</option><option value="التغذية والحمية">التغذية والحمية</option><option value="الأعشاب">الأعشاب</option><option value="العلاج الطبيعي">العلاج الطبيعي</option><option value="صيدلة">صيدلة</option><option value="جراحة المخ والأعصاب">جراحة المخ والأعصاب</option><option value="علم الأشعة (Radiology)">علم الأشعة (Radiology)</option><option value="أمراض الكبد">أمراض الكبد</option><option value="طب الألم (التخدير)">طب الألم (التخدير)</option><option value="الحساسية والمناعة">الحساسية والمناعة</option><option value="طب الطوارىء">طب الطوارىء</option><option value="جراحة الصدر والرئتين">جراحة الصدر والرئتين</option><option value="اخصائي بصريات">اخصائي بصريات</option><option value="المسالك البولية">المسالك البولية</option><option value="التخدير">التخدير</option><option value="جراحة">جراحة</option><option value="الطب النفسي للأطفال">الطب النفسي للأطفال</option><option value="طب الشيخوخة">طب الشيخوخة</option><option value="الطب النووي (إشعاعي)">الطب النووي (إشعاعي)</option><option value="اخصائية تجميل وعناية بالبشرة">اخصائية تجميل وعناية بالبشرة</option><option value="مختبرات طبية">مختبرات طبية</option></select>
 
 
-                                        <img class="img img-responsive img-circle img-thumbnail " style="max-height: 200px;" src="https://image.freepik.com/free-vector/doctor-character-background_1270-84.jpg" />
-
-                                    }
-                                    else
-                                    {
 
 
-                                        <img class="img img-responsive img-circle img-thumbnail " style="max-height: 200px;" src="https://image.freepik.com/free-vector/smiley-female-doctor-with-clipboard-stethoscope_23-2147657762.jpg" />
-
-                                    }
-                                }
-                            </div>
-                            <div class="col-sm-4">
-                                <p>@item.Name</p>
-                                <hr />
-                                <p>@item.Specials</p>
-                                <p>@item.Country/@item.City</p>
-                            </div>
-                          
                         </div>
-                    </div>
-                    <div class="col-sm-2">
+                        <div class="form-group row">
+
+                            <input id="country" placeholder="Country" type="text" class="form-control form-control-user" />
+                            <input id="city" class="form-control form-control-user mt-4" placeholder="Citry" />
+                        </div>
+                        <div class="form-group row">
+                            <input type="button" id="search" class="btn btn-primary btn-user btn-block" value="Search" />
+
+                        </div>
+                    </form>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 mb-4" id="@item.Id" onclick="gotodoctor(this.id)">
+
+            <!-- Illustrations -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@item.Name</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        @{
+                            if (item.Kind == "Male")
+                            {
+
+                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="https://image.freepik.com/free-vector/doctor-character-background_1270-84.jpg" alt="">
+
+
+
+
+                            }
+                            else
+                            {
+
+                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="https://image.freepik.com/free-vector/smiley-female-doctor-with-clipboard-stethoscope_23-2147657762.jpg" alt="">
+
+
+
+                                
+
+                            }
+                        }
 
                     </div>
+                   
+                    <p>@item.Specials</p>
+                    <p>@item.City</p>
+                    <p>@item.Country</p>
+                    <a asp-action="Details" asp-controller="Doctors" asp-route-id="@item.Id">See More &rarr;</a>
+                </div>
+            </div>
 
-                }
-            }
 
 
         </div>
 
-    </div>
-    <script>
-        function gotodoctor(id)
-        {
-            location.href = "/Doctors/Details/" + id;
-        }
-        $(document).ready(function () {
-            $("#search").on('click', function () {
-                var special = $('#special').val();
-                var country = $('#country').val();
-                var city = $('#city').val();
-                location.href = "https://localhost:5001/Doctors/Index?country="+country+"&city="+city+"&special="+special;
-            });
 
-        });
-    </script>
-</body>
-</html>
+
+
+
+
+
+
+    }
+</div>
+
+    @section Scripts{
+        <script>
+           
+            $(document).ready(function () {
+                $("#search").on('click', function () {
+                    var special = $('#special').val();
+                    var country = $('#country').val();
+                    var city = $('#city').val();
+                    location.href = "/Doctors/Index?country=" + country + "&city=" + city + "&special=" + special;
+                });
+
+            });
+        </script> }
+

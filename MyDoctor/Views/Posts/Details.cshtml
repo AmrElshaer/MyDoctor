@@ -5,44 +5,37 @@
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
- <style>
-       a:hover{
-         text-decoration:none;
-        }
- </style>
- <div class="container">
+
+<input type="text" id="postid" style="display:none" value="@Model.Id" />
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@Model.specific</h6>
+    </div>
+    <div class="card-body">
+        <p>
+            @Model.Description
+        </p>
+    </div>
+</div>
 
 
-     <input type="text" id="postid" style="display:none" value="@Model.Id" />
+
     
-     <div class="row">
-         <div class="col s12 m6">
-             <div class="card blue-grey darken-1">
-                 <div class="card-content white-text">
-                    
-                     <p>
-                         @Html.DisplayFor(model => model.specific)
-                     </p>
-                 </div>
-                 <div class="card-action">
-                     <a> @Html.DisplayFor(model => model.Description)</a> 
-                 </div>
-             </div>
-         </div>
-     </div>
-     <table class="row">
-         <tr>
-             <td colspan="2">
-                 <button class="btn btn-primary"><a style="color:white" asp-route-doctorid="@Model.doctorid" asp-action="Create" asp-route-id="@Model.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
-             </td>
-             <td colspan="2"> <button id="loadcomment" class="btn btn-primary">Show Comment</button></td>
-         </tr>
-     </table>
 
-     <div class="comments row">
+   
+    <table class="row mt-5 mt-5">
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-primary"><a style="color:white" asp-route-doctorid="@Model.doctorid" asp-action="Create" asp-route-id="@Model.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
+            </td>
+            <td colspan="2"> <button id="loadcomment" class="btn btn-primary">Show Comment</button></td>
+        </tr>
+    </table>
 
-     </div>
- </div>
+    <div class="comments row mt-5 ">
+
+    </div>
+
 <script>
     $(document).ready(function () {
 
@@ -60,10 +53,20 @@
                         $.ajax({
                             url: "/Users/GetUser?id=" + value.userid,
                             success: function (user) {
-                                var divelement = document.createElement("div");
-                                var innerhtml = "<div><img class='img-circle img-responsive' style='max-width:60px' src='https://localhost:5001/images/" + user.imagePath + "' /><h2>" + user.userName + "</h2><h4>" + value.containt + "</h4></div>";
-                                divelement.innerHTML += innerhtml;
-                                $(".comments").append(divelement);
+                             
+                                $(".comments").append(
+                                    ` <a class="dropdown-item d-flex align-items-center mb-4 col-12" href="#">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+
+                                                        <img class="img-profile rounded-circle" style="max-width: 50px;" src="/images/${user.imagePath}">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="small text-gray-500">${ user.userName}</div>
+                                                    <span class="font-weight-bold">${value.containt}</span>
+                                                </div>
+                                            </a>`);
                             }
                         });
                         console.log(resuilt);

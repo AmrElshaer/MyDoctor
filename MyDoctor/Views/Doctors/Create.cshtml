@@ -2,86 +2,106 @@
 
 
 
-@{ 
-    Layout = "~/Views/Shared/_DoctorLayout.cshtml";
-}
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block">
 
-<h4>Doctor</h4>
-<hr />
-<div class="container">
-<div class="row">
-    <div class="col-md-8" >
-        <form asp-action="Create">
-            <fieldset>
-                <legend>Doctor Info</legend>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <img src="~/Content/img/63572996-health-logo-template.jpg" style="max-width: 350px;" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="Specials" class="control-label"></label>
-                    <select class="form-control" asp-for="Specials"><option value="">اختر...</option><option value="التوليد وأمراض النساء">التوليد وأمراض النساء</option><option value="الأطفال">الأطفال</option><option value="طب عام">طب عام</option><option value="الطب الباطني">الطب الباطني</option><option value="طب الأسنان">طب الأسنان</option><option value="طب وجراحة العظام">طب وجراحة العظام</option><option value="أنف, أذن وحنجرة وجراحة الرأس والرقبة">أنف, أذن وحنجرة وجراحة الرأس والرقبة</option><option value="الأمراض الجلدية والتناسليه">الأمراض الجلدية والتناسليه</option><option value="أمراض القلب">أمراض القلب</option><option value="امراض الصدرية والجهاز التنفسي">امراض الصدرية والجهاز التنفسي</option><option value="جراحة التجميل">جراحة التجميل</option><option value="طب وجراحة العيون">طب وجراحة العيون</option><option value="طب الكلى وارتفاع ضغط الدم">طب الكلى وارتفاع ضغط الدم</option><option value="الجهاز الهضمي">الجهاز الهضمي</option><option value="طب العائلة (طب الاسرة)">طب العائلة (طب الاسرة)</option><option value="امراض المفاصل والروماتيزم">امراض المفاصل والروماتيزم</option><option value="جراحة القلب">جراحة القلب</option><option value="الطب النفسي">الطب النفسي</option><option value="طب الأعصاب">طب الأعصاب</option><option value="مرض السكري والغدد الصماء">مرض السكري والغدد الصماء</option><option value="طب  الأورام (السرطان)">طب  الأورام (السرطان)</option><option value="امراض واورام الدم">امراض واورام الدم</option><option value="جراحة الأطفال">جراحة الأطفال</option><option value="علم النفس- Psychology">علم النفس- Psychology</option><option value="التغذية والحمية">التغذية والحمية</option><option value="الأعشاب">الأعشاب</option><option value="العلاج الطبيعي">العلاج الطبيعي</option><option value="صيدلة">صيدلة</option><option value="جراحة المخ والأعصاب">جراحة المخ والأعصاب</option><option value="علم الأشعة (Radiology)">علم الأشعة (Radiology)</option><option value="أمراض الكبد">أمراض الكبد</option><option value="طب الألم (التخدير)">طب الألم (التخدير)</option><option value="الحساسية والمناعة">الحساسية والمناعة</option><option value="طب الطوارىء">طب الطوارىء</option><option value="جراحة الصدر والرئتين">جراحة الصدر والرئتين</option><option value="اخصائي بصريات">اخصائي بصريات</option><option value="المسالك البولية">المسالك البولية</option><option value="التخدير">التخدير</option><option value="جراحة">جراحة</option><option value="الطب النفسي للأطفال">الطب النفسي للأطفال</option><option value="طب الشيخوخة">طب الشيخوخة</option><option value="الطب النووي (إشعاعي)">الطب النووي (إشعاعي)</option><option value="اخصائية تجميل وعناية بالبشرة">اخصائية تجميل وعناية بالبشرة</option><option value="مختبرات طبية">مختبرات طبية</option></select>
-                    <span asp-validation-for="Specials" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Country" class="control-label"></label>
-                    <input type="tel" class="form-control" asp-for="Country" />
-                    <span asp-validation-for="Country" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="City" class="control-label"></label>
-                    <input asp-for="City" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Telephone" class="control-label"></label>
-                    <input asp-for="Telephone" class="form-control" />
-                    <span asp-validation-for="Telephone" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Kind" class="control-label"></label>
-                    <select asp-for="Kind" class="form-control" >
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Create Disease</h1>
+                        </div>
+                        <form class="user" asp-action="Create" id="CreateCatagory">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group row">
 
-                        </select>
-                    <span asp-validation-for="Kind" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Others" class="control-label"></label>
-                    <input asp-for="Others" class="form-control" />
-                    <span asp-validation-for="Others" class="text-danger"></span>
-                </div>
 
-                <hr />
-                <div class="form-group">
-                    <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                                <input asp-for="Name" class="form-control form-control-user" placeholder="Name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+
+
+
+                            </div>
+                            <div class="form-group">
+
+                                <select class="form-control" asp-for="Specials"><option value="">اختر...</option><option value="التوليد وأمراض النساء">التوليد وأمراض النساء</option><option value="الأطفال">الأطفال</option><option value="طب عام">طب عام</option><option value="الطب الباطني">الطب الباطني</option><option value="طب الأسنان">طب الأسنان</option><option value="طب وجراحة العظام">طب وجراحة العظام</option><option value="أنف, أذن وحنجرة وجراحة الرأس والرقبة">أنف, أذن وحنجرة وجراحة الرأس والرقبة</option><option value="الأمراض الجلدية والتناسليه">الأمراض الجلدية والتناسليه</option><option value="أمراض القلب">أمراض القلب</option><option value="امراض الصدرية والجهاز التنفسي">امراض الصدرية والجهاز التنفسي</option><option value="جراحة التجميل">جراحة التجميل</option><option value="طب وجراحة العيون">طب وجراحة العيون</option><option value="طب الكلى وارتفاع ضغط الدم">طب الكلى وارتفاع ضغط الدم</option><option value="الجهاز الهضمي">الجهاز الهضمي</option><option value="طب العائلة (طب الاسرة)">طب العائلة (طب الاسرة)</option><option value="امراض المفاصل والروماتيزم">امراض المفاصل والروماتيزم</option><option value="جراحة القلب">جراحة القلب</option><option value="الطب النفسي">الطب النفسي</option><option value="طب الأعصاب">طب الأعصاب</option><option value="مرض السكري والغدد الصماء">مرض السكري والغدد الصماء</option><option value="طب  الأورام (السرطان)">طب  الأورام (السرطان)</option><option value="امراض واورام الدم">امراض واورام الدم</option><option value="جراحة الأطفال">جراحة الأطفال</option><option value="علم النفس- Psychology">علم النفس- Psychology</option><option value="التغذية والحمية">التغذية والحمية</option><option value="الأعشاب">الأعشاب</option><option value="العلاج الطبيعي">العلاج الطبيعي</option><option value="صيدلة">صيدلة</option><option value="جراحة المخ والأعصاب">جراحة المخ والأعصاب</option><option value="علم الأشعة (Radiology)">علم الأشعة (Radiology)</option><option value="أمراض الكبد">أمراض الكبد</option><option value="طب الألم (التخدير)">طب الألم (التخدير)</option><option value="الحساسية والمناعة">الحساسية والمناعة</option><option value="طب الطوارىء">طب الطوارىء</option><option value="جراحة الصدر والرئتين">جراحة الصدر والرئتين</option><option value="اخصائي بصريات">اخصائي بصريات</option><option value="المسالك البولية">المسالك البولية</option><option value="التخدير">التخدير</option><option value="جراحة">جراحة</option><option value="الطب النفسي للأطفال">الطب النفسي للأطفال</option><option value="طب الشيخوخة">طب الشيخوخة</option><option value="الطب النووي (إشعاعي)">الطب النووي (إشعاعي)</option><option value="اخصائية تجميل وعناية بالبشرة">اخصائية تجميل وعناية بالبشرة</option><option value="مختبرات طبية">مختبرات طبية</option></select>
+                                <span asp-validation-for="Specials" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+
+                                <input asp-for="Kind" class="form-control form-control-user" placeholder="Kind" />
+                                <span asp-validation-for="Kind" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <input asp-for="Country" class="form-control form-control-user" placeholder="Country" />
+                                <span asp-validation-for="Country" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+
+                                <input asp-for="City" class="form-control form-control-user" placeholder="City" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+
+                                <input asp-for="Others" class="form-control form-control-user" placeholder="Describtion" />
+                                <span asp-validation-for="Others" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group">
+
+                                <input asp-for="Telephone" class="form-control form-control-user" placeholder="Telephone" />
+                                <span asp-validation-for="Telephone" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group row">
+
+
+                                <input asp-for="Email" class="form-control form-control-user" placeholder="Email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
+
+
+                            </div>
+
+                           
+                            <div class="form-group">
+
+                                <input asp-for="Password" class="form-control form-control-user" placeholder="Password" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <input asp-for="ConfirmPassword" class="form-control form-control-user" placeholder="ConfirmPassword" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                            </div>
+                            <a href="javascript:document.getElementById('CreateCatagory').submit()" class="btn btn-primary btn-user btn-block">
+                                Add Doctor
+                            </a>
+                            <hr />
+                            <a href="Index" class="btn btn-primary btn-user btn-block">
+                                All  Doctor &rarr;
+                            </a>
+                        </form>
+
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ConfirmPassword" class="control-label"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </fieldset>
-           
-</form>
+            </div>
+        </div>
     </div>
-</div>
-    </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
 
 

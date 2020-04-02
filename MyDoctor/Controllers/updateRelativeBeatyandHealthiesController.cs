@@ -20,7 +20,7 @@ namespace MyDoctor.Controllers
         }
 
         // GET: updateRelativeBeatyandHealthies
-        public async Task<IActionResult> Index(int id)
+        public IActionResult Index(int id)
         {
             var data = _context.updateRelativeBeatyandHealthy.Where(a => a.BeatyId == id);
             return Json(data);

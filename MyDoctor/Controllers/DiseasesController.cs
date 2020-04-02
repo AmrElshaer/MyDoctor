@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyDoctor.Data;
+using MyDoctor.Helper;
 using MyDoctor.Models;
 
 namespace MyDoctor.Controllers
@@ -22,7 +23,7 @@ namespace MyDoctor.Controllers
 
         }
 
-        [AllowAnonymous]
+        
         public async Task<IActionResult> Index()
         {
 
@@ -158,11 +159,12 @@ namespace MyDoctor.Controllers
         {
             return _context.Disease.Any(e => e.Id == id);
         }
-        [HttpPost]
-        public async Task AppComment(string Commment, string DiseaseName)
+        [HttpGet]
+        public async Task AppComment(DiseaseHelper diseaseHelper)
         {
+           // DiseaseHelper diseaseHelper = new DiseaseHelper();
             Comments obj = new Comments();
-            obj.Commment = Commment;
+            obj.Commment = diseaseHelper.Comment;
             CutomPropertiy cutom = this._context.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
             if(cutom.ImagePath == null)
             {
@@ -171,7 +173,7 @@ namespace MyDoctor.Controllers
             }
             obj.ImagePath = cutom.ImagePath;
             obj.UserName = cutom.UserName;
-            obj.DiseaseName = DiseaseName;
+            obj.DiseaseName = diseaseHelper.DiseaseName;
 
             await this._context.Comments.AddAsync(obj);
             this._context.SaveChanges();

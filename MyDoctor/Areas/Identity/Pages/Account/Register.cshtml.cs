@@ -14,6 +14,7 @@ using System.Web;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using MyDoctor.Helper;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
@@ -24,6 +25,7 @@ namespace MyDoctor.Areas.Identity.Pages.Account
         private readonly IHostingEnvironment _IhostEnv;
         private readonly UserManager<CutomPropertiy> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
@@ -76,31 +78,23 @@ namespace MyDoctor.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
 
             {
-                string uniquename = null;
-                if(Input.ImagePath!=null)
-                {
-
-                    string path = Path.Combine(_IhostEnv.WebRootPath,"images");
-                    uniquename = Guid.NewGuid() + "_" + Input.ImagePath.FileName;
-                    string realpath = Path.Combine(path,uniquename);
-                    Input.ImagePath.CopyTo(new FileStream(realpath,FileMode.Create));
-                }
-        
+                string uniquename = RegisterHelper.ConfigImagePath(Input.ImagePath,_IhostEnv);
                 var user = new CutomPropertiy { UserName = Input.Email, Email = Input.Email, ImagePath=uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    await  _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email),"Client");
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { userId = user.Id, code = code },
+                    //    protocol: Request.Scheme);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);

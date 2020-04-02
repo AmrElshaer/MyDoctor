@@ -1,90 +1,65 @@
 ﻿@model MyDoctor.Models.Disease
 
-@{
-    ViewData["Title"] = "Edit";
-}
-<style>
-  
-      div.container div.row div.col-lg-9 div.panel div.panel-body img
-      {
-          margin:auto;
-      }
-        div.container div.row div.col-lg-9 div.panel  h1
-        {
-            text-align:center;
-            text-transform:capitalize;
-            color:#03A9F4;
-        }
-         div.container div.row div.col-lg-9 div.panel div.panel-heading h1:first-of-type
-        {
-           
-            color:white;
-        }
-      div.container div.row div.col-lg-9 div.chat button{
-          margin-left:13%;
-      }
-     
-</style>
-
-
-<h1>Disease</h1>
-<hr />
-<div class="container">
-
 
     <div class="row">
-        <div class="col-md-4">
-            @Html.Partial("RelativeDiseaseIndex", Model.DiseaseName)
-        </div>
-        <div class="col-md-8">
+        <div class="col-lg-8 mb-4">
+            
 
-                    <div class="panel panel-primary" id="panel">
-
-
-                        <div class="panel-heading">
-                            <h1>@Model.DiseaseName</h1>
-
-                        </div>
-                        <div class="panel-body">
-                            <img width="250px" height="250px" src="@Url.Content(Model.Image)" class="img-responsive" />
-
-                        </div>
-                        <div class="panel-footer">
-                            <h1>Subject</h1>
-                            <p class="flow-text">@Model.Subject</p>
-                            <hr />
-                            <h1>Protection</h1>
-
-                            <p class="flow-text" style="overflow:scroll">@Model.Protection</p>
-                            <hr />
-                            <h1>Medicin</h1>
-                            <p class="flow-text">@Model.Medicin</p>
-                            <hr />
-                            <h1>Reasons</h1>
-                            <p class="flow-text">@Model.Reasons</p>
-                        </div>
+           
+            <!-- Illustrations -->
+            <div class="row">
+                <div class="col-lg-12 mb-4 card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">@Model.DiseaseName</h6>
                     </div>
-                
-                <div class="col-sm-12">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="@Model.Image" alt="">
+                        </div>
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Subject</h6>
+                        </div>
+                        <p>@Model.Subject</p>
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Protection</h6>
+                        </div>
+                        <p>@Model.Protection</p>
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Medicin</h6>
+                        </div>
+                        <p>@Model.Medicin</p>
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Reasons</h6>
+                        </div>
+                        <p>@Model.Reasons</p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
                     @Html.Partial("_RelativeSubject", Model.DiseaseName);
                 </div>
-              
-
-                <div class="lead col-sm-12">
+                <div class="col-lg-12">
                     @Html.Partial("_AppComment")
 
 
                 </div>
-                <div class="lead col-sm-12 ">
-                    @Html.Partial("_AllComment", Model.DiseaseName)
-                </div>
+            </div>
+            
             
 
+
         </div>
-
-
+        <div class="col-lg-4 mb-4">
+            @Html.Partial("RelativeDiseaseIndex", Model.DiseaseName)
+        </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="row">
+
+
+
+        
+        <div class="lead col-sm-12 ">
+            @Html.Partial("_AllComment", Model.DiseaseName)
+        </div>
+    </div>
+
+

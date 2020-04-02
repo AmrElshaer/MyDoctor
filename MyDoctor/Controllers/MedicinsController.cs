@@ -20,7 +20,7 @@ namespace MyDoctor.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<IActionResult> Search(string searchparam)
+        public IActionResult Search(string searchparam)
         {
             if (searchparam==null)
             {
@@ -36,7 +36,7 @@ namespace MyDoctor.Controllers
         }
 
         // GET: Medicins
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
         var arr=from p in _context.Medicin
             group p by p.diseasespecific into g

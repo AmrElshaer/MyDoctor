@@ -8,13 +8,23 @@
 
     <div class="container" style="justify-content:center">
 
+        <div class="row">
+
+            <!-- Illustrations -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">@Model.Address</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="@Model.ImageOrvideo" alt="">
+                    </div>
+                    <p>@Model.subject</p>
+                    
+                </div>
+            </div>
 
 
 
-        <div class='row' >
-            <p>@Model.Address</p>
-            <iframe scrolling='no' frameborder='0' border='0' cellspacing='0' style='border-style: none; ' src='@Model.ImageOrvideo' />
-            </iframe >
-            <p>@Model.subject</p>
         </div>
     </div>
