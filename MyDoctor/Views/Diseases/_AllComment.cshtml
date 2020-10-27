@@ -2,63 +2,45 @@
 
 
 
-    <input style="display:none" class="DiseaseName" value="@Model" />
+    <input style="display:none" id="DiseaseName" value="@Model" />
 
-    <div class="Comments" style="display:none;">
+    <div id="Comments" style="display:none;">
       
     </div>
 
 
 <script>
     $(document).ready(function () {
-        var DiseaseName = $(".DiseaseName").val();
-         var defatulimage = "Defulat.jpg";
+        var diseaseName = $("#DiseaseName").val();
+
         $.ajax({
-            url: "/Diseases/AllComment?" + "DiseaseName" + "=" + DiseaseName,
-            method: 'Get'
-            , success: function (Data) {
-                var length = Data.length;
-                $.each(Data, function (index, value) {
-                    console.log(value);
-                    $(".Comments").append(
-                        ` <a class="dropdown-item d-flex align-items-center mb-4" href="#">
+            url: `/Diseases/AllComment?DiseaseName=${diseaseName}`,
+            method: 'Get',
+            success: function(data) {
+
+                $.each(data,
+                    function(index, value) {
+
+                        $("#Comments").append(
+                            ` <a class="dropdown-item d-flex align-items-center mb-4" href="#">
                                                 <div class="mr-3">
                                                     <div class="icon-circle bg-primary">
 
-                                                        <img class="img-profile rounded-circle" style="max-width: 50px;" src="/images/${value.imagePath?value.imagePath:defatulimage}">
+                                                        <img class="img-profile rounded-circle" style="max-width: 50px;" src="/images/${value.imagePath ? value.imagePath : "Defulat.jpg"}">
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="small text-gray-500">${ value.userName}</div>
-                                                    <span class="font-weight-bold">${ value.commment}</span>
+                                                    <div class="small text-gray-500">${value.userName}</div>
+                                                    <span class="font-weight-bold">${value.commment}</span>
                                                 </div>
                                             </a>`
-
-
-                    );
-                });
-
-            },
-            complete: function (jqerxhr) {
-                if (jqerxhr.status == '200') {
-                    $(".load").toggle();
-
-                }
+                        );
+                    });
 
             }
 
-        })
-
-        $(".AllComments").on("click", function () {
-
-            var vl = $(this).html();
-            if (vl == "Show Comments") {
-                $(this).html("Hidden Comments");
-            }
-            else {
-                $(this).html("Show Comments");
-            }
-            $(".Comments").fadeToggle();
         });
+
+        
     });
 </script>

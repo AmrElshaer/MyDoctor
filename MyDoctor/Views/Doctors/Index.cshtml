@@ -89,14 +89,16 @@
 
     @section Scripts{
         <script>
-           
-            $(document).ready(function () {
-                $("#search").on('click', function () {
-                    var special = $('#special').val();
-                    var country = $('#country').val();
-                    var city = $('#city').val();
-                    location.href = "/Doctors/Index?country=" + country + "&city=" + city + "&special=" + special;
-                });
+
+            $(document).ready(function() {
+                $("#search").on('click',
+                    function() {
+                        var special = $('#special').val();
+                        var country = $('#country').val();
+                        var city = $('#city').val();
+
+                        location.href = `/Doctors/Index?country=${country}&city=${city}&special=${special}`;
+                    });
 
             });
         </script> }

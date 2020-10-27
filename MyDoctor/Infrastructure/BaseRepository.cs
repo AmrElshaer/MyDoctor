@@ -27,8 +27,8 @@ namespace MyDoctor.Infrastructure
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression< Func<T,bool>> expression=null)
         {
-            if (expression!=null)return await _table.Where(expression).ToListAsync();
-            return await _table.ToListAsync();
+            if (expression!=null)return await _table.AsNoTracking().Where(expression).ToListAsync();
+            return await _table.AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(object id)

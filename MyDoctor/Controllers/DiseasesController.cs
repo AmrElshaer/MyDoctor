@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MyDoctor.Data;
 using MyDoctor.Helper;
+using MyDoctor.IRepository;
 using MyDoctor.Models;
 
 namespace MyDoctor.Controllers
@@ -15,39 +11,36 @@ namespace MyDoctor.Controllers
     [Authorize]
     public class DiseasesController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public DiseasesController(ApplicationDbContext context)
+       
+        private readonly IDiseasesRepository _diseasesRepository;
+        private readonly ICommentRepository _commentRepository;
+        private readonly IDiseaseRelativeRepository _diseaseRelativeRepository;
+        public DiseasesController(IDiseasesRepository diseasesRepository, ICommentRepository commentRepository, IDiseaseRelativeRepository diseaseRelativeRepository)
         {
-            _context = context;
-
+            _diseasesRepository = diseasesRepository;
+            _commentRepository = commentRepository;
+            _diseaseRelativeRepository = diseaseRelativeRepository;
         }
 
         
         public async Task<IActionResult> Index()
         {
-
-            return View(await _context.Disease.ToListAsync());
+            var disease = await _diseasesRepository.GetAllAsync();
+            return View(disease);
         }
         [HttpGet]
-        public IActionResult actionResulttogetalldisease()
+        public async Task<IActionResult>  actionResulttogetalldisease()
         {
-            return new JsonResult(_context.Disease.ToList());
+            var disease = await _diseasesRepository.GetAllAsync();
+            return new JsonResult(disease);
         }
         // GET: Diseases/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var disease = await _context.Disease
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (disease == null)
-            {
-                return NotFound();
-            }
+            var disease = await _diseasesRepository.GetByIdAsync(id);
+            if (disease == null) return NotFound();
 
             return View(disease);
         }
@@ -67,9 +60,9 @@ namespace MyDoctor.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                _context.Add(disease);
-                await _context.SaveChangesAsync();
+
+                 await _diseasesRepository.InsertAsync(disease);
+                 await _diseasesRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(disease);
@@ -78,16 +71,10 @@ namespace MyDoctor.Controllers
         // GET: Diseases/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var disease = await _context.Disease.FindAsync(id);
-            if (disease == null)
-            {
-                return NotFound();
-            }
+            var disease = await _diseasesRepository.GetByIdAsync(id);
+            if (disease == null) return NotFound();
             return View(disease);
         }
 
@@ -98,48 +85,28 @@ namespace MyDoctor.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,DiseaseName,Subject,Image,Protection,Medicin,Reasons")] Disease disease)
         {
-            if (id != disease.Id)
-            {
-                return NotFound();
-            }
+            if (id != disease.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(disease);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DiseaseExists(disease.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+               
+                   _diseasesRepository.Update(disease);
+                   await _diseasesRepository.SaveAsync();
+               
+
+                  return RedirectToAction(nameof(Index));
             }
+
             return View(disease);
         }
 
         // GET: Diseases/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var disease = await _context.Disease
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (disease == null)
-            {
-                return NotFound();
-            }
+            var disease = await _diseasesRepository.GetByIdAsync(id);
+            if (disease == null) return NotFound();
 
             return View(disease);
         }
@@ -149,45 +116,32 @@ namespace MyDoctor.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var disease = await _context.Disease.FindAsync(id);
-            _context.Disease.Remove(disease);
-            await _context.SaveChangesAsync();
+            
+            await _diseasesRepository.DeleteAsync(id);
+            await _diseasesRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DiseaseExists(int id)
-        {
-            return _context.Disease.Any(e => e.Id == id);
-        }
+      
         [HttpGet]
         public async Task AppComment(DiseaseHelper diseaseHelper)
         {
-           // DiseaseHelper diseaseHelper = new DiseaseHelper();
-            Comments obj = new Comments();
-            obj.Commment = diseaseHelper.Comment;
-            CutomPropertiy cutom = this._context.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
-            if(cutom.ImagePath == null)
-            {
 
-                cutom.ImagePath = "Defulat.jpg";
-            }
-            obj.ImagePath = cutom.ImagePath;
-            obj.UserName = cutom.UserName;
-            obj.DiseaseName = diseaseHelper.DiseaseName;
-
-            await this._context.Comments.AddAsync(obj);
-            this._context.SaveChanges();
+            await _commentRepository.InsertCommentAsync(diseaseHelper, User.Identity.Name);
 
         }
         //DiseaseComments
         [HttpGet]
-        public JsonResult AllComment(string DiseaseName)
+        public async Task<JsonResult> AllComment(string diseaseName)
         {
-            List<Comments> allcomments = this._context.Comments.Where(a => a.DiseaseName == DiseaseName).ToList();
-            return Json(allcomments);
+
+            var  commencements =await _commentRepository.GetAllAsync(
+                comment=>comment.DiseaseName.ToLower().Contains(diseaseName.ToLower())
+                );
+            return Json(commencements);
         }
         //Like and Dislike
-        public JsonResult LikeAndDislike(string DiseaseName)
+        public JsonResult LikeAndDislike(string diseaseName)
         {
             LikeandDislikeclass likeAndDislike = new LikeandDislikeclass ();
             return Json(likeAndDislike);
@@ -195,18 +149,9 @@ namespace MyDoctor.Controllers
         //details for relativeDiseases
         public async Task<IActionResult> RelativeDetails(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var relativeDisease = await _context.RelativeDisease
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (relativeDisease == null)
-            {
-                return NotFound();
-            }
-
+            if (id == null) return NotFound();
+            var relativeDisease = await _diseaseRelativeRepository.GetByIdAsync(id);
+            if (relativeDisease == null) return NotFound();
             return View(relativeDisease);
         }
 

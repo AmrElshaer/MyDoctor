@@ -1,88 +1,71 @@
 ﻿@model string
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <div>
    
 
-<input style="display:none" class="DiseaseName" value="@Model" />
+    <input style="display:none" id="DiseaseName" value="@Model" />
     
-<div class="RelativeDisease">
+    <div class="RelativeDisease">
 
+    </div>
 </div>
-</div>
-<script>
-    //var jqueryfunction;
-    
-    //function gethref(data) {
 
-    //    jqueryfunction(data);
-      
-    //}
-    $(document).ready(function () {
-        
-        //jqueryfunction=function (hrefdata) {
-         
-        //    $('#panel').load('https://localhost:5001' + hrefdata, function () { });
-        //};
-        var DiseaseName = $(".DiseaseName").val();
-        console.log("i am relative" + DiseaseName);
-        $.ajax({
-            url: "/RelativeDiseases/Index?" + "DiseaseName" + "=" + DiseaseName,
-            method: 'Get'
-            , success: function (Data) {
+    <script>
 
-                $.each(Data, function (index, value) {
-                    console.log(value);
-                    $(".RelativeDisease").append(
+        $(document).ready(function() {
+           
+            var styleRelativeDisease = (obj, diseaseName) => {
+                var resuilt = `
 
-                       
-                            `
+                <div class="col-lg-12 mb-4" id=''>
 
-            <div class="col-lg-12 mb-4" id=''>
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">${DiseaseName}</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${value.imageOrvideo}" alt="">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">${diseaseName}</h6>
                         </div>
-                        <p${value.diseaseAddress}</p>
-                        <a href="/Diseases/RelativeDetails?id=${value.id}">See More &rarr;</a>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${obj.imageOrvideo}" alt="">
+                            </div>
+                            <p${obj.diseaseAddress}</p>
+                            <a href="/Diseases/RelativeDetails?id=${obj.id}">See More &rarr;</a>
+                        </div>
                     </div>
+
+
+
                 </div>
+                                `;
+                $(".RelativeDisease").append(resuilt);
+
+            };
+            var appendData = (data, diseaseName) => {
+                $.each(data,
+                    function (index, value) {
+                        styleRelativeDisease(value, diseaseName);
+
+                    });
+            }
+            var loadRelative = (diseaseName) => {
+                $.ajax({
+                    url: `/RelativeDiseases/Index?diseaseName=${diseaseName}`,
+                    method: 'Get',
+                    success: function (data) {
+                        appendData(data,diseaseName);
 
 
+                    }
 
-            </div>
-                            `
-                    )
                 });
+            };
+            //Load Relative Data For This Disease
+            loadRelative($('#DiseaseName').val());
+            
 
-            },
-            complete: function (jqerxhr) {
-                if (jqerxhr.status == '200') {
-                    $(".load").toggle();
+           
 
-                }
-
-            }
-
-        })
-
-        $(".AllComments").on("click", function () {
-
-            var vl = $(this).html();
-            if (vl == "Show Comments") {
-                $(this).html("Hidden Comments");
-            }
-            else {
-                $(this).html("Show Comments");
-            }
-            $(".RelativeDisease").fadeToggle();
         });
-       
-    });
-</script>
+    </script>
+
+
 

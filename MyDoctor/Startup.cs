@@ -62,6 +62,9 @@ namespace MyDoctor
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             //Dependency Services
             services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<IDiseasesRepository, DiseasesRepository>();
+            services.AddScoped<ICommentRepository,CommentRepository>();
+            services.AddScoped<IDiseaseRelativeRepository,DiseaseRelativeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
