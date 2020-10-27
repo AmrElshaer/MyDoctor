@@ -21,9 +21,10 @@ namespace MyDoctor.Data
       
         protected override void OnModelCreating(ModelBuilder builder)
         {
-                
-           
-                  
+
+            // Add Relation For Doctor and posts
+            builder.Entity<Posts>().HasOne<Doctor>(s => s.Doctor).WithMany(g => g.Posts).HasForeignKey(s => s.DoctorId);
+
             base.OnModelCreating(builder);
             SeedData.AddBeatyandHealthy(builder);
             SeedData.AddLikeAddDisLike(builder);

@@ -18,6 +18,8 @@ using MyDoctor.Helper;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using MyDoctor.Areas.Identity.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MyDoctor.IRepository;
+using MyDoctor.Repository;
 
 namespace MyDoctor
 {
@@ -58,6 +60,8 @@ namespace MyDoctor
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //Dependency Services
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

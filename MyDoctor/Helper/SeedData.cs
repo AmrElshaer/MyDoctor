@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MyDoctor.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyDoctor.Helper
 {
@@ -13,19 +8,10 @@ namespace MyDoctor.Helper
     {
         public static  void AddRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!  roleManager.RoleExistsAsync("Admin").Result )
-            {
-              var resuilt=  roleManager.CreateAsync(new IdentityRole { Name = "Admin" }).Result;
+            if (!  roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult() )roleManager.CreateAsync(new IdentityRole { Name = "Admin" }).GetAwaiter().GetResult();
+            if (! roleManager.RoleExistsAsync("Client").GetAwaiter().GetResult())roleManager.CreateAsync(new IdentityRole { Name = "Client" }).GetAwaiter().GetResult();
+            if (!roleManager.RoleExistsAsync("Doctor").GetAwaiter().GetResult())roleManager.CreateAsync(new IdentityRole { Name = "Doctor" }).GetAwaiter().GetResult();
             
-            }
-            if (! roleManager.RoleExistsAsync("Client").Result)
-            {
-              var resuilt=roleManager.CreateAsync(new IdentityRole { Name = "Client" }).Result;
-            }
-            if (!roleManager.RoleExistsAsync("Doctor").Result)
-            {
-                var resuilt = roleManager.CreateAsync(new IdentityRole { Name = "Doctor" }).Result;
-            }
 
         }
       
@@ -114,17 +100,14 @@ namespace MyDoctor.Helper
         }
         public  static void  AddUsers(UserManager<CutomPropertiy> userManager)
         {
-            if (userManager.FindByEmailAsync("Admin@Admin.com").Result==null)
+            var adminEmail = "Admin@Admin.com";
+            var admin = userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
+            if (admin == null)
             {
-               var user = new CutomPropertiy { UserName = "Admin@Admin.com", Email = "Admin@Admin.com"};
-               var adduserresuilt= userManager.CreateAsync(user, "Admin123@").Result;
-                if (adduserresuilt.Succeeded)
-                {
-                         var addusertoroleresuilt= userManager.AddToRoleAsync(user,"Admin").Result;
-                }
-             
+                var user = new CutomPropertiy {UserName = adminEmail, Email = adminEmail};
+                var adduserresuilt = userManager.CreateAsync(user, "Admin123@").GetAwaiter().GetResult();
+                if (adduserresuilt.Succeeded) userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
             }
-           
         }
     }
 }

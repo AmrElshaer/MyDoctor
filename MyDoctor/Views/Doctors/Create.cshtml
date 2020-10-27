@@ -34,7 +34,11 @@
 
                             <div class="form-group">
 
-                                <input asp-for="Kind" class="form-control form-control-user" placeholder="Kind" />
+                               
+                                <select asp-for="Kind" class="form-control">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
                                 <span asp-validation-for="Kind" class="text-danger"></span>
 
                             </div>

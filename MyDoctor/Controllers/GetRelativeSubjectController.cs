@@ -17,7 +17,7 @@ namespace MyDoctor.Controllers
         }
         public IActionResult Index(string relativeitem)
         {
-        var list=_context.Posts.Where(a=>a.specific==relativeitem);
+        var list=_context.Posts.Where(a=>a.Specific==relativeitem);
             if (list==null)
             {
                 return null;

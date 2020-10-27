@@ -8,12 +8,11 @@ namespace MyDoctor.Models
     public class Posts
     {
         public int Id { get; set; }
-
         public string Department { get; set; }
-        public string specific { get; set; }
+        public string Specific { get; set; }
         public string Description { get; set; }
-        public string doctorid { get; set; }
-
+        public int DoctorId { get; set; }
+        public Doctor Doctor { get; set; }    
         
     }
 }

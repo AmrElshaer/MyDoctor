@@ -9,7 +9,7 @@
 <input type="text" id="postid" style="display:none" value="@Model.Id" />
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">@Model.specific</h6>
+        <h6 class="m-0 font-weight-bold text-primary">@Model.Specific</h6>
     </div>
     <div class="card-body">
         <p>
@@ -26,7 +26,7 @@
     <table class="row mt-5 mt-5">
         <tr>
             <td colspan="2">
-                <button class="btn btn-primary"><a style="color:white" asp-route-doctorid="@Model.doctorid" asp-action="Create" asp-route-id="@Model.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
+                <button class="btn btn-primary"><a style="color:white" asp-route-doctorid="@Model.DoctorId" asp-action="Create" asp-route-id="@Model.Id" asp-controller="Commentfordoctorposts">Add Comment</a></button>
             </td>
             <td colspan="2"> <button id="loadcomment" class="btn btn-primary">Show Comment</button></td>
         </tr>

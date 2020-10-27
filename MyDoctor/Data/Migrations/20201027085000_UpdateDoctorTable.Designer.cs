@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyDoctor.Data;
 
 namespace MyDoctor.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201027085000_UpdateDoctorTable")]
+    partial class UpdateDoctorTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -355,13 +357,11 @@ namespace MyDoctor.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("DoctorId");
+                    b.Property<string>("Doctorid");
 
                     b.Property<string>("Specific");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
 
                     b.ToTable("Posts");
                 });
@@ -462,14 +462,6 @@ namespace MyDoctor.Data.Migrations
                     b.HasOne("MyDoctor.Models.CutomPropertiy")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyDoctor.Models.Posts", b =>
-                {
-                    b.HasOne("MyDoctor.Models.Doctor", "Doctor")
-                        .WithMany("Posts")
-                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

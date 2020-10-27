@@ -9,6 +9,10 @@ namespace MyDoctor.Models
 {
     public class Doctor
     {
+        public Doctor()
+        {
+            Posts=new HashSet<Posts>();
+        }
         public int Id  { get; set; }
         public string Name { get; set; }
         public string Specials { get; set; }
@@ -27,7 +31,9 @@ namespace MyDoctor.Models
         [DataType(DataType.Password)]
         [Compare("Password",ErrorMessage ="Password and confirmpassword didnot match")]
         public string ConfirmPassword { get; set; }
-       
+
+        public ICollection<Posts> Posts { get; set; }
+
 
     }
 }

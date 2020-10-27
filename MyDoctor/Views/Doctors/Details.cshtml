@@ -1,7 +1,5 @@
-﻿@model MyDoctor.Models.Doctor
-@{
-    List<Posts> posts = ViewData["Posts"] as List<Posts>;
-}
+﻿
+@model MyDoctor.Models.Doctor
 <div class="card o-hidden border-0 shadow-lg my-5">
     <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
@@ -86,21 +84,21 @@
     </div>
 </div>
 <div class="row">
-    @foreach (var item in posts)
+    @foreach (var item in Model.Posts)
     {
         <div class="col-lg-4 mb-4">
 
             <!-- Illustrations -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">@item.specific</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">@item.Specific</h6>
                 </div>
                 <div class="card-body">
 
 
                     <p>@item.Description</p>
 
-                    <a asp-route-doctorid="@item.doctorid" asp-action="Create" asp-route-id="@item.Id" asp-controller="Commentfordoctorposts">Add Comment</a>
+                    <a asp-route-doctorid="@item.DoctorId" asp-action="Create" asp-route-id="@item.Id" asp-controller="Commentfordoctorposts">Add Comment</a>
                     <hr />
                     <a  asp-action="Details" asp-route-id="@item.Id" asp-controller="Posts">Show Comment</a>
                 </div>
@@ -119,13 +117,5 @@
 
     }
 </div>
-
-
-
-
-@section Scripts
-{
-  
-}
 
 

@@ -140,7 +140,7 @@ namespace MyDoctor.Controllers
               
                
                
-                return Redirect("/Doctors/Details/"+posts.doctorid);
+                return Redirect("/Doctors/Details/"+posts.DoctorId);
             }
             return View(posts);
         }
