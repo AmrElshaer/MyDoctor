@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyDoctor.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyDoctor.Models;
-using Microsoft.AspNetCore.Http.Features;
 using MyDoctor.Helper;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using MyDoctor.Areas.Identity.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using MyDoctor.IRepository;
 using MyDoctor.Repository;
 
@@ -42,11 +36,7 @@ namespace MyDoctor
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            //services.Configure<FormOptions>(x =>
-            //{
-            //    x.ValueLengthLimit = int.MaxValue;
-            //    x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
-            //});
+           
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -65,6 +55,7 @@ namespace MyDoctor
             services.AddScoped<IDiseasesRepository, DiseasesRepository>();
             services.AddScoped<ICommentRepository,CommentRepository>();
             services.AddScoped<IDiseaseRelativeRepository,DiseaseRelativeRepository>();
+            services.AddScoped<IBeatyandHealthRepository, BeatyandHealthRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,10 +1,7 @@
 ﻿@model MyDoctor.Models.BeatyandHealthy
-<script src="~/lib/jquery/dist/jquery.js"></script>
 @{
     ViewData["Title"] = "Details";
 }
-
-
 <input style="display:none" class="BeatyandHealthyId" value="@Model.Id" />
 <input style="display:none" id="BeatyandHealthyCatagory" value="@Model.Catagory" />
 <div class="row">
@@ -115,87 +112,100 @@
 <div class="row" id="RelativeSubjecttoHealthyandbeaty">
 
 </div>
-<script>
+@section Scripts{
+    <script>
+       
+        $(document).ready(function() {
 
-    $(document).ready(function () {
+            var styleSubject = (value) => {
+                var style = ` <div class="col-lg-4 mb-4">
 
-        var DiseaseName = $(".BeatyandHealthyId").val();
-        $.ajax({
-            url: "/updateRelativeBeatyandHealthies/Index?" + "id" + "=" + DiseaseName,
-            method: 'Get'
-            , success: function (Data) {
 
-                $.each(Data, function (index, value) {
-                    console.log(value);
-                    if (value == null) {
-                        $(".RelativeBeatyandHealthies").append("<div class='card-panel hoverable'>No RelativeData</div>");
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">@Model.Catagory</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${value.imageOrvideo}" alt="">
+                                   <p>${value.address}</p>
+                                </div>
+                                <a href="/updateRelativeBeatyandHealthies/Details/${value.id}">See More &rarr;</a>
+                            </div>
+                        </div>
+
+
+
+                    </div>`;
+                return style;
+            }
+            var loadSubject = () => {
+                var diseaseId = $(".BeatyandHealthyId").val();
+                $.ajax({
+                    url: `/updateRelativeBeatyandHealthies/Index?id=${diseaseId}`,
+                    method: 'Get',
+                    success: function(data) {
+
+                        $.each(data,
+                            function(index, value) {
+
+                                if (!value) {
+                                    $(".RelativeBeatyandHealthies").append("<div class='card-panel hoverable'>No RelativeData</div>");
+                                } else {
+                                    $(".RelativeBeatyandHealthies").append(styleSubject(value));
+                                }
+
+                            });
+
                     }
-                    else {
-                        $(".RelativeBeatyandHealthies").append(
-                            ` <div class="col-lg-4 mb-4">
-
-
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">@Model.Catagory</h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${ value.imageOrvideo}" alt="">
-                   <p>${value.address}</p>
-                </div>
-                <a href="/updateRelativeBeatyandHealthies/Details/${value.id}">See More &rarr;</a>
-            </div>
-        </div>
-
-
-
-    </div>`
-
-                        );}
 
                 });
-
-            },
-            complete: function (jqerxhr) {
-
-
             }
+            var styleRelativeSubject = (value) => {
+                var style = ` <div class="col-lg-4 mb-4">
+
+
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="text-center">
+
+                                               <p>${value.description}</p>
+                                            </div>
+                                            <a href="/Posts/Details/${value.id}">See More &rarr;</a>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>`;
+                return style;
+            }
+            var loadRelativeTopic = () => {
+                var beatyandhealthcatagory = $('#BeatyandHealthyCatagory').val();
+
+                $.ajax({
+                    url: `/GetRelativeSubject/Index?relativeitem=${beatyandhealthcatagory}`,
+                    type: "Get",
+                    success: function(data) {
+
+                        $.each(data,
+                            function(index, value) {
+                                $("#RelativeSubjecttoHealthyandbeaty").append(styleRelativeSubject(value));
+                            });
+                    }
+                });
+            }
+            // Load The Topic
+            loadSubject();
+            //Load Relative Subject
+            loadRelativeTopic();
+
 
         });
-        var Beatyandhealthcatagory = document.getElementById('BeatyandHealthyCatagory').value;
 
-        $.ajax({
-            url: "/GetRelativeSubject/Index?relativeitem=" + Beatyandhealthcatagory,
-            type: "Get",
-            success: function (resuilt) {
+    </script>
+}
 
-                $.each(resuilt, function (index, value) {
-                    $("#RelativeSubjecttoHealthyandbeaty").append(
-                         ` <div class="col-lg-4 mb-4">
-
-
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary"></h6>
-            </div>
-            <div class="card-body">
-                <div class="text-center">
-                  
-                   <p>${value.description}</p>
-                </div>
-                <a href="/Posts/Details/${value.id}">See More &rarr;</a>
-            </div>
-        </div>
-
-
-
-    </div>`
-
-                )});
-            }
-        });
-
-    });
-
-</script>

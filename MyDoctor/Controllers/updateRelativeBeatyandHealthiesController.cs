@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyDoctor.Data;
 using MyDoctor.Models;
@@ -22,7 +20,7 @@ namespace MyDoctor.Controllers
         // GET: updateRelativeBeatyandHealthies
         public IActionResult Index(int id)
         {
-            var data = _context.updateRelativeBeatyandHealthy.Where(a => a.BeatyId == id);
+            var data = _context.updateRelativeBeatyandHealthy.Where(a => a.BeatyId == id).ToList();
             return Json(data);
         }
 
