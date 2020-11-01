@@ -56,6 +56,8 @@ namespace MyDoctor
             services.AddScoped<ICommentRepository,CommentRepository>();
             services.AddScoped<IDiseaseRelativeRepository,DiseaseRelativeRepository>();
             services.AddScoped<IBeatyandHealthRepository, BeatyandHealthRepository>();
+            services.AddScoped<ICommentForDoctorPostRepository,CommentForDoctorPostRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,9 +86,13 @@ namespace MyDoctor
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(name: "adminarea", template: "{area:exists}/{controller=Diseases}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=diseases}/{action=Index}/{id?}");
+               
+                
             });
         }
     }

@@ -23,6 +23,7 @@ namespace MyDoctor.Infrastructure
         {
             T existing =await _table.FindAsync(id);
             _table.Remove(existing);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression< Func<T,bool>> expression=null)
@@ -39,18 +40,34 @@ namespace MyDoctor.Infrastructure
 
         public async Task InsertAsync(T obj)
         {
-            await _table.AddAsync(obj);
+            try
+            {
+                await _table.AddAsync(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
         }
 
-        public async Task SaveAsync()
-        {
-           await _context.SaveChangesAsync();
-        }
+       
 
-        public void Update(T obj)
+        public async Task Update(T obj)
         {
-            _table.Attach(obj);
-            _context.Entry(obj).State = EntityState.Modified;
+            try{_table.Attach(obj);
+                _context.Entry(obj).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+
         }
     }
 }

@@ -62,7 +62,7 @@ namespace MyDoctor.Controllers
             {
 
                  await _diseasesRepository.InsertAsync(disease);
-                 await _diseasesRepository.SaveAsync();
+               
                 return RedirectToAction(nameof(Index));
             }
             return View(disease);
@@ -90,10 +90,8 @@ namespace MyDoctor.Controllers
             if (ModelState.IsValid)
             {
                
-                   _diseasesRepository.Update(disease);
-                   await _diseasesRepository.SaveAsync();
-               
-
+                  await  _diseasesRepository.Update(disease);
+                  
                   return RedirectToAction(nameof(Index));
             }
 
@@ -118,7 +116,7 @@ namespace MyDoctor.Controllers
         {
             
             await _diseasesRepository.DeleteAsync(id);
-            await _diseasesRepository.SaveAsync();
+            
             return RedirectToAction(nameof(Index));
         }
 

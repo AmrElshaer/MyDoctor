@@ -119,8 +119,8 @@ namespace MyDoctor.Controllers
             if (id != doctor.Id) return NotFound();
             if (ModelState.IsValid)
             {
-                _doctorRepository.Update(doctor);
-                await _doctorRepository.SaveAsync();
+                await _doctorRepository.Update(doctor);
+          
                 return RedirectToAction(nameof(Index));
             }
 
@@ -143,7 +143,7 @@ namespace MyDoctor.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _doctorRepository.DeleteAsync(id);
-            await _doctorRepository.SaveAsync();
+          
             return RedirectToAction(nameof(Index));
         }
     }

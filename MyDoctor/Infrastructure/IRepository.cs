@@ -11,8 +11,8 @@ namespace MyDoctor.Infrastructure
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression = null);
         Task<T> GetByIdAsync(object id);
         Task InsertAsync(T obj);
-        void Update(T obj);
+        Task Update(T obj);
         Task DeleteAsync(object id);
-        Task SaveAsync();
+       
     }
 }

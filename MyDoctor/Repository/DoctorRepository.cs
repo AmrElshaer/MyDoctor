@@ -34,7 +34,6 @@ namespace MyDoctor.Repository
             if (result.Succeeded)
             {
                 await InsertAsync(doctor);
-                await SaveAsync();
                 await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(doctor.Email), "Doctor");
             }
 

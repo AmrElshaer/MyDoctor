@@ -20,13 +20,15 @@
     <!-- Custom fonts for this template-->
     <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <!-- Custom styles for this template-->
     <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
-<body id="page-top" >
+<body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -107,7 +109,7 @@
                     </div>
                 </div>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefive" aria-expanded="true" aria-controls="collapsefive">
                     <i class="fas fa-fw fa-cog"></i>
@@ -139,12 +141,37 @@
                 </div>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/Posts" data-toggle="collapse" data-target="#collapseDashBoard" aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>DashBoard</span>
+                </a>
+                <div id="collapseDashBoard" class="collapse" aria-labelledby="headingDashBoard" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+
+                        <a class="collapse-item" asp-controller="DashBoard" asp-area="Admin" asp-action="Index">Home</a>
+                        <a class="collapse-item" asp-controller="DashBoard" asp-area="Admin" asp-action="Index">Messages</a>
+
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/Posts" data-toggle="collapse" data-target="#collapseControl" aria-expanded="true" aria-controls="collapseControl">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Control Panel</span>
+                </a>
+                <div id="collapseControl" class="collapse" aria-labelledby="headingControl" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" asp-controller="Category" asp-area="Admin" asp-action="Index">Category</a>
+                        <a class="collapse-item" asp-controller="Diseases" asp-area="Admin" asp-action="Index">Disease</a>
+
+                    </div>
+                </div>
+            </li>
 
 
 
-    
 
-        
 
         </ul>
         <!-- End of Sidebar -->
@@ -152,7 +179,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-            <div id="content" >
+            <div id="content">
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -162,7 +189,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -187,7 +214,7 @@
                             </div>
                         </li>
 
-                      
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -212,7 +239,7 @@
 
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                              
+
                                 @if (!SignInManager.IsSignedIn(User))
                                 {
                                     <a class="dropdown-item" href="/Identity/Account/Register">
@@ -251,15 +278,11 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                   
-
-                 
-
                     <!-- Content Row -->
                     <div>
                         @RenderBody()
                     </div>
-                   
+
 
                 </div>
                 <!-- /.container-fluid -->
@@ -286,13 +309,15 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-   
-    
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/Content/vendor/jquery/jquery.min.js"></script>
-    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
 

@@ -54,7 +54,6 @@ namespace MyDoctor.Controllers
             if (ModelState.IsValid)
             {
                 await _beatyandHealthRepository.InsertAsync(beatyandHealthy);
-                await _beatyandHealthRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -81,8 +80,7 @@ namespace MyDoctor.Controllers
 
             if (ModelState.IsValid)
             {
-                _beatyandHealthRepository.Update(beatyandHealthy);
-                await _beatyandHealthRepository.SaveAsync();
+                await _beatyandHealthRepository.Update(beatyandHealthy);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -106,7 +104,7 @@ namespace MyDoctor.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _beatyandHealthRepository.DeleteAsync(id);
-            await _beatyandHealthRepository.SaveAsync();
+            
             return RedirectToAction(nameof(Index));
         }
     }

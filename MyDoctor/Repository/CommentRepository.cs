@@ -29,7 +29,7 @@ namespace MyDoctor.Repository
 
             };
             await InsertAsync(obj);
-            await SaveAsync();
+            
            
         }
     }

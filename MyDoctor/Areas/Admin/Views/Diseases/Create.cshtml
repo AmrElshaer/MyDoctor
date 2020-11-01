@@ -1,0 +1,55 @@
+﻿@model MyDoctor.Models.Disease
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Disease</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DiseaseName" class="control-label"></label>
+                <input asp-for="DiseaseName" class="form-control" />
+                <span asp-validation-for="DiseaseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Protection" class="control-label"></label>
+                <input asp-for="Protection" class="form-control" />
+                <span asp-validation-for="Protection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medicin" class="control-label"></label>
+                <input asp-for="Medicin" class="form-control" />
+                <span asp-validation-for="Medicin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reasons" class="control-label"></label>
+                <input asp-for="Reasons" class="form-control" />
+                <span asp-validation-for="Reasons" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

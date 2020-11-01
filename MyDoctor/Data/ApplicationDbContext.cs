@@ -26,8 +26,8 @@ namespace MyDoctor.Data
             builder.Entity<Posts>().HasOne<Doctor>(s => s.Doctor).WithMany(g => g.Posts).HasForeignKey(s => s.DoctorId);
 
             base.OnModelCreating(builder);
-            SeedData.AddBeatyandHealthy(builder);
-            SeedData.AddLikeAddDisLike(builder);
+            //SeedData.AddBeatyandHealthy(builder);
+            //SeedData.AddLikeAddDisLike(builder);
            
         }
 
