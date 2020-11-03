@@ -25,13 +25,13 @@ namespace MyDoctor.Controllers
         // GET: RelativeofBeatyandhealthies
         public IActionResult Index(int id)
         {
-           var data= _context.RelativeofBeatyandhealthy.Where(a=>a.BeatyId==id);
+           var data= _context.RelativeofBeatyandhealthy.Where(a=>a.BeatyandHealthId==id);
             return Json(data);
         }
         
          
     // GET: RelativeofBeatyandhealthies/Details/5
-    public async Task<IActionResult> Details(string id)
+    public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
@@ -95,7 +95,7 @@ namespace MyDoctor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,ImageOrvideo,subject,Address")] RelativeofBeatyandhealthy relativeofBeatyandhealthy)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageOrvideo,subject,Address")] RelativeofBeatyandhealthy relativeofBeatyandhealthy)
         {
             if (id != relativeofBeatyandhealthy.Id)
             {
@@ -126,7 +126,7 @@ namespace MyDoctor.Controllers
         }
 
         // GET: RelativeofBeatyandhealthies/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -146,7 +146,7 @@ namespace MyDoctor.Controllers
         // POST: RelativeofBeatyandhealthies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var relativeofBeatyandhealthy = await _context.RelativeofBeatyandhealthy.FindAsync(id);
             _context.RelativeofBeatyandhealthy.Remove(relativeofBeatyandhealthy);
@@ -154,7 +154,7 @@ namespace MyDoctor.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RelativeofBeatyandhealthyExists(string id)
+        private bool RelativeofBeatyandhealthyExists(int id)
         {
             return _context.RelativeofBeatyandhealthy.Any(e => e.Id == id);
         }

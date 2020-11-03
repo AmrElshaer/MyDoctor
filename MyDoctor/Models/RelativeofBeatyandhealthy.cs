@@ -8,13 +8,16 @@ namespace MyDoctor.Models
 {
     public class RelativeofBeatyandhealthy
     {
-        public string Id { get; set; }
-    
+        public int Id { get; set; }
+
         [DataType(dataType: DataType.Url)]
-        public string ImageOrvideo { get; set; }
-        public string subject { get; set; }
+        public string ImageOrVideo { get; set; }
+        public string Subject { get; set; }
         public string Address { get; set; }
-        public int BeatyId { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? ModiteDate { get; set; }
+        public int BeatyandHealthId { get; set; }
+        public BeatyandHealthy BeatyandHealthy { get; set; }
        
     }
 }

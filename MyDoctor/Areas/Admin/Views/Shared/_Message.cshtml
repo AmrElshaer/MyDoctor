@@ -1,0 +1,18 @@
+﻿@using MyDoctor.Areas.Admin.Models
+@{
+   
+    var message = TempData.Get<Message>("Message");
+
+}
+
+@switch (message)
+{
+    case null:
+        break;
+    case Message mess when mess.IsSuccess:
+        <h4 class="alert alert-info">@mess.Content</h4>
+        break;
+    default:
+        <h4 class="alert alert-danger">@message.Content</h4>
+        break;
+}

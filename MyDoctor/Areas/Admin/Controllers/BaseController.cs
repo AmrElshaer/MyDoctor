@@ -32,7 +32,7 @@ namespace MyDoctor.Areas.Admin.Controllers
 
         protected void TitleExcelStyle(IXLCell titleCell,string title)
         {
-            titleCell.Value = $"MyDoctoy Report For ${title} At {DateTime.Now.ToShortDateString()}";
+            titleCell.Value = $"MyDoctoy Report For {title} At {DateTime.Now.ToShortDateString()}";
             titleCell.Style.Fill.BackgroundColor = XLColor.BabyBlue;
             titleCell.RichText.SetFontColor(XLColor.White);
             titleCell.Style.Font.Bold = true;

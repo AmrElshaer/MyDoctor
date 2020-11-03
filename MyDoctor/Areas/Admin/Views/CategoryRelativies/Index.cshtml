@@ -1,0 +1,182 @@
+﻿
+@using MyDoctor.IRepository
+@using MyDoctor.Models
+@using PagedList.Core.Mvc
+@model MyDoctor.Areas.Admin.Models.SearchResult<RelativeofBeatyandhealthy>
+@inject ICategoryRepository CategoryRepository 
+@{
+    ViewData["Title"] = "Index";
+    await Html.RenderPartialAsync("_Message");
+}
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
+<form class="needs-validation" novalidate>
+
+    <fieldset class="form-row">
+        <legend>Create Date</legend>
+        <div class="col-md-6 mb-3">
+            <label for="createFrom">From</label>
+            <input type="date" class="form-control" id="createFrom" name="createFrom">
+
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="createTo">To</label>
+            <input type="date" class="form-control" id="createTo" name="createTo">
+        </div>
+    </fieldset>
+
+
+
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+
+            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <select name="BeatyandHealthId" class="form-control">
+                <optgroup label="Category">
+                    <option disabled selected > -- select an option -- </option>
+                    @foreach (var category in await CategoryRepository.GetAllAsync())
+                    {
+
+                        <option value="@category.Id" label="@category.Category"></option>
+
+                    }
+                </optgroup>
+              
+            </select>
+           
+            
+        </div>
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+    
+
+
+</form>
+<a class="btn btn-facebook" asp-action="ExportToExcel" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" target="_blank">ExportToExcel</a>
+<table class="table" id="Category">
+    <thead>
+        <tr>
+            <th>
+                Media
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                CreateDate
+            </th>
+            <th>
+                ModifiyDate
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ItemsList)
+        {
+            <tr>
+
+                <td>
+
+                    <img src="@item.ImageOrVideo" class="img img-thumbnail" style="max-width: 150px;max-height: 150px" />
+                </td>
+                <td>
+                    <p>@item.Address</p>
+
+                </td>
+                <td>
+                    @item.BeatyandHealthy.Category
+                </td>
+                <td>
+                    @if (item.Subject.Length > 200)
+                    {
+                        @item.Subject.Substring(0, 200)
+                    }
+                    else
+                    {
+                        @item.Subject
+                    }
+
+                </td>
+                <td>
+                    @if (item.CreateDate.HasValue)
+                    {
+                        @item.CreateDate.Value.ToShortDateString()
+                    }
+
+                </td>
+                <td>
+                    @if (item.ModiteDate.HasValue)
+                    {
+                        @item.ModiteDate.Value.ToShortDateString()
+                    }
+                </td>
+                <td>
+
+                    <button class="btn btn-primary" onclick="editCategory({Id:@item.Id,ImageOrVideo:'@item.ImageOrVideo',CreateDate:'@item.CreateDate',Address:'@item.Address',Subject:'@item.Subject',BeatyandHealthId:'@item.BeatyandHealthId'})">Edit</button>
+                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
+                        <input name="id" value="@item.Id" style="display: none" />
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<section>
+    @await Html.PartialAsync("_CreateEdit", new RelativeofBeatyandhealthy())
+</section>
+<p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" asp-route-beatyandHealthId="@Model.IdRelated"/></p>
+@section Scripts
+{
+    <script>
+        "use strict";
+
+        function editCategory(relativecategory) {
+            $('#Id').val(relativecategory.Id);
+            $('#ImageOrVideo').val(relativecategory.ImageOrVideo);
+            $('#Address').val(relativecategory.Address);
+            $('#BeatyandHealthId').val(relativecategory.BeatyandHealthId);
+            $('#CreateDate').val(relativecategory.CreateDate);
+            $('#Subject').val(relativecategory.Subject);
+            $("#BeatyandHealthId option").each(function() {
+                if ($(this).val() == relativecategory.BeatyandHealthId) {
+                    $(this).attr("selected", "selected");
+                }
+
+            });
+            $('#exampleModal').modal('show');
+        }
+
+        $('#deleteCategory').submit(function(e) {
+            var r = confirm("Are You Sure You Want To Delete");
+            if (r === false) e.preventDefault();
+
+        });
+        $('#exampleModal').on('hidden.bs.modal',
+            function(e) {
+                $('#Id').val('');
+                $('#ImageOrVideo').val('');
+                $('#Address').val('');
+                $('#Subject').val('');
+                $('#CreateDate').val('');
+            });
+
+    </script>
+    <script src="/js/FormsValidation.js"></script>
+}

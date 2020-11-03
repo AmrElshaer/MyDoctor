@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20190708220845_addimagepath.cs" />
-    <Compile Remove="Data\Migrations\20190708220845_addimagepath.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="MailKit" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -20,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

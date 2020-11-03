@@ -87,7 +87,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Health/Beauty</h6>
                         <a asp-action="index" asp-controller="BeatyandHealthies" class="collapse-item">Health/Beauty</a>
-                        <a asp-action="Create" asp-controller="BeatyandHealthies" class="collapse-item">Add Catagory</a>
+                        <a asp-action="Create" asp-controller="BeatyandHealthies" class="collapse-item">Add Category</a>
                         <a asp-action="Create" asp-controller="updateRelativeBeatyandHealthies" class="collapse-item">Add Relative Subject</a>
 
                     </div>
@@ -163,7 +163,8 @@
                 <div id="collapseControl" class="collapse" aria-labelledby="headingControl" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" asp-controller="Category" asp-area="Admin" asp-action="Index">Category</a>
-                        <a class="collapse-item" asp-controller="Diseases" asp-area="Admin" asp-action="Index">Disease</a>
+
+                        <a class="collapse-item" asp-controller="CategoryRelativies" asp-area="Admin" asp-action="Index">RelativeCategory</a>
 
                     </div>
                 </div>

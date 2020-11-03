@@ -8,12 +8,13 @@ namespace MyDoctor.ViewModels
 {
     public class Relativebeatyandhealthy
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [DataType(dataType: DataType.Url)]
         public string ImageOrvideo { get; set; }
-        public string subject { get; set; }
+        public string Subject { get; set; }
         public string Address { get; set; }
-        public  int beatyandHealthy { get; set; }
+        public DateTime CreateDate { get; set; }
+        public  int BeatyandHealthy { get; set; }
     }
 }

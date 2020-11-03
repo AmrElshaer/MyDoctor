@@ -7,9 +7,9 @@ namespace MyDoctor.Controllers
 {
     public class BeatyandHealthiesController : Controller
     {
-        private readonly IBeatyandHealthRepository _beatyandHealthRepository;
+        private readonly ICategoryRepository _beatyandHealthRepository;
 
-        public BeatyandHealthiesController(IBeatyandHealthRepository beatyandHealthRepository)=>
+        public BeatyandHealthiesController(ICategoryRepository beatyandHealthRepository)=>
             _beatyandHealthRepository = beatyandHealthRepository;
         
 
@@ -49,7 +49,7 @@ namespace MyDoctor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Catagory,Image")] BeatyandHealthy beatyandHealthy)
+        public async Task<IActionResult> Create([Bind("Id,Category,Image")] BeatyandHealthy beatyandHealthy)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace MyDoctor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Catagory,Image")] BeatyandHealthy beatyandHealthy)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Category,Image")] BeatyandHealthy beatyandHealthy)
         {
             if (id != beatyandHealthy.Id) return NotFound();
 

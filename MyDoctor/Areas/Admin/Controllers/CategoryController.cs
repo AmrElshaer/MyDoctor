@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.Areas.Admin.Models;
 using MyDoctor.IRepository;
 using MyDoctor.Models;
 
@@ -12,8 +11,8 @@ namespace MyDoctor.Areas.Admin.Controllers
    
     public class CategoryController : BaseController
     {
-        private readonly IBeatyandHealthRepository _categoryRepository;
-        public CategoryController(IBeatyandHealthRepository categoryRepository)
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
@@ -22,24 +21,21 @@ namespace MyDoctor.Areas.Admin.Controllers
         {
             var pageNumber = page??1;
             var pageSize = 5;
-            var model = new SearchViewModel
-            {
-                SearchResult = _categoryRepository.GetSearchResult(query, pageNumber, pageSize,createFrom,createTo)
-            };
-            model.SearchResult.SearchQuery = query;
+            var model = _categoryRepository.GetSearchResult(query, pageNumber, pageSize, createFrom, createTo);
+            
             return View(model);
         }
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async  Task<ActionResult> CreateEdit(BeatyandHealthy category)
+        public async  Task<ActionResult> CreateEdit(BeatyandHealthy healthBeatyandHealthy)
         {
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                   await _categoryRepository.CreateEdit(category);
+                   await _categoryRepository.CreateEdit(healthBeatyandHealthy);
                    AddMessage("Category Save Success-full","Message",true);
                  
                 }
@@ -56,9 +52,9 @@ namespace MyDoctor.Areas.Admin.Controllers
             
         }
 
-        public async Task<IActionResult> ExportToExcel()
+        public  IActionResult ExportToExcel(string query, DateTime? createFrom, DateTime? createTo)
         {
-            var categories = await _categoryRepository.GetAllAsync();
+            var categories = _categoryRepository.Search(query,createFrom,createTo);
             using (var workbook=new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Category");
@@ -88,7 +84,7 @@ namespace MyDoctor.Areas.Admin.Controllers
                     numberrow.Value = number++;
                     numberrow.Style.Fill.BackgroundColor = XLColor.BabyBlue;
                     var categoryrow = worksheet.Cell(current, 2);
-                    categoryrow.Value = item.Catagory;
+                    categoryrow.Value = item.Category;
                     var imagerow = worksheet.Cell(current, 3);
                     imagerow.Value = item.Image;
                     imagerow.Hyperlink = new XLHyperlink(item.Image);

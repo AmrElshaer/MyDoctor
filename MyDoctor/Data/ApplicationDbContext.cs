@@ -24,7 +24,10 @@ namespace MyDoctor.Data
 
             // Add Relation For Doctor and posts
             builder.Entity<Posts>().HasOne<Doctor>(s => s.Doctor).WithMany(g => g.Posts).HasForeignKey(s => s.DoctorId);
-
+            builder.Entity<RelativeofBeatyandhealthy>()
+                .HasOne<BeatyandHealthy>(relativeBeaty => relativeBeaty.BeatyandHealthy)
+                .WithMany(category => category.RelativeofBeatyandhealthies)
+                .HasForeignKey(relativebeaty => relativebeaty.BeatyandHealthId);
             base.OnModelCreating(builder);
             //SeedData.AddBeatyandHealthy(builder);
             //SeedData.AddLikeAddDisLike(builder);
@@ -40,7 +43,6 @@ namespace MyDoctor.Data
         public DbSet<MyDoctor.Models.RelativeDisease> RelativeDisease { get; set; }
         public DbSet<MyDoctor.Models.BeatyandHealthy> BeatyandHealthy { get; set; }
         public DbSet<MyDoctor.Models.RelativeofBeatyandhealthy> RelativeofBeatyandhealthy { get; set; }
-        public DbSet<MyDoctor.Models.updateRelativeBeatyandHealthy> updateRelativeBeatyandHealthy { get; set; }
         public DbSet<MyDoctor.Models.Doctor> Doctor { get; set; }
         public DbSet<MyDoctor.Models.Posts> Posts { get; set; }
         public DbSet<MyDoctor.Models.Commentfordoctorpost> Commentfordoctorpost { get; set; }

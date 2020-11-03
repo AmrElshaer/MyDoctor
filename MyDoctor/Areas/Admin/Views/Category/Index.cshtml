@@ -1,49 +1,35 @@
 ﻿
-
-@using MyDoctor.Areas.Admin.Models
 @using MyDoctor.Models
 @using PagedList.Core.Mvc
-@model MyDoctor.Areas.Admin.Models.SearchViewModel
+@model MyDoctor.Areas.Admin.Models.SearchResult<BeatyandHealthy>
 
 @{
     ViewData["Title"] = "Index";
-    var message =TempData.Get<Message>("Message");
 
-}
-
-@switch (message)
-{
-    case null:
-        break;
-    case Message mess when mess.IsSuccess:
-        <h4 class="alert alert-info">@mess.Content</h4>
-        break;
-    default:
-        <h4 class="alert alert-danger">@message.Content</h4>
-        break;
+    await Html.RenderPartialAsync("_Message");
 }
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
 <form class="needs-validation" novalidate>
-    
-        <fieldset class="form-row">
-            <legend >Create Date</legend>
-            <div class="col-md-6 mb-3">
-                <label for="createFrom">From</label>
-                <input type="date" class="form-control" id="createFrom" name="createFrom">
-                
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="createTo">To</label>
-                <input type="date" class="form-control" id="createTo" name="createTo">
-            </div>
-        </fieldset>
-       
-       
-   
+
+    <fieldset class="form-row">
+        <legend>Create Date</legend>
+        <div class="col-md-6 mb-3">
+            <label for="createFrom">From</label>
+            <input type="date" class="form-control" id="createFrom" name="createFrom">
+
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="createTo">To</label>
+            <input type="date" class="form-control" id="createTo" name="createTo">
+        </div>
+    </fieldset>
+
+
+
     <div class="form-row">
         <div class="col-md-6 mb-3">
 
-            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchResult.SearchQuery" placeholder="Search">
+            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
             <div class="valid-feedback">
                 Looks good!
             </div>
@@ -56,7 +42,7 @@
 
 
 </form>
-<a class="btn btn-facebook" asp-action="ExportToExcel" target="_blank">ExportToExcel</a>
+<a class="btn btn-facebook" asp-action="ExportToExcel" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" target="_blank">ExportToExcel</a>
 <table class="table" id="Category">
     <thead>
         <tr>
@@ -76,8 +62,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.SearchResult.Category)
-    {
+        @foreach (var item in Model.ItemsList)
+        {
             <tr>
 
                 <td>
@@ -85,7 +71,7 @@
                     <img src="@item.Image" class="img img-thumbnail" style="max-width: 150px;max-height: 150px" />
                 </td>
                 <td>
-                    <h3>@item.Catagory</h3>
+                    <h3>@item.Category</h3>
 
                 </td>
                 <td>
@@ -93,7 +79,7 @@
                     {
                         @item.CreateDate.Value.ToShortDateString()
                     }
-                    
+
                 </td>
                 <td>
                     @if (item.ModifiedDate.HasValue)
@@ -102,13 +88,8 @@
                     }
                 </td>
                 <td>
-                    <input data-flag="Id" value="@item.Id" style="display: none" type="number"/>
-                    <input data-flag="Image" value="@item.Image" style="display: none" type="text"/>
-                    <input data-flag="Catagory" value="@item.Catagory" style="display: none" type="text"/>
-                    <input data-flag="CreateDate" value="@item.CreateDate" style="display: none" type="text"/>
-                    
 
-                    <button class="btn btn-primary" onclick="editCategory({Id:@item.Id,Image:'@item.Image',Catagory:'@item.Catagory',CreateDate:'@item.CreateDate'})">Edit</button>
+                    <button class="btn btn-primary" onclick="editCategory({Id:@item.Id,Image:'@item.Image',Catagory:'@item.Category',CreateDate:'@item.CreateDate'})">Edit</button>
                     <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
                         <input name="id" value="@item.Id" style="display: none" />
                         <button class="btn btn-danger" type="submit">Delete</button>
@@ -120,9 +101,9 @@
     </tbody>
 </table>
 <section>
-    @await Html.PartialAsync("_CreateEdit", new BeatyandHealthy())
+    @await Html.PartialAsync("_CreateEdit",new BeatyandHealthy())
 </section>
-<p><pager class="pager-container" list="@Model.SearchResult.Category" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchResult.SearchQuery" asp-route-createFrom="@Model.SearchResult.CreateFrom" asp-route-createTo="@Model.SearchResult.CreateTo"/></p>
+<p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" /></p>
 @section Scripts
 {
     <script>
@@ -135,46 +116,21 @@
             $('#CreateDate').val(category.CreateDate);
             $('#exampleModal').modal('show');
         }
+        $('#deleteCategory').submit(function (e) {
+            console.log("submit");
+            var r = confirm("Are You Sure You Want To Delete");
+            if (r === false) e.preventDefault();
 
-        $(document).ready(() => {
-            $('#deleteCategory').submit(function(e) {
-                console.log("submit");
-                var r = confirm("Are You Sure You Want To Delete");
-                if (r === false) e.preventDefault();
-
-            });
-            $('#exampleModal').on('hidden.bs.modal',
-                function(e) {
-                    $('#id-name').val('');
-                    $('#category-name').val('');
-                    $('#image-name').val('');
-                    $('#CreateDate-name').val('');
-                });
         });
+        $('#exampleModal').on('hidden.bs.modal',
+            function (e) {
+                $('#id-name').val('');
+                $('#category-name').val('');
+                $('#image-name').val('');
+                $('#CreateDate-name').val('');
+            });
+
+       
     </script>
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function() {
-            'use strict';
-            window.addEventListener('load',
-                function() {
-                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                    var forms = document.getElementsByClassName('needs-validation');
-                    // Loop over them and prevent submission
-                    var validation = Array.prototype.filter.call(forms,
-                        function(form) {
-                            form.addEventListener('submit',
-                                function(event) {
-                                    if (form.checkValidity() === false) {
-                                        event.preventDefault();
-                                        event.stopPropagation();
-                                    }
-                                    form.classList.add('was-validated');
-                                },
-                                false);
-                        });
-                },
-                false);
-        })();
-    </script>
+    <script src="/js/FormsValidation.js"></script>
 }

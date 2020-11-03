@@ -7,12 +7,13 @@ using PagedList.Core;
 
 namespace MyDoctor.Areas.Admin.Models
 {
-    public class SearchResult
+    public class SearchResult<T> where T :class
     {
-        public IPagedList<BeatyandHealthy> Category { get; set; }
+        public IPagedList<T> ItemsList { get; set; }
 
         public string SearchQuery { get; set; }
         public DateTime? CreateFrom { get; set; }
         public DateTime? CreateTo { get; set; }
+        public int? IdRelated { get; set; }
     }
 }

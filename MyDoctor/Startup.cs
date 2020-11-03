@@ -55,8 +55,9 @@ namespace MyDoctor
             services.AddScoped<IDiseasesRepository, DiseasesRepository>();
             services.AddScoped<ICommentRepository,CommentRepository>();
             services.AddScoped<IDiseaseRelativeRepository,DiseaseRelativeRepository>();
-            services.AddScoped<IBeatyandHealthRepository, BeatyandHealthRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICommentForDoctorPostRepository,CommentForDoctorPostRepository>();
+            services.AddScoped<ICategoryRelativiesRepository, CategoryRelativiesRepository>();
 
         }
 
