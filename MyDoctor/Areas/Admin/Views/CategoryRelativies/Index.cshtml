@@ -1,4 +1,5 @@
 ﻿
+@using MyDoctor.Areas.Admin.Models
 @using MyDoctor.IRepository
 @using MyDoctor.Models
 @using PagedList.Core.Mvc
@@ -102,14 +103,9 @@
                     @item.BeatyandHealthy.Category
                 </td>
                 <td>
-                    @if (item.Subject.Length > 200)
-                    {
-                        @item.Subject.Substring(0, 200)
-                    }
-                    else
-                    {
-                        @item.Subject
-                    }
+                   
+                        @item.Subject.MaxString(100,"SeeMore")
+                    
 
                 </td>
                 <td>
@@ -128,7 +124,7 @@
                 <td>
 
                     <button class="btn btn-primary" onclick="editCategory({Id:@item.Id,ImageOrVideo:'@item.ImageOrVideo',CreateDate:'@item.CreateDate',Address:'@item.Address',Subject:'@item.Subject',BeatyandHealthId:'@item.BeatyandHealthId'})">Edit</button>
-                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
+                    <form asp-action="Delete" id="delete" style="display: inline-block">
                         <input name="id" value="@item.Id" style="display: none" />
                         <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
@@ -168,15 +164,10 @@
             if (r === false) e.preventDefault();
 
         });
-        $('#exampleModal').on('hidden.bs.modal',
-            function(e) {
-                $('#Id').val('');
-                $('#ImageOrVideo').val('');
-                $('#Address').val('');
-                $('#Subject').val('');
-                $('#CreateDate').val('');
-            });
+      
 
     </script>
+    <script src="/js/NotifiyDelete.js"></script>
+    <script src="/js/ClearModal.js"></script>
     <script src="/js/FormsValidation.js"></script>
 }

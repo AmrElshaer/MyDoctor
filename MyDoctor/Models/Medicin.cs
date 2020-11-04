@@ -8,13 +8,22 @@ namespace MyDoctor.Models
 {
     public class Medicin
     {
-        public int id { get; set; }
+        public Medicin()
+        {
+            this.DiseaseMedicins=new HashSet<DiseaseMedicin>();
+        }
+        public int Id { get; set; }
         
-        public string name { get; set; }
-       [DataType(DataType.Currency)]
-        public decimal price { get; set; }
-        public  string affects { get; set; }
-        public string indications { get; set; }
-        public string diseasespecific { get; set; }
+        public string Name { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal Price { get; set; }
+        public  string Affects { get; set; }
+        public string Indications { get; set; }
+        public string CategoryId { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public BeatyandHealthy BeatyandHealthy { get; set; }
+        public string Image { get; set; }
+        public ICollection<DiseaseMedicin>  DiseaseMedicins { get; set; }
     }
 }

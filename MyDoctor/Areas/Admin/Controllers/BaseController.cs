@@ -11,7 +11,7 @@ namespace MyDoctor.Areas.Admin.Controllers
     [Area(nameof(Admin))]
     public class BaseController : Controller
     {
-        protected void  AddMessage(string content,string key,bool isSuccess=false)
+        protected void  AddMessage(string content,string key="Message",bool isSuccess=false)
         {
            
             TempData.Put(key, new Message()

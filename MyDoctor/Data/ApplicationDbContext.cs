@@ -24,10 +24,21 @@ namespace MyDoctor.Data
 
             // Add Relation For Doctor and posts
             builder.Entity<Posts>().HasOne<Doctor>(s => s.Doctor).WithMany(g => g.Posts).HasForeignKey(s => s.DoctorId);
+            // Add Relation For Category and RelativeCategory
             builder.Entity<RelativeofBeatyandhealthy>()
                 .HasOne<BeatyandHealthy>(relativeBeaty => relativeBeaty.BeatyandHealthy)
                 .WithMany(category => category.RelativeofBeatyandhealthies)
                 .HasForeignKey(relativebeaty => relativebeaty.BeatyandHealthId);
+            builder.Entity<DiseaseMedicin>()
+                .HasKey(bc => new { bc.DiseaseId, bc.MedicinId });
+            builder.Entity<DiseaseMedicin>()
+                .HasOne(bc => bc.Medicin)
+                .WithMany(b => b.DiseaseMedicins)
+                .HasForeignKey(bc => bc.MedicinId);
+            builder.Entity<DiseaseMedicin>()
+                .HasOne(bc => bc.Disease)
+                .WithMany(c => c.DiseaseMedicins)
+                .HasForeignKey(bc => bc.DiseaseId);
             base.OnModelCreating(builder);
             //SeedData.AddBeatyandHealthy(builder);
             //SeedData.AddLikeAddDisLike(builder);

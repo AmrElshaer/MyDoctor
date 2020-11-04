@@ -1,4 +1,6 @@
-﻿@model IEnumerable<MyDoctor.Models.Disease>
+﻿@using MyDoctor.Areas.Admin.Models
+@using MyDoctor.Models
+@model MyDoctor.Areas.Admin.Models.SearchResult<MyDoctor.Models.Disease>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,60 +8,129 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
+<form class="needs-validation" novalidate>
+
+    <fieldset class="form-row">
+        <legend>Create Date</legend>
+        <div class="col-md-6 mb-3">
+            <label for="createFrom">From</label>
+            <input type="date" class="form-control" id="createFrom" name="createFrom">
+
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="createTo">To</label>
+            <input type="date" class="form-control" id="createTo" name="createTo">
+        </div>
+    </fieldset>
+
+
+
+    <div class="form-row">
+        <div class="col-md-6 mb-3">
+
+            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+
+
+
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DiseaseName)
+                DiseaseName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Subject)
+                Subject
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                Image
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Protection)
+                Protection
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Medicin)
+                Category
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Reasons)
+                Reasons
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiseaseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Protection)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Medicin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reasons)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.ItemsList)
+        {
+            <tr>
+                <td>
+                    @item.DiseaseName
+                </td>
+                <td>
+                    @item.Subject.MaxString(50,"......")
+                </td>
+                <td>
+                    <img src="@item.Image" class="img img-thumbnail" style="max-width: 150px;max-height: 150px"/>
+                   
+                </td>
+                <td>
+                    @item.Protection.MaxString(50, ".....")
+                </td>
+                <td>
+                    @item.BeatyandHealthy.Category
+                </td>
+                <td>
+                    @item.Reasons.MaxString(50, ".....")
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="editCategory({Id:@item.Id,Image:'@item.Image',Protection:'@item.Protection',BeatyandHealthyId:'@item.BeatyandHealthyId',Subject:'@item.Subject',Reasons:'@item.Reasons',CreateDate:'@item.CreateDate',DiseaseName:'@item.DiseaseName'})">Edit</button>
+                    <form asp-action="Delete" id="delete" style="display: inline-block">
+                        <input name="id" value="@item.Id" style="display: none" />
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<section>
+    @await Html.PartialAsync("_CreateEdit", new Disease())
+</section>
+@section Scripts
+{
+    <script>
+       
+
+        function editCategory(disease) {
+            $('#Id').val(disease.Id);
+            $('#Image').val(disease.Image);
+            $('#Protection').val(disease.Protection);
+            $('#DiseaseName').val(disease.DiseaseName);
+            $('#CreateDate').val(disease.CreateDate);
+            $('#Subject').val(disease.Subject);
+            $('#Reasons').val(disease.Reasons);
+            $("#BeatyandHealthId option").each(function () {
+                if ($(this).val() == disease.BeatyandHealthId) {
+                    $(this).attr("selected", "selected");
+                }
+
+            });
+            $('#exampleModal').modal('show');
+        }
+
+       
+      
+
+    </script>
+    <script src="/js/NotifiyDelete.js"></script>
+    <script src="/js/ClearModal.js"></script>
+    <script src="/js/FormsValidation.js"></script>
+}

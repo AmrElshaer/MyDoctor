@@ -4,7 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MyDoctor.Areas.Admin.Models;
 using MyDoctor.Data;
+using MyDoctor.Models;
+using PagedList.Core;
 
 namespace MyDoctor.Infrastructure
 {
@@ -53,7 +56,7 @@ namespace MyDoctor.Infrastructure
             
         }
 
-       
+      
 
         public async Task Update(T obj)
         {

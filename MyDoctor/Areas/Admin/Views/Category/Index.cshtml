@@ -116,21 +116,12 @@
             $('#CreateDate').val(category.CreateDate);
             $('#exampleModal').modal('show');
         }
-        $('#deleteCategory').submit(function (e) {
-            console.log("submit");
-            var r = confirm("Are You Sure You Want To Delete");
-            if (r === false) e.preventDefault();
-
-        });
-        $('#exampleModal').on('hidden.bs.modal',
-            function (e) {
-                $('#id-name').val('');
-                $('#category-name').val('');
-                $('#image-name').val('');
-                $('#CreateDate-name').val('');
-            });
+       
+     
 
        
     </script>
+    <script src="/js/NotifiyDelete.js"></script>
+    <script src="/js/ClearModal.js"></script>
     <script src="/js/FormsValidation.js"></script>
 }

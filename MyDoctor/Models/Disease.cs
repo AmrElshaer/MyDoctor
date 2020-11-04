@@ -9,15 +9,20 @@ namespace MyDoctor.Models
     public class Disease
     {
         
-      public  int Id { get; set; }
+        public  int Id { get; set; }
         [Required]
         public string DiseaseName { get; set; }
         public string Subject { get; set; }
         [DataType(DataType.ImageUrl)]
         public string Image { get; set; }
         public string Protection { get; set; }
-        public string Medicin { get; set; }
+       
         public string Reasons { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public int? BeatyandHealthyId { get; set; }
+        public ICollection<DiseaseMedicin> DiseaseMedicins  { get; set; }
+        public BeatyandHealthy BeatyandHealthy { get; set; }
 
     }
 }
