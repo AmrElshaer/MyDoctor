@@ -39,6 +39,10 @@ namespace MyDoctor.Data
                 .HasOne(bc => bc.Disease)
                 .WithMany(c => c.DiseaseMedicins)
                 .HasForeignKey(bc => bc.DiseaseId);
+            builder.Entity<Medicin>().HasOne(m => m.BeatyandHealthy).WithMany(b => b.Medicins)
+                .HasForeignKey(m => m.BeatyandHealthyId);
+            builder.Entity<Disease>().HasOne(m => m.BeatyandHealthy).WithMany(b => b.Diseases)
+                .HasForeignKey(m => m.BeatyandHealthyId);
             base.OnModelCreating(builder);
             //SeedData.AddBeatyandHealthy(builder);
             //SeedData.AddLikeAddDisLike(builder);

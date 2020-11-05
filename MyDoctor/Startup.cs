@@ -58,6 +58,7 @@ namespace MyDoctor
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICommentForDoctorPostRepository,CommentForDoctorPostRepository>();
             services.AddScoped<ICategoryRelativiesRepository, CategoryRelativiesRepository>();
+            services.AddScoped<IMedicinRepository,MedicinRepository>();
 
         }
 

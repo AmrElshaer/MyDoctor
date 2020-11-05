@@ -8,6 +8,8 @@ namespace MyDoctor.Models
         {
 
             RelativeofBeatyandhealthies =new HashSet<RelativeofBeatyandhealthy>();
+            Medicins= new HashSet<Medicin>();
+
         }
         public int Id { get; set; }
         public string Category { get; set; }
@@ -15,5 +17,7 @@ namespace MyDoctor.Models
         public DateTime? CreateDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public ICollection<RelativeofBeatyandhealthy> RelativeofBeatyandhealthies { get; set; }
+        public ICollection<Medicin> Medicins { get; set; }
+        public ICollection<Disease> Diseases { get; set; }
     }
 }

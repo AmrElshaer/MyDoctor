@@ -1,0 +1,149 @@
+﻿
+@using MyDoctor.Areas.Admin.Models
+@using MyDoctor.Models
+@model MyDoctor.Areas.Admin.Models.SearchResult<MyDoctor.Models.Medicin>
+
+    @{
+    ViewData["Title"] = "Index";
+    }
+
+    <h2>Index</h2>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
+    <form class="needs-validation" novalidate>
+
+        <fieldset class="form-row">
+            <legend>Create Date</legend>
+            <div class="col-md-6 mb-3">
+                <label for="createFrom">From</label>
+                <input type="date" class="form-control" id="createFrom" name="createFrom">
+
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="createTo">To</label>
+                <input type="date" class="form-control" id="createTo" name="createTo">
+            </div>
+        </fieldset>
+
+
+
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+
+                <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+
+
+
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Affects
+                </th>
+                <th>
+                    Image
+                </th>
+                <th>
+                    Indications
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ItemsList)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Affects.MaxString(50,"......")
+                </td>
+                <td>
+                    <img src="@item.Image" class="img img-thumbnail" style="max-width: 150px;max-height: 150px" />
+
+                </td>
+                <td>
+                    @item.Indications.MaxString(50, ".....")
+                </td>
+                <td>
+                    @item.BeatyandHealthy.Category
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                   
+                    <button class="btn btn-primary" onclick="editCategory('@item.ToJson()')">Edit</button>
+                    <form asp-action="Delete" id="delete" style="display: inline-block">
+                        <input name="id" value="@item.Id" style="display: none"/>
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <section>
+        @await Html.PartialAsync("_CreateEdit", new Medicin())
+    </section>
+    @section Scripts
+    {
+        <script>
+
+
+            function editCategory(diseasejson) {
+                var disease = JSON.parse(diseasejson);
+                console.log(disease);
+                $('#Id').val(disease.Id);
+                $('#Image').val(disease.Image);
+                $('#Affects').val(disease.Affects);
+                $('#Name').val(disease.Name);
+                $('#CreateDate').val(disease.CreateDate);
+                $('#Price').val(disease.Price);
+                $('#Indications').val(disease.Indications);
+                $("#BeatyandHealthId option").each(function() {
+                    if ($(this).val() == disease.BeatyandHealthId) {
+                        $(this).attr("selected", "selected");
+                    }
+
+                });
+                if (disease.DiseaseMedicins) {
+                    $("input[name='Diseases']").each(function () {
+                        var diseasesId = disease.DiseaseMedicins.map(dm => dm.DiseaseId);
+                        if (diseasesId.includes(+$(this).val())) {
+                            console.log('checked');
+                            $(this).attr("checked", "checked");
+                        }
+
+                    });
+                }
+               
+                $('#exampleModal').modal('show');
+            }
+
+
+        </script>
+        <script src="/js/NotifiyDelete.js"></script>
+        <script src="/js/ClearModal.js"></script>
+        <script src="/js/FormsValidation.js"></script>
+    }

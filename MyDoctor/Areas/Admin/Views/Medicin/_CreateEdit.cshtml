@@ -1,0 +1,92 @@
+﻿
+@using MyDoctor.IRepository
+@model MyDoctor.Models.Medicin
+@inject ICategoryRepository CategoryRepository
+@inject IDiseasesRepository DiseasesRepository
+<style>
+
+
+    /* Important part */
+    .modal-dialog {
+        overflow-y: initial !important
+    }
+
+    .modal-body {
+        height: 60vh;
+        overflow-y: auto;
+    }
+</style>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Disease</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="CreateEdit" id="CreateEdit">
+                    <div class="form-group" style="display: none">
+                        <label for="id-name" class="col-form-label">id</label>
+                        <input asp-for="Id" value="@Model.Id">
+                    </div>
+                    <div class="form-group" style="display: none">
+
+                        <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="BeatyandHealthId" class="col-form-label">Category</label>
+
+                        <select asp-for="BeatyandHealthyId" class="form-control">
+
+                            @foreach (var category in await CategoryRepository.GetAllAsync())
+                            {
+
+                                <option value="@category.Id" label="@category.Category"></option>
+
+                            }
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="image-name" class="col-form-label">Image Url</label>
+                        <input asp-for="Image" value="@Model.Image" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="DiseaseName" class="col-form-label">Name</label>
+                        <input value="@Model.Name" asp-for="Name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="DiseaseName" class="col-form-label">Affects</label>
+                        <input value="@Model.Affects" asp-for="Affects" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="DiseaseName" class="col-form-label">Indications</label>
+                        <input value="@Model.Indications" asp-for="Indications" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="DiseaseName" class="col-form-label">Price</label>
+                        <input value="@Model.Price" asp-for="Price" class="form-control">
+                    </div>
+
+                    <label for="DiseaseName" class="col-form-label">Disease</label>
+                    @foreach (var disease in await DiseasesRepository.GetAllAsync())
+                    {<div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="Diseases"  value="@disease.Id">
+                            <label class="form-check-label" for="exampleCheck1">@disease.DiseaseName</label>
+                        </div>
+                    }
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
