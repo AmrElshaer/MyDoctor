@@ -21,11 +21,12 @@ namespace MyDoctor.Controllers
         // GET: Doctors
         public async Task<IActionResult> Index(string special, string city, string country)
         {
-            var resuilt = await _doctorRepository.GetAllAsync(doctor =>
-                (special == null || doctor.Specials.ToLower().Contains(special.ToLower())) &&
-                (city == null || doctor.City.ToLower().Contains(city.ToLower())) &&
-                (country == null || doctor.Country.ToLower().Contains(country.ToLower())));
-            return View(resuilt);
+            //var resuilt = await _doctorRepository.GetAllAsync(doctor =>
+            //    (special == null || doctor.Specials.ToLower().Contains(special.ToLower())) &&
+            //    (city == null || doctor.City.ToLower().Contains(city.ToLower())) &&
+            //    (country == null || doctor.Country.ToLower().Contains(country.ToLower())));
+            //return View(resuilt);
+            return View();
         }
 
         /// <summary>
@@ -71,10 +72,10 @@ namespace MyDoctor.Controllers
         // GET: Doctors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) return NotFound();
-            var doctor = await _doctorRepository.GetDocWithPostsAsync(id);
-            if (doctor == null) return NotFound();
-            return View(doctor);
+            //if (id == null) return NotFound();
+            //var doctor = await _doctorRepository.GetDocWithPostsAsync(id);
+            //if (doctor == null) return NotFound();
+            return View();
         }
 
         // GET: Doctors/Create
@@ -92,12 +93,12 @@ namespace MyDoctor.Controllers
             [Bind("Id,Name,Specials,Country,City,Telephone,Others,Email,Password,ConfirmPassword,Kind")]
             Doctor doctor)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _doctorRepository.RegisterDoctor(doctor);
-                if (result.Succeeded) return RedirectToAction(nameof(Index));
-                result.Errors.ToList().ForEach(error => ModelState.AddModelError(string.Empty, error.Description));
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    var result = await _doctorRepository.RegisterDoctor(doctor);
+            //    if (result.Succeeded) return RedirectToAction(nameof(Index));
+            //    result.Errors.ToList().ForEach(error => ModelState.AddModelError(string.Empty, error.Description));
+            //}
 
             return View(doctor);
         }

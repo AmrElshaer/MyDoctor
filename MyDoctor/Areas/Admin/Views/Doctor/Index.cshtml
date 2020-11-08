@@ -1,0 +1,147 @@
+﻿
+@using MyDoctor.Areas.Admin.Models
+@using MyDoctor.IRepository
+@using MyDoctor.Models
+@model MyDoctor.Areas.Admin.Models.SearchResult<MyDoctor.Models.Doctor>
+@inject ICategoryRepository CategoryRepository
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
+<form class="needs-validation" novalidate>
+
+
+
+
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+
+            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <select name="BeatyandHealthId" class="form-control" asp-items="@(new SelectList(await CategoryRepository.GetAllAsync(),"Id","Category"))">
+               
+                <option disabled selected> -- select an option -- </option>
+            </select>   
+                
+
+
+
+        </div>
+        <div class="col-md-4 mb-3">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+
+
+
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Specific
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Telephone
+            </th>
+            <th>
+                Password
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ItemsList)
+        {
+            <tr>
+                <td>
+                    <img src="/images/@item.ImagePath" class="img img-thumbnail" style="max-width: 150px;max-height: 150px" />
+                </td>
+                <td>
+                    @item.Name
+                </td>
+               
+                <td>
+                    @item.Category.Category 
+                    </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.Telephone
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="editCategory(@item.ToJson())">Edit</button>
+                    <form asp-action="Delete" id="delete" style="display: inline-block">
+                        <input name="id" value="@item.Id" style="display: none" />
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<section>
+    @await Html.PartialAsync("_CreateEdit", new Doctor())
+</section>
+@section Scripts
+{
+    <script>
+
+
+        function editCategory(doctor) {
+           
+            $('#Id').val(doctor.Id);
+            $('#ImagePath').val(doctor.ImagePath);
+            $('#Email').val(doctor.Email);
+            $('#Password').val(doctor.Password);
+            $('#ConfirmPassword').val(doctor.ConfirmPassword);
+            $('#Others').val(doctor.Others);
+            $('#Telephone').val(doctor.Telephone);
+            $('#Country').val(doctor.Country);
+            $('#City').val(doctor.City);
+            $('#Name').val(doctor.Name);
+            $('#ImagePath').val(doctor.ImagePath);
+            $("#CategoryId option").each(function () {
+                if ($(this).val() == doctor.CategoryId) {
+                    $(this).attr("selected", "selected");
+                }
+
+            });
+            $("#Kind option").each(function () {
+                if ($(this).val() == doctor.Kind) {
+                    $(this).attr("selected", "selected");
+                }
+
+            });
+            $('#exampleModal').modal('show');
+        }
+
+
+
+
+    </script>
+    <script src="/js/NotifiyDelete.js"></script>
+    <script src="/js/ClearModal.js"></script>
+    <script src="/js/FormsValidation.js"></script>
+}
+

@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Doctors\**" />
+    <Content Remove="Views\Doctors\**" />
+    <EmbeddedResource Remove="Views\Doctors\**" />
+    <None Remove="Views\Doctors\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
     <PackageReference Include="MailKit" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

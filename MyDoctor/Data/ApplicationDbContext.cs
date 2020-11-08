@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyDoctor.Helper;
 using MyDoctor.Models;
 
@@ -43,9 +44,17 @@ namespace MyDoctor.Data
                 .HasForeignKey(m => m.BeatyandHealthyId);
             builder.Entity<Disease>().HasOne(m => m.BeatyandHealthy).WithMany(b => b.Diseases)
                 .HasForeignKey(m => m.BeatyandHealthyId);
+            //Value Converters string when insert enum when write
+            var converter = new ValueConverter<Kind, string>(
+                v => v.ToString(),
+                v => (Kind)Enum.Parse(typeof(Kind), v));
+
+            builder
+                .Entity<Doctor>()
+                .Property(e => e.Kind)
+                .HasConversion(converter);
             base.OnModelCreating(builder);
-            //SeedData.AddBeatyandHealthy(builder);
-            //SeedData.AddLikeAddDisLike(builder);
+            
            
         }
 

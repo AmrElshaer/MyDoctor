@@ -1,0 +1,105 @@
+﻿@using MyDoctor.IRepository
+@using MyDoctor.Models
+@model MyDoctor.Models.Doctor
+@inject ICategoryRepository CategoryRepository
+<style>
+
+
+    /* Important part */
+    .modal-dialog {
+        overflow-y: initial !important
+    }
+
+    .modal-body {
+        height: 60vh;
+        overflow-y: auto;
+    }
+</style>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Disease</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="CreateEdit" id="CreateEdit" enctype="multipart/form-data">
+                    <div class="form-group" style="display: none">
+                        <label for="id-name" class="col-form-label">id</label>
+                        <input asp-for="Id" value="@Model.Id">
+                    </div>
+                    <div class="form-group" style="display: none">
+
+                        <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="Name" class="col-form-label">Name</label>
+                        <input value="@Model.Name" asp-for="Name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="Email" class="col-form-label">Email</label>
+                        <input value="@Model.Email" asp-for="Email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="CategoryId" class="col-form-label">Specific</label>
+
+                        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(await CategoryRepository.GetAllAsync(),"Id","Category"))">
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="image-name" class="col-form-label">Image</label>
+                        <input name="image" type="file" class="form-control">
+                    </div>
+                    <div style="display: none">
+                        <input asp-for="ImagePath"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="Telephone" class="col-form-label">Telephone</label>
+                        <input value="@Model.Telephone" asp-for="Telephone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="Kind" class="col-form-label">Kind</label>
+                        <select asp-for="Kind" asp-items="@Html.GetEnumSelectList(typeof(Kind))"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Country" class="col-form-label">Country</label>
+                        <input value="@Model.Country" asp-for="Country" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="City" class="col-form-label">City</label>
+                        <input value="@Model.City" asp-for="City" class="form-control">
+                    </div>
+                    <div class="form-group">
+
+                        <input asp-for="Password" class="form-control form-control-user" placeholder="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input asp-for="ConfirmPassword" class="form-control form-control-user" placeholder="ConfirmPassword" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label for="City" class="col-form-label">Others</label>
+                        <textarea class="form-control"  asp-for="Others">
+                            @Model.Others
+                        </textarea>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

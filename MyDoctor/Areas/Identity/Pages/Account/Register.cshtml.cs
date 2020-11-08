@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
@@ -22,11 +23,9 @@ namespace MyDoctor.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<CutomPropertiy> _signInManager;
-        private readonly IHostingEnvironment _IhostEnv;
+        private readonly IHostingEnvironment _ihostEnv;
         private readonly UserManager<CutomPropertiy> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-
-        private readonly IEmailSender _emailSender;
 
         public RegisterModel(
            IHostingEnvironment hostingEnvironment,
@@ -35,11 +34,10 @@ namespace MyDoctor.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
-            _IhostEnv = hostingEnvironment;
+            _ihostEnv = hostingEnvironment;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -78,7 +76,7 @@ namespace MyDoctor.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
 
             {
-                string uniquename = RegisterHelper.ConfigImagePath(Input.ImagePath,_IhostEnv);
+                string uniquename = RegisterHelper.ConfigImagePath(Input.ImagePath,_ihostEnv);
                 var user = new CutomPropertiy { UserName = Input.Email, Email = Input.Email, ImagePath=uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 
@@ -86,16 +84,6 @@ namespace MyDoctor.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
                     await  _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email),"Client");
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { userId = user.Id, code = code },
-                    //    protocol: Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }

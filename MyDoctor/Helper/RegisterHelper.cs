@@ -10,12 +10,14 @@ namespace MyDoctor.Helper
 {
     public static class RegisterHelper
     {
-        public static string ConfigImagePath(IFormFile imagepath, IHostingEnvironment _IhostEnv)
+        
+
+        public static string ConfigImagePath(IFormFile imagepath, IHostingEnvironment _ihostEnv)
         {
             if (imagepath != null)
             {
 
-                string path = Path.Combine(_IhostEnv.WebRootPath, "images");
+                string path = Path.Combine(_ihostEnv.WebRootPath, "images");
                 string uniquename = Guid.NewGuid() + "_" + imagepath.FileName;
                 string realpath = Path.Combine(path, uniquename);
                 imagepath.CopyTo(new FileStream(realpath, FileMode.Create));
@@ -23,6 +25,16 @@ namespace MyDoctor.Helper
             }
             return null;
                 
+        }
+
+        public static void DeleteImage(string imagePath, IHostingEnvironment _ihostEnv)
+        {
+            var path = Path.Combine(_ihostEnv.WebRootPath,"images", imagePath);
+
+            if (File.Exists(path))
+            {
+                File.Decrypt(path);
+            }
         }
     }
 }
