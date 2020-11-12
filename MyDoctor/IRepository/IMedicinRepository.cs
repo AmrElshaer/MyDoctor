@@ -28,6 +28,6 @@ namespace MyDoctor.IRepository
         /// <param name="createFrom"></param>
         /// <param name="createTo"></param>
         /// <returns></returns>
-        IOrderedQueryable<Medicin> Search(string query, DateTime? createFrom, DateTime? createTo);
+        IOrderedQueryable<Medicin> Search(string query= null, DateTime? createFrom = null, DateTime? createTo = null);
     }
 }

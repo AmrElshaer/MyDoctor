@@ -14,8 +14,8 @@ namespace MyDoctor.IRepository
         SearchResult<RelativeofBeatyandhealthy> GetSearchResult(string query, int pageNumber, int pageSize,
             DateTime? createFrom, DateTime? createTo, int? beatyandHealthId);
 
-        IOrderedQueryable<RelativeofBeatyandhealthy> Search(string query, DateTime? createFrom,
-            DateTime? createTo,int? beatyandHealthId);
+        IOrderedQueryable<RelativeofBeatyandhealthy> Search(string query=null, DateTime? createFrom=null,
+            DateTime? createTo=null,int? beatyandHealthId=null);
         
         Task CreateEdit(RelativeofBeatyandhealthy category);
     }

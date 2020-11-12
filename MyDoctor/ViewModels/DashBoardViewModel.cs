@@ -12,6 +12,7 @@ namespace MyDoctor.ViewModels
         public IEnumerable<Doctor> Doctors { get; set; }
         public IEnumerable<Medicin> Medicins { get; set; }
         public IEnumerable<Disease> Diseases { get; set; }
+        public IEnumerable<RelativeofBeatyandhealthy> RelativeCategories { get; set; }
 
     }
 }

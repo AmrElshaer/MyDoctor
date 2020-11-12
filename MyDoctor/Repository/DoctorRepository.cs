@@ -87,7 +87,7 @@ namespace MyDoctor.Repository
             };
             return searchResult;
         }
-        private IOrderedQueryable<Doctor> Search(string query,int? categoryId)
+        public IOrderedQueryable<Doctor> Search(string query,int? categoryId)
         {
             var doctors = _context.Doctor.Include(doc => doc.Category).Where(x =>
                 (query == null || x.Name.ToLower().Contains(query.ToLower()))
