@@ -22,17 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Doctor\Data\" />
+    <Folder Include="Areas\Doctor\Models\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\Content\img\undraw_posting_photo.svg" />
-    <None Include="wwwroot\Content\js\demo\chart-area-demo.js" />
-    <None Include="wwwroot\Content\js\demo\chart-bar-demo.js" />
-    <None Include="wwwroot\Content\js\demo\chart-pie-demo.js" />
-    <None Include="wwwroot\Content\js\demo\datatables-demo.js" />
-    <None Include="wwwroot\Content\js\sb-admin-2.js" />
-    <None Include="wwwroot\Content\js\sb-admin-2.min.js" />
     <None Include="wwwroot\Content\scss\navs\_global.scss" />
     <None Include="wwwroot\Content\scss\navs\_sidebar.scss" />
     <None Include="wwwroot\Content\scss\navs\_topbar.scss" />

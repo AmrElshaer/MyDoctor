@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyDoctor.Models;
+using MyDoctor.ViewModels;
 
 namespace MyDoctor.Helper
 {
@@ -8,105 +9,22 @@ namespace MyDoctor.Helper
     {
         public static  void AddRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!  roleManager.RoleExistsAsync("Admin").GetAwaiter().GetResult() )roleManager.CreateAsync(new IdentityRole { Name = "Admin" }).GetAwaiter().GetResult();
-            if (! roleManager.RoleExistsAsync("Client").GetAwaiter().GetResult())roleManager.CreateAsync(new IdentityRole { Name = "Client" }).GetAwaiter().GetResult();
-            if (!roleManager.RoleExistsAsync("Doctor").GetAwaiter().GetResult())roleManager.CreateAsync(new IdentityRole { Name = "Doctor" }).GetAwaiter().GetResult();
+            if (!  roleManager.RoleExistsAsync(Roles.Admin.ToString()).GetAwaiter().GetResult() )roleManager.CreateAsync(new IdentityRole { Name = Roles.Admin.ToString() }).GetAwaiter().GetResult();
+            if (! roleManager.RoleExistsAsync(Roles.Client.ToString()).GetAwaiter().GetResult())roleManager.CreateAsync(new IdentityRole { Name = Roles.Client.ToString() }).GetAwaiter().GetResult();
+            if (!roleManager.RoleExistsAsync(Roles.Doctor.ToString()).GetAwaiter().GetResult())roleManager.CreateAsync(new IdentityRole { Name = Roles.Doctor.ToString() }).GetAwaiter().GetResult();
             
 
         }
-      
-        public static void AddBeatyandHealthy(ModelBuilder builder)
-        {
-            builder.Entity<BeatyandHealthy>().HasData(
-              new BeatyandHealthy
-              {
-                  Id = 1,
-                  Category = "الرياضة والرشاقة",
-                  Image = "https://static.webteb.net/images/content/slideshow_slideshow_1756_3807b64a6cc-17e2-4ea3-9785-abd3cdb05540.jpg"
-
-              }, new BeatyandHealthy
-              {
-                  Id = 2,
-                  Category = "الريجيم وتخفيف الوزن",
-                  Image = "https://static.webteb.net/images/content/tbl_articles_article_21104_50697899ac1-0b6d-454d-b882-aa5c535a839d.jpg"
-
-
-              }
-              , new BeatyandHealthy
-              {
-                  Id = 3,
-                  Category = "التغذية السليمة",
-                  Image = "https://static.webteb.net/images/content/tbl_articles_article_21149_393ab96dbff-e233-4161-8335-2590a210376c.jpg"
-              }, new BeatyandHealthy
-              {
-                  Id = 4,
-                  Category = "الحياة الزوجية",
-                  Image = "https://static.webteb.net/images/content/slideshow_slideshow_1855_938129447e6-33b4-4d1f-87e9-cb69c44f463f.jpg"
-
-              }, new BeatyandHealthy
-              {
-                  Id = 5,
-                  Category = "العناية بالشعر",
-                  Image = "https://static.webteb.net/images/content/video_video_574_19396f7560c-3586-42b6-8a33-c4242b762843.jpg"
-
-              }
-              , new BeatyandHealthy
-              {
-                  Id = 6,
-                  Category = "العناية بالبشرة والجمال",
-                  Image = "https://static.webteb.net/images/content/tbl_articles_article_21115_350a54688d-6b44-49de-9132-c83db36c1e21.jpg"
-
-              }
-              , new BeatyandHealthy
-              {
-                  Id = 7,
-                  Category = "جودة الحياة",
-                  Image = "https://static.webteb.net/images/content/tbl_articles_article_21091_224c1f7c9d9-1017-49f6-91ab-8338bf8f8bf5.jpg"
-
-              }, new BeatyandHealthy
-              {
-                  Id = 8,
-                  Category = "الجيل الذهبي",
-                  Image = "https://static.webteb.net/images/content/tbl_articles_article_17490_98.jpg"
-
-              }
-              , new BeatyandHealthy
-              {
-                  Id = 9,
-                  Category = "وصفات صحية",
-                  Image = "https://static.webteb.net/images/content/ramadanrecipe_recipe_544_785238ad407-4bce-40df-a2e5-402e3fae7092.jpg"
-
-              }
-              , new BeatyandHealthy
-              {
-                  Id = 10,
-                  Category = "القيم الغذائية للمأكولات",
-                  Image = "https://static.webteb.net/images/content/tbl_articles_article_21183_468062634f5-e43b-4772-bd68-daaf7436c10f.jpg"
-
-              }
-          );
-        }
-        public static void AddLikeAddDisLike(ModelBuilder builder)
-        {
-            builder.Entity<LikeandDislikeclass>().HasData(
-                new LikeandDislikeclass
-                {
-                    Id = 1,
-                    DiseaseName = "Highpress",
-                    Like = 0,
-                    DisLike = 0,
-                }
-            );
-        }
-        public  static void  AddUsers(UserManager<CutomPropertiy> userManager)
+        
+        public  static void  AddUsers(UserManager<ApplicationUser> userManager)
         {
             var adminEmail = "Admin@Admin.com";
             var admin = userManager.FindByEmailAsync(adminEmail).GetAwaiter().GetResult();
             if (admin == null)
             {
-                var user = new CutomPropertiy {UserName = adminEmail, Email = adminEmail};
+                var user = new ApplicationUser {UserName = adminEmail, Email = adminEmail};
                 var adduserresuilt = userManager.CreateAsync(user, "Admin123@").GetAwaiter().GetResult();
-                if (adduserresuilt.Succeeded) userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+                if (adduserresuilt.Succeeded) userManager.AddToRoleAsync(user, Roles.Admin.ToString()).GetAwaiter().GetResult();
             }
         }
     }

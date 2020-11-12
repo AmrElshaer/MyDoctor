@@ -11,18 +11,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MyDoctor.Models;
 using MyDoctor.Data;
+using MyDoctor.ViewModels;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<CutomPropertiy> _signInManager;
-        private readonly UserManager<CutomPropertiy> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly ApplicationDbContext _context;
 
-        public LoginModel(ApplicationDbContext context,SignInManager<CutomPropertiy> signInManager, ILogger<LoginModel> logger,UserManager<CutomPropertiy>userManager)
+        public LoginModel(ApplicationDbContext context,SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger,UserManager<ApplicationUser>userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -74,7 +75,6 @@ namespace MyDoctor.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
-
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -82,42 +82,34 @@ namespace MyDoctor.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    
                     var user = await _userManager.FindByNameAsync(Input.Email);
                     var roles= await _userManager.GetRolesAsync(user);
                     switch (roles.FirstOrDefault())
                     {
-                        case null:
-                        case "Admin":
-                        case "Client":
-                            return LocalRedirect("/");
-                    
-                        case "Doctor":
-                          var doctor=   _context.Doctor.FirstOrDefault(a => a.Email == user.Email);
-                            return RedirectToAction("Details","Doctors",new { id=doctor.Id});
+                        
+                        
+                        case nameof(Roles.Admin):
+                            return RedirectToAction("Index", "DashBoard", new { area = nameof(Roles.Admin) });
+
+                        case nameof(Roles.Doctor):
+                            return RedirectToAction("Index", "DashBoard", new { area = nameof(Roles.Doctor) });
+                        default:
+                            return RedirectToAction("Index", "DashBoard");
+
 
                     }
-
-
-
-                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
+                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+               
                 if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+                     return RedirectToPage("./Lockout");
+               
+                ModelState.AddModelError(string.Empty,"Email Or Password Is Not Correct");
+               
             }
-
+            
             // If we got this far, something failed, redisplay form
             return Page();
         }

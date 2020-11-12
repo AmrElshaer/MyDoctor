@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.Helper;
 using MyDoctor.IRepository;
-using MyDoctor.Models;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -28,7 +25,7 @@ namespace MyDoctor.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateEdit(Doctor doctor,IFormFile image)
+        public async Task<ActionResult> CreateEdit(MyDoctor.Models.Doctor doctor,IFormFile image)
         {
             
             if (ModelState.IsValid)

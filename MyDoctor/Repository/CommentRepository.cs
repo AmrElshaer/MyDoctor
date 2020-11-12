@@ -19,7 +19,7 @@ namespace MyDoctor.Repository
 
         public async Task InsertCommentAsync(DiseaseHelper diseaseHelper,string userName)
         {
-            CutomPropertiy user = await this._context.Users.FirstOrDefaultAsync(a => a.UserName == userName);
+            ApplicationUser user = await this._context.Users.FirstOrDefaultAsync(a => a.UserName == userName);
             Comments obj = new Comments()
             {
                 Commment = diseaseHelper.Comment,

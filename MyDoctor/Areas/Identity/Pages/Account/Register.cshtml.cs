@@ -16,21 +16,22 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using MyDoctor.Helper;
+using MyDoctor.ViewModels;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<CutomPropertiy> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHostingEnvironment _ihostEnv;
-        private readonly UserManager<CutomPropertiy> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
            IHostingEnvironment hostingEnvironment,
-            UserManager<CutomPropertiy> userManager,
-            SignInManager<CutomPropertiy> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -77,13 +78,13 @@ namespace MyDoctor.Areas.Identity.Pages.Account
 
             {
                 string uniquename = RegisterHelper.ConfigImagePath(Input.ImagePath,_ihostEnv);
-                var user = new CutomPropertiy { UserName = Input.Email, Email = Input.Email, ImagePath=uniquename };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, ImagePath=uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    await  _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email),"Client");
+                    await  _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email),nameof(Roles.Client));
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }

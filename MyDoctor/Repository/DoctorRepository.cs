@@ -17,10 +17,10 @@ namespace MyDoctor.Repository
 {
     public class DoctorRepository:BaseRepository<Doctor>,IDoctorRepository
     {
-        private readonly UserManager<CutomPropertiy> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHostingEnvironment _ihostEnv;
 
-        public DoctorRepository(ApplicationDbContext context, UserManager<CutomPropertiy> userManager, IHostingEnvironment ihostEnv) :base(context)
+        public DoctorRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment ihostEnv) :base(context)
         {
             _userManager = userManager;
             _ihostEnv = ihostEnv;
@@ -35,7 +35,7 @@ namespace MyDoctor.Repository
         private async Task RegisterDoctor(Doctor doctor,IFormFile image)
         {
             var imagePath= RegisterHelper.ConfigImagePath(image, _ihostEnv);
-            var user = new CutomPropertiy { UserName = doctor.Email, Email = doctor.Email,ImagePath = imagePath };
+            var user = new ApplicationUser { UserName = doctor.Email, Email = doctor.Email,ImagePath = imagePath };
             var result = await _userManager.CreateAsync(user, doctor.Password);
 
             if (result.Succeeded)

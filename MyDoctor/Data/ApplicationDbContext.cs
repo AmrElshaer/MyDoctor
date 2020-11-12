@@ -10,7 +10,7 @@ using MyDoctor.Models;
 
 namespace MyDoctor.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<CutomPropertiy>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
      
 

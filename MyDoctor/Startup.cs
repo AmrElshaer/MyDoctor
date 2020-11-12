@@ -40,12 +40,13 @@ namespace MyDoctor
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<CutomPropertiy, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddTransient<IEmailSender, EmailSender>();
-            
-             services.ConfigureApplicationCookie(o => o.LoginPath = "/identity/Account/Login");
+            //Inject Claim Factory
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, DoctorClaimsPrincipalFactory>();
+            services.ConfigureApplicationCookie(o => o.LoginPath = "/identity/Account/Login");
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
@@ -63,7 +64,7 @@ namespace MyDoctor
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public  void Configure(IApplicationBuilder app, IHostingEnvironment env,UserManager<CutomPropertiy> userManager,RoleManager<IdentityRole>roleManager)
+        public  void Configure(IApplicationBuilder app, IHostingEnvironment env,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole>roleManager)
         {
              SeedData.AddRoles(roleManager);
              SeedData.AddUsers(userManager);
