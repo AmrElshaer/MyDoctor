@@ -6,13 +6,12 @@ using MyDoctor.Models;
 
 namespace MyDoctor.ViewModels
 {
-    public class DashBoardViewModel
+    public class DashBoardViewModel:IBaseViewModel
     {
         public IEnumerable<BeatyandHealthy> Categories { get; set; }
         public IEnumerable<Doctor> Doctors { get; set; }
         public IEnumerable<Medicin> Medicins { get; set; }
         public IEnumerable<Disease> Diseases { get; set; }
         public IEnumerable<RelativeofBeatyandhealthy> RelativeCategories { get; set; }
-
     }
 }

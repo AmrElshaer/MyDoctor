@@ -10,21 +10,21 @@
                     <div class="col-md-6 col-lg-3">
                         <div class="card">
                             <div class="card-header bg-white">
-                                
+
                                 <h6 class="card-subtitle mb-2 text-muted">@category.Category</h6>
                             </div>
                             <img class="img-fluid" src="@category.Image" alt="">
-                            
+
                             <div class="card-footer">
                                 <p class="card-text d-inline">
-                                    <img style="max-width:17px" src="Content/img/clock.svg" /><small class="ml-2 text-muted">@category.CreateDate.Value.ToShortDateString()</small>
+                                    <img style="max-width: 17px" src="/Content/img/clock.svg"/><small class="ml-2 text-muted">@category.CreateDate.Value.ToShortDateString()</small>
                                 </p><a asp-controller="BeatyandHealthies" asp-action="Details" asp-route-id="@category.Id" class="card-link float-right"><small>See</small></a>
                             </div>
                         </div>
                     </div>
                 }
+               
 
-             
             </div>
         </div>
     </div>

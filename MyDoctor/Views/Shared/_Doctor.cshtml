@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-12 m-b-30">
 
-        <h4 class="d-inline"><img style="max-width:17px" src="Content/img/doctor.svg" /><span class="ml-2">Doctors</span></h4>
+        <h4 class="d-inline"><img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="ml-2">Doctors</span></h4>
         <p class="text-muted"></p>
         <div class="row">
             @foreach (var doctor in Model)
@@ -20,8 +20,8 @@
                             <h6 class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]">@doctor.Category.Category</h6>
                             <p class="card-text">@doctor.Others</p>
                             <p class="card-text">
-                                <span><img style="max-width: 17px" src="Content/img/germany.svg" /><small class="ml-2 text-muted">@doctor.Country</small></span>
-                                <span><img style="max-width: 17px" src="Content/img/home.svg" /><small class="ml-2 text-muted">@doctor.City</small></span>
+                                <span><img style="max-width: 17px" src="/Content/img/germany.svg" /><small class="ml-2 text-muted">@doctor.Country</small></span>
+                                <span><img style="max-width: 17px" src="/Content/img/home.svg" /><small class="ml-2 text-muted">@doctor.City</small></span>
 
 
                             </p><a asp-controller="Doctors" asp-route-id="@doctor.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>

@@ -10,6 +10,7 @@ namespace MyDoctor.IRepository
 {
     public interface ICategoryRepository:IRepository<BeatyandHealthy>
     {
+        Task<BeatyandHealthy> GetCategoryWithRelated(int id);
         /// <summary>
         /// Search With Paging 
         /// </summary>

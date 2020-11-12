@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
+@using MyDoctor.IRepository
 @using MyDoctor.ViewModels
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject ICategoryRepository CategoryRepository
 @{
     var imagePath = User.FindFirstValue(Claims.ImagePath.ToString());
 }
@@ -16,12 +18,6 @@
     <title>MYDoctor</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/Content/img/favicon.ico">
-    <!-- Pignose Calender -->
-    @*<link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">*@
-    <!-- Chartist -->
-    @*<link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
-        <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">*@
-    <!-- Custom Stylesheet -->
     <link href="/Content/css/style.css" rel="stylesheet">
 
 </head>
@@ -48,10 +44,10 @@
             <div class="brand-logo">
                 <a asp-action="Index" asp-controller="DashBoard">
 
-                    <b class="logo-abbr"><img src="Content/img/HomeLogo.svg" style="max-width: 20px" /></b>
+                    <b class="logo-abbr"><img src="/Content/img/HomeLogo.svg" style="max-width: 20px" /></b>
                     <span class="logo-compact">Second</span>
                     <span class="brand-title">
-                       <img src="Content/img/HomeLogo.svg" style="max-width: 47px"/>
+                       <img src="/Content/img/HomeLogo.svg" style="max-width: 47px"/>
                     </span>
                 </a>
             </div>
@@ -101,7 +97,7 @@
                                     <ul>
                                         <li class="notification-unread">
                                             <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/1.jpg" alt="">
+                                                <img class="float-left mr-3 avatar-img" src="/images/avatar/1.jpg" alt="">
                                                 <div class="notification-content">
                                                     <div class="notification-heading">Saiful Islam</div>
                                                     <div class="notification-timestamp">08 Hours ago</div>
@@ -111,7 +107,7 @@
                                         </li>
                                         <li class="notification-unread">
                                             <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/2.jpg" alt="">
+                                                <img class="float-left mr-3 avatar-img" src="/images/avatar/2.jpg" alt="">
                                                 <div class="notification-content">
                                                     <div class="notification-heading">Adam Smith</div>
                                                     <div class="notification-timestamp">08 Hours ago</div>
@@ -121,7 +117,7 @@
                                         </li>
                                         <li>
                                             <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/3.jpg" alt="">
+                                                <img class="float-left mr-3 avatar-img" src="/images/avatar/3.jpg" alt="">
                                                 <div class="notification-content">
                                                     <div class="notification-heading">Barak Obama</div>
                                                     <div class="notification-timestamp">08 Hours ago</div>
@@ -131,7 +127,7 @@
                                         </li>
                                         <li>
                                             <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/4.jpg" alt="">
+                                                <img class="float-left mr-3 avatar-img" src="/images/avatar/4.jpg" alt="">
                                                 <div class="notification-content">
                                                     <div class="notification-heading">Hilari Clinton</div>
                                                     <div class="notification-timestamp">08 Hours ago</div>
@@ -215,7 +211,7 @@
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative" data-toggle="dropdown">
                                 <span class="activity active"></span>
-                                <img src="images/@imagePath" height="40" width="40" alt="">
+                                <img src="/images/@imagePath" height="40" width="40" alt="">
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
@@ -257,8 +253,18 @@
             <div class="nk-nav-scroll">
                 <ul class="metismenu" id="menu">
 
-
-
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-grid menu-icon"></i><span class="nav-text">Departments</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            @foreach (var beatyandHealthy in await CategoryRepository.GetAllAsync())
+                            {
+                              <li><a asp-controller="BeatyandHealthies" asp-action="Details" asp-route-id="@beatyandHealthy.Id">@beatyandHealthy.Category</a></li>
+                            }
+                            
+                        </ul>
+                    </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-envelope menu-icon"></i> <span class="nav-text">Message</span>
@@ -270,21 +276,9 @@
                         </ul>
                     </li>
 
-
-
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-grid menu-icon"></i><span class="nav-text">Departments</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="./ui-accordion.html">Accordion</a></li>
-                        </ul>
-                    </li>
-
-
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <img style="max-width:17px" src="Content/img/doctor.svg" /><span class="nav-text ml-2">Doctors</span>
+                            <img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="nav-text ml-2">Doctors</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="./page-login.html">Login</a></li>
@@ -305,7 +299,7 @@
 
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <img style="max-width:17px" src="Content/img/medicine.svg" /><span class="nav-text ml-2">Medicin</span>
+                            <img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="nav-text ml-2">Medicin</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="./page-login.html">Login</a></li>
@@ -326,7 +320,7 @@
 
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <img style="max-width:17px" src="Content/img/heartbeat.svg" /><span class="nav-text ml-2">Disease</span>
+                            <img style="max-width:17px" src="/Content/img/heartbeat.svg" /><span class="nav-text ml-2">Disease</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="./page-login.html">Login</a></li>

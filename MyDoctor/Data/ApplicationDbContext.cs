@@ -48,7 +48,7 @@ namespace MyDoctor.Data
             var converter = new ValueConverter<Kind, string>(
                 v => v.ToString(),
                 v => (Kind)Enum.Parse(typeof(Kind), v));
-
+            builder.Entity<Doctor>().HasOne(d => d.Category).WithMany(c => c.Doctors);
             builder
                 .Entity<Doctor>()
                 .Property(e => e.Kind)

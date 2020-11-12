@@ -19,5 +19,6 @@ namespace MyDoctor.Models
         public ICollection<RelativeofBeatyandhealthy> RelativeofBeatyandhealthies { get; set; }
         public ICollection<Medicin> Medicins { get; set; }
         public ICollection<Disease> Diseases { get; set; }
+        public  ICollection<Doctor>Doctors { get; set; }
     }
 }

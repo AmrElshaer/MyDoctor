@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyDoctor.Areas.Admin.Models;
 using MyDoctor.Data;
 using MyDoctor.Infrastructure;
@@ -29,6 +30,13 @@ namespace MyDoctor.Repository
                 CreateTo = createTo
             };
             return searchResult;
+        }
+
+        public async Task<BeatyandHealthy> GetCategoryWithRelated(int id)
+        {
+            var category =await _table.AsNoTracking().Include(c => c.Diseases)
+                .Include(c=>c.Medicins).Include(c=>c.Doctors).Include(c=>c.RelativeofBeatyandhealthies).FirstOrDefaultAsync(c=>c.Id==id);
+            return category;
         }
 
         public IOrderedQueryable<BeatyandHealthy> Search(string query, DateTime? createFrom, DateTime? createTo)
