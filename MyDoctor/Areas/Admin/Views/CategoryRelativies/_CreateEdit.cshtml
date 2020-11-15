@@ -30,7 +30,7 @@
                         
                         <select asp-for="BeatyandHealthId" class="form-control">
 
-                            @foreach (var category in await CategoryRepository.GetAllAsync())
+                            @foreach(var category in CategoryRepository.GetAll())
                             {
 
                                 <option   value="@category.Id" label="@category.Category"></option>

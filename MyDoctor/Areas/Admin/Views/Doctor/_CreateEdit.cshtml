@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="CategoryId" class="col-form-label">Specific</label>
 
-                        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(await CategoryRepository.GetAllAsync(),"Id","Category"))">
+                        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList( CategoryRepository.GetAll(),"Id","Category"))">
                         </select>
 
                     </div>

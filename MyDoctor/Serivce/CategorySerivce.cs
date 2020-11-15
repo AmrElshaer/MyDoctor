@@ -12,25 +12,20 @@ namespace MyDoctor.Serivce
     public class CategorySerivce:ICategorySerivce
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IDoctorRepository _doctorRepository;
-        private readonly IMedicinRepository _medicinRepository;
-        private readonly IDiseasesRepository _diseasesRepository;
-        private readonly ICategoryRelativiesRepository _categoryRelativiesRepository;
-        public CategorySerivce(ICategoryRepository categoryRepository, IDoctorRepository doctorRepository, IMedicinRepository medicinRepository, IDiseasesRepository diseasesRepository, ICategoryRelativiesRepository categoryRelativiesRepository)
+   
+        public CategorySerivce(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
-            _doctorRepository = doctorRepository;
-            _medicinRepository = medicinRepository;
-            _diseasesRepository = diseasesRepository;
-            _categoryRelativiesRepository = categoryRelativiesRepository;
+           
         }
         public async Task<IBaseViewModel> GetCategory(int categoryId)
         {
-            var cateogry = await _categoryRepository.GetCategoryWithRelated(categoryId);
+          
+            var cateogry = await _categoryRepository.GetByIdAsync(categoryId,c => c.Diseases, c => c.Medicins, c => c.Doctors, c => c.RelativeofBeatyandhealthies);
             var result = new BeatyandHealthViewModel()
             {
                 BeatyandHealthy =cateogry,
-                Categories = await  _categoryRepository.GetAllAsync(a=>a.Id!=categoryId),
+                Categories = await  _categoryRepository.GetAll(a=>a.Id!=categoryId).ToListAsync(),
                 Doctors = cateogry.Doctors,
                 Medicins = cateogry.Medicins,
                 Diseases = cateogry.Diseases,

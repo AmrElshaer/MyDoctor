@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyDoctor.ViewModels
+namespace MyDoctor.Data
 {
-    public class Medicngroup
+    public abstract class BaseEntity
     {
-        public string id { get; set; }
-       
+      public   int Id { get; set; }
     }
 }

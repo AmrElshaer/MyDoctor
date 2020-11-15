@@ -104,9 +104,9 @@ namespace MyDoctor.Controllers
         }
 
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null) return NotFound();
+           
             var doctor = await _doctorRepository.GetByIdAsync(id);
             if (doctor == null) return NotFound();
             return View(doctor);
@@ -129,9 +129,9 @@ namespace MyDoctor.Controllers
         }
 
         // GET: Doctors/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null) return NotFound();
+            
             var doctor = await _doctorRepository.GetByIdAsync(id);
             if (doctor == null) return NotFound();
             return View(doctor);

@@ -1,6 +1,10 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -76,7 +80,15 @@ namespace MyDoctor.Repository
 
         public SearchResult<Doctor> GetSearchResult(string query, int pageNumber, int pageSize,int? category)
         {
-            var searchHits = Search(query, category);
+            var searchHits = GetAll(
+                x =>
+                (query == null || x.Name.ToLower().Contains(query.ToLower()))
+                && (category == null || x.CategoryId == category),
+                d => d.OrderByDescending(a => a.Id),
+                new List<Expression<Func<Doctor, object>>>() {
+                   d=>d.Category
+                }
+                );
             var subset = searchHits.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();
             var searchResult = new SearchResult<Doctor>()
@@ -87,17 +99,6 @@ namespace MyDoctor.Repository
             };
             return searchResult;
         }
-        public IOrderedQueryable<Doctor> Search(string query,int? categoryId)
-        {
-            var doctors = _context.Doctor.Include(doc => doc.Category).Where(x =>
-                (query == null || x.Name.ToLower().Contains(query.ToLower()))
-                && (categoryId == null || x.CategoryId == categoryId)
-
-            ).OrderByDescending(category => category.Id);
-            return doctors;
-
-        }
-
         public async Task DeleteDoctorAsync(int id)
         {
             var doctor =await GetByIdAsync(id);

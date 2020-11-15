@@ -258,7 +258,7 @@
                             <i class="icon-grid menu-icon"></i><span class="nav-text">Departments</span>
                         </a>
                         <ul aria-expanded="false">
-                            @foreach (var beatyandHealthy in await CategoryRepository.GetAllAsync())
+                            @foreach (var beatyandHealthy in  CategoryRepository.GetAll())
                             {
                               <li><a asp-controller="BeatyandHealthies" asp-action="Details" asp-route-id="@beatyandHealthy.Id">@beatyandHealthy.Category</a></li>
                             }
@@ -302,9 +302,7 @@
                             <img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="nav-text ml-2">Medicin</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="./page-login.html">Login</a></li>
-                            <li><a href="./page-register.html">Register</a></li>
-                            <li><a href="./page-lock.html">Lock Screen</a></li>
+                           
                             <li>
                                 <a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
                                 <ul aria-expanded="false">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,12 @@ namespace MyDoctor.Areas.Admin.Controllers
 
         public  IActionResult ExportToExcel(string query, DateTime? createFrom, DateTime? createTo)
         {
-            var categories = _categoryRepository.Search(query,createFrom,createTo);
+            var categories = _categoryRepository.GetAll(x =>
+                (query == null || x.Category.ToLower().Contains(query.ToLower()))
+                && (createFrom == null || x.CreateDate >= createFrom)
+                && (createTo == null || x.CreateDate <= createTo)
+                , c => c.OrderByDescending(a => a.Id)
+                );
             using (var workbook=new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Category");

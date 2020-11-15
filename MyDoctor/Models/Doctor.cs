@@ -1,16 +1,17 @@
 ﻿
+using MyDoctor.Data;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace MyDoctor.Models
 {
-    public class Doctor
+    public class Doctor:BaseEntity
     {
         public Doctor()
         {
             Posts=new HashSet<Posts>();
         }
-        public int Id  { get; set; }
+       
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public BeatyandHealthy Category { get; set; }

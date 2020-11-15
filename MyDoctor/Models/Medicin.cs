@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyDoctor.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace MyDoctor.Models
 {
-    public class Medicin
+    public class Medicin:BaseEntity
     {
         public Medicin()
         {
             this.DiseaseMedicins=new HashSet<DiseaseMedicin>();
         }
-        public int Id { get; set; }
-        
+       
         public string Name { get; set; }
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }

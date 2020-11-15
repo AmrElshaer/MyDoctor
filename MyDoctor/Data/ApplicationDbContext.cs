@@ -64,12 +64,10 @@ namespace MyDoctor.Data
         public DbSet<MyDoctor.Models.Disease> Disease { get; set; }
         public DbSet<MyDoctor.Models.Comments> Comments { get; set; }
         public DbSet<MyDoctor.Models.LikeandDislikeclass> LikeandDislikeclass { get; set; }
-        public DbSet<MyDoctor.Models.RelativeDisease> RelativeDisease { get; set; }
         public DbSet<MyDoctor.Models.BeatyandHealthy> BeatyandHealthy { get; set; }
         public DbSet<MyDoctor.Models.RelativeofBeatyandhealthy> RelativeofBeatyandhealthy { get; set; }
         public DbSet<MyDoctor.Models.Doctor> Doctor { get; set; }
         public DbSet<MyDoctor.Models.Posts> Posts { get; set; }
-        public DbSet<MyDoctor.Models.Commentfordoctorpost> Commentfordoctorpost { get; set; }
         public DbSet<MyDoctor.Models.Medicin> Medicin { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyDoctor.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyDoctor.Models
 {
-    public class RelativeofBeatyandhealthy
+    public class RelativeofBeatyandhealthy:BaseEntity
     {
-        public int Id { get; set; }
+       
 
         [DataType(dataType: DataType.Url)]
         public string ImageOrVideo { get; set; }

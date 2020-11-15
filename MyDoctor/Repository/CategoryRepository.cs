@@ -19,7 +19,12 @@ namespace MyDoctor.Repository
 
         public SearchResult<BeatyandHealthy> GetSearchResult(string query, int page, int pageSize,DateTime? createFrom,DateTime? createTo)
         {
-            var searchHits =Search(query,createFrom,createTo);
+            var searchHits = GetAll(x =>
+                (query == null || x.Category.ToLower().Contains(query.ToLower()))
+                && (createFrom == null || x.CreateDate >= createFrom)
+                && (createTo == null || x.CreateDate <= createTo)
+                , c => c.OrderByDescending(a => a.Id)
+                );
             var subset = searchHits.Skip((page - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();
             var searchResult = new SearchResult<BeatyandHealthy>()
@@ -31,25 +36,6 @@ namespace MyDoctor.Repository
             };
             return searchResult;
         }
-
-        public async Task<BeatyandHealthy> GetCategoryWithRelated(int id)
-        {
-            var category =await _table.AsNoTracking().Include(c => c.Diseases)
-                .Include(c=>c.Medicins).Include(c=>c.Doctors).Include(c=>c.RelativeofBeatyandhealthies).FirstOrDefaultAsync(c=>c.Id==id);
-            return category;
-        }
-
-        public IOrderedQueryable<BeatyandHealthy> Search(string query, DateTime? createFrom, DateTime? createTo)
-        {
-            var categories= _context.BeatyandHealthy.Where(x =>
-                (query == null || x.Category.ToLower().Contains(query.ToLower()))
-                && (createFrom == null || x.CreateDate >= createFrom)
-                && (createTo == null || x.CreateDate <= createTo)
-            ).OrderByDescending(category => category.Id);
-            return categories;
-
-        }
-
         public async Task CreateEdit(BeatyandHealthy category)
         {
             if (category.Id != 0)

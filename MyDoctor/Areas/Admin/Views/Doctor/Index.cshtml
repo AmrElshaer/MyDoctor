@@ -2,104 +2,154 @@
 @using MyDoctor.Areas.Admin.Models
 @using MyDoctor.IRepository
 @using MyDoctor.Models
+@using PagedList.Core.Mvc
 @model MyDoctor.Areas.Admin.Models.SearchResult<MyDoctor.Models.Doctor>
 @inject ICategoryRepository CategoryRepository
+@await Html.PartialAsync("_Message");
+<!--**********************************
+          Content body start
+      ***********************************-->
+<div class="content-body">
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h2>Index</h2>
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
-<form class="needs-validation" novalidate>
-
-
-
-
-    <div class="form-row">
-        <div class="col-md-4 mb-3">
-
-            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <select name="BeatyandHealthId" class="form-control" asp-items="@(new SelectList(await CategoryRepository.GetAllAsync(),"Id","Category"))">
-               
-                <option disabled selected> -- select an option -- </option>
-            </select>   
-                
-
-
-
-        </div>
-        <div class="col-md-4 mb-3">
-            <button class="btn btn-primary" type="submit">Search</button>
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Control Panel</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Doctors</a></li>
+            </ol>
         </div>
     </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="outline-button">
+
+                            <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#exampleModal"><img src="~/Content/img/plus.svg" style="max-width:25px" /></button>
 
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
 
-</form>
+                        <div class="basic-form">
+                            <form>
+                                <div class="form-row">
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="createFrom">From</label>
+                                        <input type="date" class="form-control" id="createFrom" name="createFrom">
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="createTo">To</label>
+                                        <input type="date" class="form-control" id="createTo" name="createTo">
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="BeatyandHealthId">Category</label>
+                                        <select name="BeatyandHealthId" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll(),"Id","Category"))">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Image
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Specific
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Telephone
-            </th>
-            <th>
-                Password
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ItemsList)
-        {
-            <tr>
-                <td>
-                    <img src="/images/@item.ImagePath" class="img img-thumbnail" style="max-width: 150px;max-height: 150px" />
-                </td>
-                <td>
-                    @item.Name
-                </td>
-               
-                <td>
-                    @item.Category.Category 
-                    </td>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    @item.Telephone
-                </td>
-                <td>
-                    <button class="btn btn-primary" onclick="editCategory(@item.ToJson())">Edit</button>
-                    <form asp-action="Delete" id="delete" style="display: inline-block">
-                        <input name="id" value="@item.Id" style="display: none" />
-                        <button class="btn btn-danger" type="submit">Delete</button>
-                    </form>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                            <option disabled selected> -- select an option -- </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="createTo">Name</label>
+                                        <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+                                    </div>
+                                    <div class="col-lg-12 col-md-6 text-center">
+
+                                        <button class="btn btn-dark mt-2" type="submit"><i style="font-size:20px" class="mdi mdi-magnify"></i></button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="active-member">
+                            <div class="table-responsive">
+                                <table class="table table-xs mb-0">
+                                    <thead>
+                                        <tr>
+
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Specific
+                                            </th>
+                                            <th>
+                                                Email
+                                            </th>
+                                            <th>
+                                                Telephone
+                                            </th>
+                                            <th>
+                                                Password
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ItemsList)
+                                        {
+                                            <tr>
+                                                <td><img src="/images/@item.ImagePath" class=" rounded-circle mr-3" alt="">@item.Name</td>
+
+                                                <td>
+                                                    @item.Category.Category
+                                                </td>
+                                                <td>
+                                                    @item.Email
+                                                </td>
+                                                <td>
+                                                    @item.Telephone
+                                                </td>
+                                                <td>
+
+                                                    <button class="btn btn-outline-light" onclick="editCategory(@item.ToJson())"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
+                                                        <input name="id" value="@item.Id" style="display: none" />
+                                                        <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
+                                                    </form>
+
+                                                </td>
+
+                                            </tr>
+
+
+                                        }
+
+                                    </tbody>
+                                </table>
+                                <p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" /></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
 <section>
     @await Html.PartialAsync("_CreateEdit", new Doctor())
 </section>
@@ -109,7 +159,7 @@
 
 
         function editCategory(doctor) {
-           
+
             $('#Id').val(doctor.Id);
             $('#ImagePath').val(doctor.ImagePath);
             $('#Email').val(doctor.Email);

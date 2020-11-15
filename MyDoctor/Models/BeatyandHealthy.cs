@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MyDoctor.Data;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 namespace MyDoctor.Models
 {
-    public class BeatyandHealthy
+    public class BeatyandHealthy:BaseEntity
     {
         public BeatyandHealthy()
         {
@@ -11,7 +13,7 @@ namespace MyDoctor.Models
             Medicins= new HashSet<Medicin>();
 
         }
-        public int Id { get; set; }
+        
         public string Category { get; set; }
         public string  Image { get; set; }
         public DateTime? CreateDate { get; set; }
@@ -19,6 +21,7 @@ namespace MyDoctor.Models
         public ICollection<RelativeofBeatyandhealthy> RelativeofBeatyandhealthies { get; set; }
         public ICollection<Medicin> Medicins { get; set; }
         public ICollection<Disease> Diseases { get; set; }
+        [JsonIgnore]
         public  ICollection<Doctor>Doctors { get; set; }
     }
 }

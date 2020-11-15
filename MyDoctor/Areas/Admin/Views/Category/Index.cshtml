@@ -4,106 +4,153 @@
 @model MyDoctor.Areas.Admin.Models.SearchResult<BeatyandHealthy>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Departments";
 
     await Html.RenderPartialAsync("_Message");
 }
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create</button>
-<form class="needs-validation" novalidate>
+<!--**********************************
+          Content body start
+      ***********************************-->
+<div class="content-body">
 
-    <fieldset class="form-row">
-        <legend>Create Date</legend>
-        <div class="col-md-6 mb-3">
-            <label for="createFrom">From</label>
-            <input type="date" class="form-control" id="createFrom" name="createFrom">
-
-        </div>
-        <div class="col-md-6 mb-3">
-            <label for="createTo">To</label>
-            <input type="date" class="form-control" id="createTo" name="createTo">
-        </div>
-    </fieldset>
-
-
-
-    <div class="form-row">
-        <div class="col-md-6 mb-3">
-
-            <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="col-md-6 mb-3">
-            <button class="btn btn-primary" type="submit">Search</button>
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Control Panel</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Departments</a></li>
+            </ol>
         </div>
     </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <div class="outline-button">
+
+                            <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#exampleModal"><img src="~/Content/img/plus.svg"  style="max-width:25px"/></button>
+                            
+                            <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToExcel" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" target="_blank"><img src="~/Content/img/excel.png" style="max-width:25px" /></a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <div class="basic-form">
+                            <form>
+                                <div class="form-row">
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="createFrom">From</label>
+                                        <input type="date" class="form-control" id="createFrom" name="createFrom">
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="createTo">To</label>
+                                        <input type="date" class="form-control" id="createTo" name="createTo">
+                                    </div>
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="createTo">Category</label>
+                                        <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+                                    </div>
+                                    <div class="col-lg-12 col-md-6 text-center">
+
+                                        <button class="btn btn-dark mt-2" type="submit"><i style="font-size:20px" class="mdi mdi-magnify"></i></button>
+                                        
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="active-member">
+                            <div class="table-responsive">
+                                <table class="table table-xs mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Category
+                                            </th>
+                                            <th>
+                                                CreateDate
+                                            </th>
+                                            <th>
+                                                ModifiyDate
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ItemsList)
+                                        {
+                                            <tr>
+                                                <td><img src="@item.Image" class=" rounded-circle mr-3" alt="">@item.Category</td>
+
+                                                <td>
+                                                    <span>
+                                                        @if (item.CreateDate.HasValue)
+                                                        {
+                                                            @item.CreateDate.Value.ToShortDateString()
+                                                        }
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span>
+                                                        @if (item.CreateDate.HasValue)
+                                                        {
+                                                            @item.CreateDate.Value.ToShortDateString()
+                                                        }
+                                                    </span>
+                                                </td>
+                                                <td>
+
+                                                    <button class="btn btn-outline-light" onclick="editCategory({Id:@item.Id,Image:'@item.Image',Catagory:'@item.Category',CreateDate:'@item.CreateDate'})"><img src="~/Content/img/edit.png" style="max-width:20px"/></button>
+                                                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
+                                                        <input name="id" value="@item.Id" style="display: none" />
+                                                        <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px"/></button>
+                                                    </form>
+                                                   
+                                                </td>
+
+                                            </tr>
 
 
+                                        }
 
-</form>
-<a class="btn btn-facebook" asp-action="ExportToExcel" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" target="_blank">ExportToExcel</a>
-<table class="table" id="Category">
-    <thead>
-        <tr>
-            <th>
-                Image
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-                CreateDate
-            </th>
-            <th>
-                ModifiyDate
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.ItemsList)
-        {
-            <tr>
+                                    </tbody>
+                                </table>
+                                <p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" /></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
 
-                <td>
-
-                    <img src="@item.Image" class="img img-thumbnail" style="max-width: 150px;max-height: 150px" />
-                </td>
-                <td>
-                    <h3>@item.Category</h3>
-
-                </td>
-                <td>
-                    @if (item.CreateDate.HasValue)
-                    {
-                        @item.CreateDate.Value.ToShortDateString()
-                    }
-
-                </td>
-                <td>
-                    @if (item.ModifiedDate.HasValue)
-                    {
-                        @item.ModifiedDate.Value.ToShortDateString()
-                    }
-                </td>
-                <td>
-
-                    <button class="btn btn-primary" onclick="editCategory({Id:@item.Id,Image:'@item.Image',Catagory:'@item.Category',CreateDate:'@item.CreateDate'})">Edit</button>
-                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
-                        <input name="id" value="@item.Id" style="display: none" />
-                        <button class="btn btn-danger" type="submit">Delete</button>
-                    </form>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 <section>
-    @await Html.PartialAsync("_CreateEdit",new BeatyandHealthy())
+    @await Html.PartialAsync("_CreateEdit", new BeatyandHealthy())
 </section>
-<p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" /></p>
+
 @section Scripts
 {
     <script>
@@ -116,10 +163,10 @@
             $('#CreateDate').val(category.CreateDate);
             $('#exampleModal').modal('show');
         }
-       
-     
 
-       
+
+
+
     </script>
     <script src="/js/NotifiyDelete.js"></script>
     <script src="/js/ClearModal.js"></script>

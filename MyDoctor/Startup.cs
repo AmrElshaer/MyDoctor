@@ -52,17 +52,14 @@ namespace MyDoctor
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             //Dependency Serivce
             services.AddTransient<IDashBoardSerivce, DashBoardSerivce>();
             services.AddTransient<ICategorySerivce,CategorySerivce>();
             //Dependency Repository
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IDiseasesRepository, DiseasesRepository>();
-            services.AddScoped<ICommentRepository,CommentRepository>();
-            services.AddScoped<IDiseaseRelativeRepository,DiseaseRelativeRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ICommentForDoctorPostRepository,CommentForDoctorPostRepository>();
             services.AddScoped<ICategoryRelativiesRepository, CategoryRelativiesRepository>();
             services.AddScoped<IMedicinRepository,MedicinRepository>();
 

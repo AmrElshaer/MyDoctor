@@ -16,6 +16,6 @@ namespace MyDoctor.IRepository
         Task DeleteDoctorAsync(int id);
         Task CreateEdit(Doctor doctor, IFormFile image);
         SearchResult<Doctor> GetSearchResult(string query, int pageNumber, int pageSize, int? category);
-        IOrderedQueryable<Doctor> Search(string query=null, int? categoryId=null);
+        
     }
 }

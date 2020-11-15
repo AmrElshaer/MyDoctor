@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyDoctor.IRepository;
 using MyDoctor.Models;
 
@@ -29,8 +33,17 @@ namespace MyDoctor.Areas.Admin.Controllers
         public IActionResult ExportToExcel(string query, int? page, DateTime? createFrom, DateTime? createTo,
             int? beatyandHealthId)
         {
-            var relativescategories =
-                _categoryRelativiesRepository.Search(query, createFrom, createTo, beatyandHealthId);
+            var relativescategories = _categoryRelativiesRepository.GetAll(
+                x =>
+                (query == null || x.Address.ToLower().Contains(query.ToLower()))
+                && (createFrom == null || x.CreateDate >= createFrom)
+                && (createTo == null || x.CreateDate <= createTo)
+                && (beatyandHealthId == null || x.BeatyandHealthy.Id == beatyandHealthId.Value),
+                rc => rc.OrderByDescending(a => a.Id),
+                new List<Expression<Func<RelativeofBeatyandhealthy, object>>>() {
+                rc=>rc.BeatyandHealthy
+                }
+                );
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("RelativeCategory");

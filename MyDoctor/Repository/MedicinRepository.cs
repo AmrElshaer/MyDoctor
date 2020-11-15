@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Microsoft.EntityFrameworkCore;
 using MyDoctor.Areas.Admin.Models;
 using MyDoctor.Data;
@@ -19,7 +22,15 @@ namespace MyDoctor.Repository
 
         public SearchResult<Medicin> GetSearchResult(string query, int page, int pageSize, DateTime? createFrom, DateTime? createTo)
         {
-            var searchHits = Search(query, createFrom, createTo);
+            var searchHits = GetAll(x =>
+               (query == null || x.Name.ToLower().Contains(query.ToLower()))
+               && (createFrom == null || x.CreateDate >= createFrom)
+               && (createTo == null || x.CreateDate <= createTo)
+                , m => m.OrderByDescending(a => a.Id),
+                new List<Expression<Func<Medicin, object>>>() {
+                m=>m.BeatyandHealthy,
+                m=>m.DiseaseMedicins
+                });
             var subset = searchHits.Skip((page - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();
             var searchResult = new SearchResult<Medicin>()
@@ -80,14 +91,6 @@ namespace MyDoctor.Repository
            
         }
 
-        public IOrderedQueryable<Medicin> Search(string query, DateTime? createFrom, DateTime? createTo)
-        {
-            var medicins = _context.Medicin.Include(m=>m.BeatyandHealthy).Include(m=>m.DiseaseMedicins).Where(x =>
-                (query == null || x.Name.ToLower().Contains(query.ToLower()))
-                && (createFrom == null || x.CreateDate >= createFrom)
-                && (createTo == null || x.CreateDate <= createTo)
-            ).OrderByDescending(category => category.Id);
-            return medicins;
-        }
+        
     }
 }
