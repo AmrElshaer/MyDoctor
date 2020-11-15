@@ -260,7 +260,7 @@
                         <ul aria-expanded="false">
                             @foreach (var beatyandHealthy in  CategoryRepository.GetAll())
                             {
-                              <li><a asp-controller="BeatyandHealthies" asp-action="Details" asp-route-id="@beatyandHealthy.Id">@beatyandHealthy.Category</a></li>
+                              <li><a asp-controller="BeatyandHealthies"  asp-action="Details"  asp-route-id="@beatyandHealthy.Id">@beatyandHealthy.Category</a></li>
                             }
                             
                         </ul>
@@ -277,7 +277,7 @@
                     </li>
 
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <a asp-controller="Doctors" asp-action="Index" asp-area="" aria-expanded="false">
                             <img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="nav-text ml-2">Doctors</span>
                         </a>
                         <ul aria-expanded="false">

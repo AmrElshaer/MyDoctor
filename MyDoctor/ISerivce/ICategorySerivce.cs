@@ -8,6 +8,6 @@ namespace MyDoctor.ISerivce
 {
     public interface ICategorySerivce
     {
-        Task<IBaseViewModel> GetCategory(int categoryId);
+        Task<IBaseViewModel> GetCategory(int categoryId, int numberRelated);
     }
 }

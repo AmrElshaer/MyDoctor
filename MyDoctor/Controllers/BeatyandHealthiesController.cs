@@ -20,7 +20,7 @@ namespace MyDoctor.Controllers
         public async Task<IActionResult> Details(int id)
         {
             
-            var beatyandHealthy = await _categorySerivce.GetCategory(id);
+            var beatyandHealthy = await _categorySerivce.GetCategory(id,4);
             if (beatyandHealthy == null) return NotFound();
             return View(beatyandHealthy);
         }

@@ -258,15 +258,15 @@
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                         </a>
-                        <ul style="height: 0px;">
+                        <ul aria-expanded="false">
                             <li><a asp-controller="DashBoard" asp-action="Index" asp-area="Admin">Home</a></li>
 
                         </ul>
                     </li>
-                 
+
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                           <img style="max-width:20px" src="~/Content/img/equalizer (1).png"/><span class="nav-text ml-2">Control Panel</span>
+                            <img style="max-width:20px" src="~/Content/img/equalizer (1).png" /><span class="nav-text ml-2">Control Panel</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">Departments</a></li>
@@ -284,7 +284,7 @@
                         <ul aria-expanded="false">
                             @foreach (var beatyandHealthy in CategoryRepository.GetAll())
                             {
-                                <li><a asp-controller="BeatyandHealthies" asp-action="Details" asp-route-id="@beatyandHealthy.Id">@beatyandHealthy.Category</a></li>
+                                <li><a asp-controller="BeatyandHealthies" asp-area="" asp-action="Details" asp-route-id="@beatyandHealthy.Id">@beatyandHealthy.Category</a></li>
                             }
 
                         </ul>
