@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using MyDoctor.Areas.Admin.Models;
 using MyDoctor.Data;
 using MyDoctor.Infrastructure;
@@ -42,7 +41,7 @@ namespace MyDoctor.Repository
             {
                 
                     category.ModifiedDate=DateTime.Now.Date;
-                    await Update(category);
+                    await UpdateAsync(category);
                
             }
             else
@@ -56,5 +55,6 @@ namespace MyDoctor.Repository
             
 
         }
+       
     }
 }

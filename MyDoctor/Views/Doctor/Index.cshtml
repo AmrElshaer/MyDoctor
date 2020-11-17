@@ -1,7 +1,134 @@
-﻿
+﻿@using MyDoctor.IRepository
+@model MyDoctor.ViewModels.DoctorViewModel;
+@inject MyDoctor.IRepository.ICategoryRepository CategoryRepository
+@inject ICountryRepository CountryRepository
+@inject ICityRepository CityRepository
 @{
-    ViewData["Title"] = "Index";
+    var category = CategoryRepository.GetAll().ToList();
 }
+@{
 
-<h2>Index</h2>
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
+}
+<!--**********************************
+         Content body start
+     ***********************************-->
+<div class="content-body">
 
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Doctors</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Doctors</h4>
+                        <p class="text-muted">
+                            <code></code>
+                        </p>
+                        <form id="accordion-one" class="accordion">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa" aria-hidden="true"></i>Department</h5>
+                                </div>
+                                <div id="collapseOne" class="collapse" data-parent="#accordion-one">
+                                    <div class="card-body">
+                                        @foreach (var item in category)
+                                        {
+                                            <div class="form-check mt-2">
+                                                <input type="checkbox" class="form-check-input" @(Model.DoctorSearch.Categories.Contains(item.Id) ? "checked" : "") name="Categories" value="@item.Id">
+                                                <label class="form-check-label" for="exampleCheck1">@item.Category</label>
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa" aria-hidden="true"></i>Country</h5>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion-one">
+                                    <div class="card-body">
+                                        @foreach (var item in CountryRepository.GetAll().ToList())
+                                        {
+
+                                            <div class="form-check mt-2">
+                                                <input @(Model.DoctorSearch.Countries.Contains(item.Name) ? "checked" : "") type="checkbox" class="form-check-input" name="Countries" value="@item.Name">
+                                                <label class="form-check-label" for="exampleCheck1">@item.Name</label>
+                                            </div>
+                                        }
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa" aria-hidden="true"></i>City</h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion-one">
+                                    <div class="card-body">
+                                        @foreach (var item in CityRepository.GetAll().ToList())
+                                        {
+
+                                            <div class="form-check mt-2">
+                                                <input @(Model.DoctorSearch.Cities.Contains(item.Name) ? "checked" : "") type="checkbox" class="form-check-input" name="Cities" value="@item.Name">
+                                                <label class="form-check-label" for="exampleCheck1">@item.Name</label>
+                                            </div>
+                                        }
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="form-group">
+                                    <input type="text" name="Name" value="@Model.DoctorSearch.Name" class="form-control" placeholder="Name" />
+                                </div>
+                            </div>
+                            <div class="card">
+                                <button class="btn btn-dark">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @foreach (var doctor in Model.Doctors)
+            {
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img class="img-fluid" src="/images/@(doctor.ImagePath)" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@doctor.Name</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]">@doctor.Category.Category</h6>
+                            <p class="card-text">@doctor.Others</p>
+                            <p class="card-text">
+                                <span><img style="max-width: 17px" src="/Content/img/germany.svg" /><small class="ml-2 text-muted">@doctor.Country</small></span>
+                                <span><img style="max-width: 17px" src="/Content/img/home.svg" /><small class="ml-2 text-muted">@doctor.City</small></span>
+
+
+                            </p><a asp-controller="Doctor" asp-route-id="@doctor.Id" asp-action="Profile" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+</div>
+<!-- #/ container -->
+</div>
+<!--**********************************
+    Content body end
+***********************************-->

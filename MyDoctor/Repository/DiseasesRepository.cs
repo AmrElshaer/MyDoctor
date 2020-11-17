@@ -26,7 +26,7 @@ namespace MyDoctor.Repository
             if (disease.Id > 0)
             {
                 disease.ModifiedDate = DateTime.Now;
-                await Update(disease);
+                await UpdateAsync(disease);
             }
             else
             {
@@ -43,9 +43,9 @@ namespace MyDoctor.Repository
                 && (createFrom == null || x.CreateDate >= createFrom)
                 && (createTo == null || x.CreateDate <= createTo)
                 , d => d.OrderByDescending(a => a.Id)
-                , new List<Expression<Func<Disease, object>>>() {
+                , 
                     d=>d.BeatyandHealthy
-                }
+                
                 );
             var subset = searchHits.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();

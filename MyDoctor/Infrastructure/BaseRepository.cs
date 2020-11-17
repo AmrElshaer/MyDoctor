@@ -29,7 +29,7 @@ namespace MyDoctor.Infrastructure
             await _context.SaveChangesAsync();
         }
 
-        public  IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null,IList<Expression<Func<T, object>>> includes=null)
+        public  IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null,params Expression<Func<T, object>>[] includes)
         {
             var result = _table.AsNoTracking();
             if (includes != null)
@@ -40,6 +40,17 @@ namespace MyDoctor.Infrastructure
                 result = orderBy(result);
             
             return  result;
+        }
+
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        {
+            var result = _table.AsNoTracking();
+            if (expression != null)
+                result = result.Where(expression);
+            if (orderBy != null)
+                result = orderBy(result);
+
+            return result;
         }
 
         public async Task<T> GetByIdAsync(int id)
@@ -74,7 +85,7 @@ namespace MyDoctor.Infrastructure
 
 
 
-        public async Task Update(T obj)
+        public async Task UpdateAsync(T obj)
         {
             try { _table.Attach(obj);
                 _context.Entry(obj).State = EntityState.Modified;

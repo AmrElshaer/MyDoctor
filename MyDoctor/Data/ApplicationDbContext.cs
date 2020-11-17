@@ -22,10 +22,10 @@ namespace MyDoctor.Data
       
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-            // Add Relation For Doctor and posts
-            builder.Entity<Posts>().HasOne<Doctor>(s => s.Doctor).WithMany(g => g.Posts).HasForeignKey(s => s.DoctorId);
-            // Add Relation For Category and RelativeCategory
+            #region Country
+            builder.Entity<City>().HasOne(c=>c.Country).WithMany(country=>country.Cities).HasForeignKey(c=>c.CountryId);
+            #endregion
+           
             builder.Entity<RelativeofBeatyandhealthy>()
                 .HasOne<BeatyandHealthy>(relativeBeaty => relativeBeaty.BeatyandHealthy)
                 .WithMany(category => category.RelativeofBeatyandhealthies)
@@ -61,13 +61,15 @@ namespace MyDoctor.Data
 
 
 
-        public DbSet<MyDoctor.Models.Disease> Disease { get; set; }
-        public DbSet<MyDoctor.Models.Comments> Comments { get; set; }
-        public DbSet<MyDoctor.Models.LikeandDislikeclass> LikeandDislikeclass { get; set; }
-        public DbSet<MyDoctor.Models.BeatyandHealthy> BeatyandHealthy { get; set; }
-        public DbSet<MyDoctor.Models.RelativeofBeatyandhealthy> RelativeofBeatyandhealthy { get; set; }
-        public DbSet<MyDoctor.Models.Doctor> Doctor { get; set; }
-        public DbSet<MyDoctor.Models.Posts> Posts { get; set; }
-        public DbSet<MyDoctor.Models.Medicin> Medicin { get; set; }
+        public DbSet<Disease> Disease { get; set; }
+        public DbSet<Comments> Comments { get; set; }
+        public DbSet<LikeandDislikeclass> LikeandDislikeclass { get; set; }
+        public DbSet<BeatyandHealthy> BeatyandHealthy { get; set; }
+        public DbSet<RelativeofBeatyandhealthy> RelativeofBeatyandhealthy { get; set; }
+        public DbSet<Doctor> Doctor { get; set; }
+        public DbSet<Posts> Posts { get; set; }
+        public DbSet<Medicin> Medicin { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<MyDoctor.Models.City> Cities { get; set; }
     }
 }

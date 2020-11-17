@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyDoctor.IRepository;
 using MyDoctor.Models;
 
@@ -40,9 +37,8 @@ namespace MyDoctor.Areas.Admin.Controllers
                 && (createTo == null || x.CreateDate <= createTo)
                 && (beatyandHealthId == null || x.BeatyandHealthy.Id == beatyandHealthId.Value),
                 rc => rc.OrderByDescending(a => a.Id),
-                new List<Expression<Func<RelativeofBeatyandhealthy, object>>>() {
                 rc=>rc.BeatyandHealthy
-                }
+                
                 );
             using (var workbook = new XLWorkbook())
             {

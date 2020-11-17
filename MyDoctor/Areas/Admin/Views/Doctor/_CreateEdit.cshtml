@@ -2,6 +2,8 @@
 @using MyDoctor.Models
 @model MyDoctor.Models.Doctor
 @inject ICategoryRepository CategoryRepository
+@inject ICountryRepository CountryRepository
+@inject ICityRepository CityRepository
 <style>
 
 
@@ -62,15 +64,19 @@
                     </div>
                     <div class="form-group">
                         <label for="Kind" class="col-form-label">Kind</label>
-                        <select asp-for="Kind" asp-items="@Html.GetEnumSelectList(typeof(Kind))"></select>
+                        <select asp-for="Kind" class="form-control" asp-items="@Html.GetEnumSelectList(typeof(Kind))"></select>
                     </div>
                     <div class="form-group">
                         <label for="Country" class="col-form-label">Country</label>
-                        <input value="@Model.Country" asp-for="Country" class="form-control">
+                        <select id="CountryList" asp-for="Country" class="form-control" asp-items="@(new SelectList( CountryRepository.GetAll(),"Id","Name"))">
+                        </select>
+                        
                     </div>
                     <div class="form-group">
                         <label for="City" class="col-form-label">City</label>
-                        <input value="@Model.City" asp-for="City" class="form-control">
+                        <select id="CityList" asp-for="Country" class="form-control" asp-items="@(new SelectList( CityRepository.GetAll(),"CountryId","Name"))">
+                            </select>
+                            
                     </div>
                     <div class="form-group">
 

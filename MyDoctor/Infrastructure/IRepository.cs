@@ -9,11 +9,12 @@ namespace MyDoctor.Infrastructure
 {
     public interface IRepository<T> where  T:BaseEntity
     {
-        IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null, IList<Expression<Func<T, object>>> includes=null);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null,params Expression<Func<T, object>>[] includes);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null);
         Task<T> GetByIdAsync(int id);
         Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
         Task InsertAsync(T obj);
-        Task Update(T obj);
+        Task UpdateAsync(T obj);
         Task DeleteAsync(object id);
        
     }

@@ -27,10 +27,9 @@ namespace MyDoctor.Repository
                && (createFrom == null || x.CreateDate >= createFrom)
                && (createTo == null || x.CreateDate <= createTo)
                 , m => m.OrderByDescending(a => a.Id),
-                new List<Expression<Func<Medicin, object>>>() {
                 m=>m.BeatyandHealthy,
                 m=>m.DiseaseMedicins
-                });
+                );
             var subset = searchHits.Skip((page - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();
             var searchResult = new SearchResult<Medicin>()

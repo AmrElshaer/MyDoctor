@@ -30,9 +30,8 @@ namespace MyDoctor.Repository
                 && (createTo == null || x.CreateDate <= createTo)
                 && (beatyandHealthId == null || x.BeatyandHealthy.Id == beatyandHealthId.Value),
                 rc => rc.OrderByDescending(a => a.Id),
-                new List<Expression<Func<RelativeofBeatyandhealthy, object>>>() {
                 rc=>rc.BeatyandHealthy
-                }
+                
                 );
             var subset = searchHits.Skip((page - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();
@@ -53,7 +52,7 @@ namespace MyDoctor.Repository
             {
 
                 category.ModiteDate = DateTime.Now.Date;
-                await Update(category);
+                await UpdateAsync(category);
 
             }
             else

@@ -1,6 +1,9 @@
-﻿@model MyDoctor.ViewModels.BeatyandHealthViewModel
+﻿@using MyDoctor.Areas.Admin.Models
+@model MyDoctor.ViewModels.BeatyandHealthViewModel
 @{
-    ViewData["Title"] = "Details";
+
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
 }
 <!--**********************************
           Content body start
@@ -18,28 +21,49 @@
 
 
     <div class="container-fluid">
-       
+
 
         <!--Start Slider-->
         <div class="row">
-            <div class="col-md-12 col-lg-8  ">
+            <div class="col-md-12 col-lg-6">
                 <div class="card">
-                    <img class="img-fluid" src="@Model.BeatyandHealthy.Image"/>
+                    <img class="img-fluid" src="@Model.BeatyandHealthy.Image" />
                     <div class="card-body">
                         <h4 class="card-title mb-0">@Model.BeatyandHealthy.Category</h4>
 
                     </div>
                 </div>
             </div>
-            
+            @foreach (var relativeCategory in Model.RelativeCategories)
+            {
+                <div class="col-md-12 col-lg-3">
+                  
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title">@relativeCategory.Address</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0, (badges.Length - 1))]">#@relativeCategory.BeatyandHealthy.Category</h6>
+                        </div>
+                        <img class="img-fluid" src="@relativeCategory.ImageOrVideo" alt="">
+                        <div class="card-body">
+                            <p class="card-text">@relativeCategory.Subject.MaxString(100, String.Empty)</p>
+                        </div>
+                        <div class="card-footer">
+                            <p class="card-text d-inline">
+                                <img style="max-width: 17px" src="/Content/img/clock.svg" /><small class="ml-2 text-muted">@relativeCategory.CreateDate.Value.ToShortDateString()</small>
+                            </p><a asp-controller="RelativeofBeatyandhealthies" asp-route-id="@relativeCategory.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            }
         </div>
         <!--End Slider-->
         <!--Start Department-->
         @await Html.PartialAsync("_Category", Model.Categories)
         <!--End Department-->
-        <!--Start Relative Department-->
-        @await Html.PartialAsync("_RelativeCategory", Model.RelativeCategories)
-        <!--End Relative Department-->
+       
         <!--Start Medicin-->
         @await Html.PartialAsync("_Medicin", Model.Medicins)
         <!--End Relative Medicin-->

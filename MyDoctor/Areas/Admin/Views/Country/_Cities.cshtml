@@ -1,0 +1,87 @@
+﻿@using MyDoctor.Models
+@model (IEnumerable<City> cities, int countryId)
+<section>
+    <div class="modal fade" id="EditCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">City</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" asp-controller="City" asp-action="CreateEdit" id="CreateEdit">
+                        <div class="form-group" style="display:none">
+                            <label for="id-name" class="col-form-label">id</label>
+                            <input name="Id" type="text" class="form-control" id="cityId">
+                        </div>
+
+                        <div class="form-group" style="display:none">
+
+                            <input name="CountryId" id="CountryCityId" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Name</label>
+                            <input name="Name" type="text" class="form-control" id="cityName">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="Cities_@Model.countryId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-xs mb-0">
+
+                        <tbody>
+                            @foreach (var item in Model.cities)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @item.Name
+                                    </td>
+
+                                    <td>
+                                        
+                                        <button onclick="UpdateCity({Id:@item.Id,Name:'@item.Name',CountryId:'@item.CountryId'})" data-toggle="modal" data-target="#EditCity" class="btn btn-outline-light"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                        <form asp-action="Delete" id="deleteCategory" asp-controller="City" style="display: inline-block">
+                                            <input name="id" value="@item.Id" style="display: none" />
+                                            <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
+                                        </form>
+
+
+                                    </td>
+
+                                </tr>
+
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

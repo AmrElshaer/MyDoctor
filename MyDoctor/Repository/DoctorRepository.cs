@@ -85,9 +85,7 @@ namespace MyDoctor.Repository
                 (query == null || x.Name.ToLower().Contains(query.ToLower()))
                 && (category == null || x.CategoryId == category),
                 d => d.OrderByDescending(a => a.Id),
-                new List<Expression<Func<Doctor, object>>>() {
                    d=>d.Category
-                }
                 );
             var subset = searchHits.Skip((pageNumber - 1) * pageSize).Take(pageSize);
             var count = searchHits.Count();
