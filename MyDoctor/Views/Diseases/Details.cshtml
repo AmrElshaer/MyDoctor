@@ -1,54 +1,118 @@
-﻿@*@model MyDoctor.Models.Disease
-
+﻿
+@model MyDoctor.ViewModels.DiseaseViewModel
 @{
-    ViewData["Title"] = "Details";
+
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
 }
+<!--**********************************
+          Content body start
+      ***********************************-->
+<div class="content-body">
 
-<h2>Details</h2>
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Disease.DiseaseName</a></li>
+            </ol>
+        </div>
+    </div>
 
-<div>
-    <h4>Disease</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DiseaseName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DiseaseName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Subject)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Subject)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Protection)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Protection)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Medicin)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Medicin)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Reasons)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Reasons)
-        </dd>
-    </dl>
+
+    <div class="container-fluid">
+
+
+        <!--Start Slider-->
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">@Model.Disease.DiseaseName</h4>
+                        <div class="basic-list-group">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <img class="img-fluid" src="@Model.Disease.Image" />
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Subject</h5><small class="text-muted">@Model.Disease.CreateDate.Value.ToShortDateString()</small>
+                                    </div>
+                                    <p class="mb-1">@Model.Disease.Subject.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Protection</h5>
+                                    </div>
+                                    <p class="mb-1">@Model.Disease.Protection.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Reasons</h5>
+                                    </div>
+                                    <p class="mb-1">@Model.Disease.Reasons.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Disease Treate</h5>
+                                    </div>
+                                    <p class="mb-1">
+                                        <ul>
+                                            @foreach (var diseasemedicin in Model.Disease.DiseaseMedicins)
+                                            {
+                                                <li>@diseasemedicin.Medicin.Name</li>
+                                            }
+                                        </ul>
+                                    </p>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            @foreach (var medicin in Model.Medicins)
+            {
+                <div class="col-md-12 col-lg-3">
+
+                    <div class="card">
+                        <img class="img-fluid" src="@medicin.Image" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@medicin.Name</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]">@medicin.BeatyandHealthy.Category</h6>
+                            <p class="card-text">@medicin.Indications</p>
+                            <p class="card-text">
+                                <span><img style="max-width: 17px" src="~/Content/img/price-tag.svg" /><small class="ml-2 text-muted">@medicin.Price</small></span>
+
+                            </p><a asp-controller="Medicins" asp-route-id="@medicin.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            }
+        </div>
+        <!--End Slider-->
+        <!--Start Department-->
+        @await Html.PartialAsync("_Category", Model.Categories.ToList())
+        <!--End Department-->
+        <!--Start Relative Department-->
+        @await Html.PartialAsync("_RelativeCategory", Model.RelativeCategories.ToList())
+        <!--End Relative Department-->
+        <!--Start Disease-->
+        @await Html.PartialAsync("_Disease", Model.Diseases.ToList())
+        <!--End  Disease-->
+        <!--Start Doctor-->
+        @await Html.PartialAsync("_Doctor", Model.Doctors.ToList())
+        <!--End  Disease-->
+
+    </div>
+
+
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>*@
+
+<!--**********************************
+    Content body end
+***********************************-->
