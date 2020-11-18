@@ -1,34 +1,112 @@
-﻿@*@model MyDoctor.Models.Medicin
+﻿
+@model MyDoctor.ViewModels.MedicinViewModel
+@{
 
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
+}
+<!--**********************************
+          Content body start
+      ***********************************-->
+<div class="content-body">
 
-
-
-
-
-
-
-
-<div class="col-lg-12 mb-4">
-
-   
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">@Model.name</h6>
-        </div>
-        <div class="card-body">
-            <div >
-                <h4 class="m-0 font-weight-bold text-primary">Affects</h4>
-                <p>@Model.affects</p>
-                <h4 class="m-0 font-weight-bold text-primary">Indeications</h4>
-                <p>@Model.indications</p>
-                <h4 class="m-0 font-weight-bold text-primary">Price</h4>
-                <p>@Model.price</p>
-            </div>
-           
-           
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Medicin.Name</a></li>
+            </ol>
         </div>
     </div>
 
 
+    <div class="container-fluid">
 
-</div>*@
+
+        <!--Start Slider-->
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">@Model.Medicin.Name<span class="ml-3"><img style="max-width: 17px" src="~/Content/img/price-tag.svg" /><small class="ml-2 text-muted">@Model.Medicin.Price</small></span></h4>
+                        <div class="basic-list-group">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <img class="img-fluid" src="@Model.Medicin.Image" />
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Indications</h5><small class="text-muted">@Model.Medicin.CreateDate.Value.ToShortDateString()</small>
+                                    </div>
+                                    <p class="mb-1">@Model.Medicin.Indications.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Affects</h5>
+                                    </div>
+                                    <p class="mb-1">@Model.Medicin.Affects.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Disease Treate</h5>
+                                    </div>
+                                    <p class="mb-1">
+                                        <ul>
+                                            @foreach (var diseasemedicin in Model.Medicin.DiseaseMedicins)
+                                            {
+                                                <li>@diseasemedicin.Disease.DiseaseName</li>
+                                            }
+                                        </ul>
+                                    </p>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            @foreach (var medicin in Model.Medicins)
+            {
+                <div class="col-md-12 col-lg-3">
+
+                    <div class="card">
+                        <img class="img-fluid" src="@medicin.Image" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@medicin.Name</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]">@medicin.BeatyandHealthy.Category</h6>
+                            <p class="card-text">@medicin.Indications</p>
+                            <p class="card-text">
+                                <span><img style="max-width: 17px" src="~/Content/img/price-tag.svg" /><small class="ml-2 text-muted">@medicin.Price</small></span>
+
+                            </p><a asp-controller="Medicins" asp-route-id="@medicin.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            }
+        </div>
+        <!--End Slider-->
+        <!--Start Department-->
+        @await Html.PartialAsync("_Category", Model.Categories.ToList())
+        <!--End Department-->
+        <!--Start Relative Department-->
+        @await Html.PartialAsync("_RelativeCategory", Model.RelativeCategories.ToList())
+        <!--End Relative Department-->
+        <!--Start Disease-->
+        @await Html.PartialAsync("_Disease", Model.Diseases.ToList())
+        <!--End  Disease-->
+        <!--Start Doctor-->
+        @await Html.PartialAsync("_Doctor", Model.Doctors.ToList())
+        <!--End  Disease-->
+
+    </div>
+
+
+</div>
+
+<!--**********************************
+    Content body end
+***********************************-->

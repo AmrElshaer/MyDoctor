@@ -71,5 +71,6 @@ namespace MyDoctor.Data
         public DbSet<Medicin> Medicin { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<MyDoctor.Models.City> Cities { get; set; }
+        public DbSet<DiseaseMedicin> DiseaseMedicins { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace MyDoctor.Models
         {
 
             RelativeofBeatyandhealthies =new HashSet<RelativeofBeatyandhealthy>();
+            Doctors = new HashSet<Doctor>();
+            Diseases = new HashSet<Disease>();
             Medicins= new HashSet<Medicin>();
 
         }

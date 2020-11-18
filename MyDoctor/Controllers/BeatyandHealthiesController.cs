@@ -1,18 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyDoctor.IRepository;
-using MyDoctor.ISerivce;
-using MyDoctor.Models;
-
 namespace MyDoctor.Controllers
 {
     public class BeatyandHealthiesController : Controller
     {
-        private readonly ICategorySerivce _categorySerivce;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public BeatyandHealthiesController(ICategorySerivce categorySerivce)
+        public BeatyandHealthiesController(ICategoryRepository categoryRepository)
         {
-            _categorySerivce = categorySerivce;
+            _categoryRepository = categoryRepository;
             
         }
 
@@ -20,7 +17,7 @@ namespace MyDoctor.Controllers
         public async Task<IActionResult> Details(int id)
         {
             
-            var beatyandHealthy = await _categorySerivce.GetCategory(id,4);
+            var beatyandHealthy = await _categoryRepository.GetCategoryAsync(id,4);
             if (beatyandHealthy == null) return NotFound();
             return View(beatyandHealthy);
         }

@@ -1,0 +1,105 @@
+﻿@model MyDoctor.ViewModels.MedicinViewModel;
+@inject MyDoctor.IRepository.ICategoryRepository CategoryRepository
+@{
+    var category = CategoryRepository.GetAll().ToList();
+}
+@{
+
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
+}
+<!--**********************************
+         Content body start
+     ***********************************-->
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Medicin</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Medicins</h4>
+                        <p class="text-muted">
+                            <code></code>
+                        </p>
+                        <form id="accordion-one" class="accordion">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa" aria-hidden="true"></i>Department</h5>
+                                </div>
+                                <div id="collapseOne" class="collapse" data-parent="#accordion-one">
+                                    <div class="card-body">
+                                        @foreach (var item in category)
+                                        {
+                                            <div class="form-check mt-2">
+                                                <input type="checkbox" class="form-check-input" @(Model.MedicinSearch.Categories.Contains(item.Id) ? "checked" : "") name="Categories" value="@item.Id">
+                                                <label class="form-check-label" for="exampleCheck1">@item.Category</label>
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa" aria-hidden="true"></i>Price</h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion-one">
+                                    <div class="card-body">
+                                        <input name="Price" type="range" min="@Model.MedicinSearch.MinPrice" max="@Model.MedicinSearch.MaxPrice" value="@Model.MedicinSearch.Price" class="form-control" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="form-group">
+                                    <input type="text" name="Name" value="@Model.MedicinSearch.Name" class="form-control" placeholder="Name" />
+                                </div>
+                            </div>
+                            <div class="card">
+                                <button class="btn btn-dark">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @foreach (var medicin in Model.Medicins)
+            {
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img class="img-fluid" src="@medicin.Image" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@medicin.Name</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]">@medicin.BeatyandHealthy.Category</h6>
+                            <p class="card-text">@medicin.Indications</p>
+                            <p class="card-text">
+                                <span><img style="max-width: 17px" src="~/Content/img/price-tag.svg" /><small class="ml-2 text-muted">@medicin.Price</small></span>
+
+                            </p><a asp-controller="Medicins" asp-route-id="@medicin.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+
+    </div>
+</div>
+<!-- #/ container -->
+</div>
+<!--**********************************
+    Content body end
+***********************************-->

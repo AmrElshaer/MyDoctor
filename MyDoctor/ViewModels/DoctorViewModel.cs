@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace MyDoctor.ViewModels
 {
-    public class DoctorViewModel
+    public class DoctorViewModel:BaseViewModel
     {
-       
+        public DoctorViewModel()
+        {
+
+        }
         public DoctorViewModel(IEnumerable<Doctor> doctors,DoctorSearch doctorSearch)
         {
             this.Doctors = doctors;

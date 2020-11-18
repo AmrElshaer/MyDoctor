@@ -7,17 +7,21 @@ using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Microsoft.EntityFrameworkCore;
 using MyDoctor.Areas.Admin.Models;
 using MyDoctor.Data;
+using MyDoctor.Helper;
 using MyDoctor.Infrastructure;
 using MyDoctor.IRepository;
 using MyDoctor.Models;
+using MyDoctor.ViewModels;
 using PagedList.Core;
 
 namespace MyDoctor.Repository
 {
     public class MedicinRepository:BaseRepository<Medicin>,IMedicinRepository
     {
+      
         public MedicinRepository(ApplicationDbContext context) : base(context)
         {
+           
         }
 
         public SearchResult<Medicin> GetSearchResult(string query, int page, int pageSize, DateTime? createFrom, DateTime? createTo)
@@ -90,6 +94,33 @@ namespace MyDoctor.Repository
            
         }
 
-        
+        public (decimal minprice, decimal maxprice) PriceRange()
+        {
+            var maxprice= _context.Medicin.Max(m=>m.Price);
+            var minprice= _context.Medicin.Min(m=>m.Price);
+            return (minprice, maxprice);
+        }
+
+        public async Task<MedicinViewModel> GetMedicinAsync(int id,int numberRelated)
+        {
+            var medicin =await  _context.Medicin.Include(m=>m.BeatyandHealthy).Include(m=>m.DiseaseMedicins).ThenInclude(dm=>dm.Disease).FirstOrDefaultAsync(m=>m.Id==id);
+
+            var result = new MedicinViewModel()
+            {
+                Medicin = medicin,
+                Categories = await _context.BeatyandHealthy.Where(a => a.Id != medicin.BeatyandHealthyId).OrderByDescending(a => a.Id).Take(numberRelated).ToListAsync(),
+                Doctors = (medicin.BeatyandHealthy.Doctors.Any(), medicin.BeatyandHealthy.Doctors.Count() >= numberRelated) == (true, true) ?
+                           medicin.BeatyandHealthy.Doctors :
+                           medicin.BeatyandHealthy.Doctors.AppendData(await _context.Doctor.Include( d => d.Category).Where(d => d.Category.Id != medicin.BeatyandHealthyId).Take(numberRelated - medicin.BeatyandHealthy.Doctors.Count()).ToListAsync()),
+                Medicins = await _context.Medicin.Where(m=>m.Id!=id).OrderByDescending(a => a.Id).Take(numberRelated).ToListAsync(),
+                Diseases = (medicin.BeatyandHealthy.Diseases.Any(), medicin.BeatyandHealthy.Diseases.Count() >= numberRelated) == (true, true) ?
+                           medicin.BeatyandHealthy.Diseases :
+                           medicin.BeatyandHealthy.Diseases.AppendData(await _context.Disease.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthy.Id != medicin.BeatyandHealthyId).Take(numberRelated - medicin.BeatyandHealthy.Diseases.Count()).ToListAsync()),
+                RelativeCategories = (medicin.BeatyandHealthy.RelativeofBeatyandhealthies.Any(), medicin.BeatyandHealthy.RelativeofBeatyandhealthies.Count() >= numberRelated) == (true, true) ?
+                                     medicin.BeatyandHealthy.RelativeofBeatyandhealthies :
+                                      medicin.BeatyandHealthy.RelativeofBeatyandhealthies.AppendData(await _context.RelativeofBeatyandhealthy.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthy.Id != medicin.BeatyandHealthyId).Take(numberRelated - medicin.BeatyandHealthy.RelativeofBeatyandhealthies.Count()).ToListAsync())
+            };
+            return result;
+        }
     }
 }

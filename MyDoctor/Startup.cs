@@ -13,9 +13,7 @@ using MyDoctor.Helper;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using MyDoctor.Areas.Identity.Services;
 using MyDoctor.IRepository;
-using MyDoctor.ISerivce;
 using MyDoctor.Repository;
-using MyDoctor.Serivce;
 
 namespace MyDoctor
 {
@@ -53,9 +51,6 @@ namespace MyDoctor
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            //Dependency Serivce
-            services.AddTransient<IDashBoardSerivce, DashBoardSerivce>();
-            services.AddTransient<ICategorySerivce,CategorySerivce>();
             //Dependency Repository
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IDiseasesRepository, DiseasesRepository>();
