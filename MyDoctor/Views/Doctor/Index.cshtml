@@ -1,6 +1,6 @@
-﻿@using MyDoctor.IRepository
-@model MyDoctor.ViewModels.DoctorViewModel;
-@inject MyDoctor.IRepository.ICategoryRepository CategoryRepository
+﻿@using MYDoctor.Core.Application.IRepository
+@using MYDoctor.Core.Application.ViewModel
+@inject ICategoryRepository CategoryRepository
 @inject ICountryRepository CountryRepository
 @inject ICityRepository CityRepository
 @{
@@ -68,7 +68,7 @@
                                                 <label class="form-check-label" for="exampleCheck1">@item.Name</label>
                                             </div>
                                         }
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                                 <label class="form-check-label" for="exampleCheck1">@item.Name</label>
                                             </div>
                                         }
-                                       
+
                                     </div>
                                 </div>
                             </div>

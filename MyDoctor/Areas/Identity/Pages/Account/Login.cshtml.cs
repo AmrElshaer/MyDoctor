@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MyDoctor.Models;
-using MyDoctor.Data;
-using MyDoctor.ViewModels;
+using MYDoctor.Infrastructure.Identity;
+using MYDoctor.Core.Application.Common.Enum;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
@@ -95,7 +94,7 @@ namespace MyDoctor.Areas.Identity.Pages.Account
                         case nameof(Roles.Doctor):
                             return RedirectToAction("Index", "DashBoard", new { area = nameof(Roles.Doctor) });
                         default:
-                            return RedirectToAction("Index", "DashBoard");
+                            return RedirectToAction("Index", "DashBoard", new { area = string.Empty });
 
 
                     }

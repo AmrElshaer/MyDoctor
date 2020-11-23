@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyDoctor.Helper;
-using MyDoctor.IRepository;
-using MyDoctor.Models;
+using MYDoctor.Core.Application.IRepository;
 
 namespace MyDoctor.Controllers
 {

@@ -1,5 +1,8 @@
-﻿@model MyDoctor.ViewModels.MedicinViewModel;
-@inject MyDoctor.IRepository.ICategoryRepository CategoryRepository
+﻿@using MYDoctor.Core.Application.ViewModel
+@using MYDoctor.Core.Application.IRepository
+
+@model MedicinViewModel
+@inject ICategoryRepository CategoryRepository
 @{
     var category = CategoryRepository.GetAll().ToList();
 }
@@ -51,7 +54,7 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa" aria-hidden="true"></i>Price</h5>

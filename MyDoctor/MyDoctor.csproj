@@ -6,15 +6,42 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Models\**" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="Helper\**" />
+    <Compile Remove="Infrastructure\**" />
+    <Compile Remove="IRepository\**" />
+    <Compile Remove="Repository\**" />
+    <Compile Remove="ViewModels\**" />
     <Compile Remove="Views\Doctors\**" />
+    <Content Remove="Areas\Admin\Models\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Helper\**" />
+    <Content Remove="Infrastructure\**" />
+    <Content Remove="IRepository\**" />
+    <Content Remove="Repository\**" />
+    <Content Remove="ViewModels\**" />
     <Content Remove="Views\Doctors\**" />
+    <EmbeddedResource Remove="Areas\Admin\Models\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Helper\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="IRepository\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
     <EmbeddedResource Remove="Views\Doctors\**" />
+    <None Remove="Areas\Admin\Models\**" />
+    <None Remove="Data\**" />
+    <None Remove="Helper\**" />
+    <None Remove="Infrastructure\**" />
+    <None Remove="IRepository\**" />
+    <None Remove="Repository\**" />
+    <None Remove="ViewModels\**" />
     <None Remove="Views\Doctors\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.95.3" />
-    <PackageReference Include="MailKit" Version="2.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
@@ -24,6 +51,8 @@
   <ItemGroup>
     <Folder Include="Areas\Doctor\Data\" />
     <Folder Include="Areas\Doctor\Models\" />
+    <Folder Include="Areas\Doctor\Views\Shared\" />
+    <Folder Include="Models\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
@@ -1763,6 +1792,11 @@
     <None Include="wwwroot\Content\vendor\jquery\jquery.slim.js" />
     <None Include="wwwroot\Content\vendor\jquery\jquery.slim.min.js" />
     <None Include="wwwroot\Content\vendor\jquery\jquery.slim.min.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MYDoctor.Core\MYDoctor.Core.csproj" />
+    <ProjectReference Include="..\MYDoctor.Infrastructure\MYDoctor.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

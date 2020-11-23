@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.Areas.Admin.Models;
+using MyDoctor.Common;
+using MyDoctor.Models;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {

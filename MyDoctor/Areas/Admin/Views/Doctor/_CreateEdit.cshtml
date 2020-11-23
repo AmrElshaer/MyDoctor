@@ -1,6 +1,4 @@
-﻿@using MyDoctor.IRepository
-@using MyDoctor.Models
-@model MyDoctor.Models.Doctor
+﻿@model Doctor
 @inject ICategoryRepository CategoryRepository
 @inject ICountryRepository CountryRepository
 @inject ICityRepository CityRepository
@@ -68,15 +66,13 @@
                     </div>
                     <div class="form-group">
                         <label for="Country" class="col-form-label">Country</label>
-                        <select id="CountryList" asp-for="Country" class="form-control" asp-items="@(new SelectList( CountryRepository.GetAll(),"Id","Name"))">
+                        <select id="CountryList" asp-for="Country" class="form-control" asp-items="@(new SelectList( CountryRepository.GetAll(),"Name","Name"))">
                         </select>
-                        
                     </div>
                     <div class="form-group">
                         <label for="City" class="col-form-label">City</label>
-                        <select id="CityList" asp-for="Country" class="form-control" asp-items="@(new SelectList( CityRepository.GetAll(),"CountryId","Name"))">
+                        <select id="CityList" asp-for="City" class="form-control" asp-items="@(new SelectList( CityRepository.GetAll(),"Name","Name"))">
                             </select>
-                            
                     </div>
                     <div class="form-group">
 

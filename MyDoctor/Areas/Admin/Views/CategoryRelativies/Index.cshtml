@@ -1,9 +1,8 @@
-﻿
-@using MyDoctor.Areas.Admin.Models
-@using MyDoctor.IRepository
-@using MyDoctor.Models
-@using PagedList.Core.Mvc
-@model MyDoctor.Areas.Admin.Models.SearchResult<RelativeofBeatyandhealthy>
+﻿@using MYDoctor.Core.Domain.Entities
+@using MYDoctor.Core.Application.IRepository
+@using MYDoctor.Core.Application.Common.Search
+@using MYDoctor.Core.Application.Common
+@model SearchResult<RelativeofBeatyandhealthy>
 @inject ICategoryRepository CategoryRepository
 @{
     ViewData["Title"] = "Index";
@@ -33,7 +32,7 @@
                         <div class="outline-button">
 
                             <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#exampleModal"><img src="~/Content/img/plus.svg" style="max-width:25px" /></button>
-                            <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToExcel" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" target="_blank"><img src="~/Content/img/excel.png" style="max-width:25px" /></a>
+                            <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToExcel" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><img src="~/Content/img/excel.png" style="max-width:25px" /></a>
 
 
                         </div>
@@ -59,25 +58,14 @@
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="">Address</label>
-                                        <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+                                        <input name="searchQuery" type="text" class="form-control" id="validationCustom01" value="@Model.SearchParamter.SearchQuery" placeholder="Search">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="BeatyandHealthId" >Category</label>
-                                        <select name="BeatyandHealthId" class="form-control">
-                                            <optgroup label="Category">
-                                                <option disabled selected> -- select an option -- </option>
-
-                                                @foreach (var category in CategoryRepository.GetAll().ToList())
-                                                {
-
-                                                    <option value="@category.Id" label="@category.Category"></option>
-
-                                                }
-                                            </optgroup>
-
+                                        <label for="BeatyandHealthId">Category</label>
+                                        <select name="IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll().ToList(),"Id","Category",Model.SearchParamter.IdRelated))">
                                         </select>
                                     </div>
-                                   
+
                                     <div class="col-lg-12 col-md-6 text-center">
 
                                         <button class="btn btn-dark mt-2" type="submit"><i style="font-size:20px" class="mdi mdi-magnify"></i></button>
@@ -100,9 +88,9 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                               Address
+                                                Address
                                             </th>
-                                           
+
                                             <th>
                                                 Category
                                             </th>
@@ -122,49 +110,49 @@
                                     <tbody>
                                         @foreach (var item in Model.ItemsList)
                                         {
-                                        <tr>
-                                            <td><img src="@item.ImageOrVideo" class=" rounded-circle mr-3" alt="">@item.Address</td>
+                                            <tr>
+                                                <td><img src="@item.ImageOrVideo" class=" rounded-circle mr-3" alt="">@item.Address</td>
 
-                                            <td>
-                                                @item.BeatyandHealthy.Category
-                                            </td>
-                                            <td>
+                                                <td>
+                                                    @item.BeatyandHealthy.Category
+                                                </td>
+                                                <td>
 
-                                                @item.Subject.MaxString(100, "SeeMore")
+                                                    @item.Subject.MaxString(100, "SeeMore")
 
 
-                                            </td>
-                                            <td>
-                                                @if (item.CreateDate.HasValue)
-                                                {
-                                                    @item.CreateDate.Value.ToShortDateString()
-                                                }
+                                                </td>
+                                                <td>
+                                                    @if (item.CreateDate.HasValue)
+                                                    {
+                                                        @item.CreateDate.Value.ToShortDateString()
+                                                    }
 
-                                            </td>
-                                            <td>
-                                                @if (item.ModiteDate.HasValue)
-                                                {
-                                                    @item.ModiteDate.Value.ToShortDateString()
-                                                }
-                                            </td>
-                                            <td>
+                                                </td>
+                                                <td>
+                                                    @if (item.ModiteDate.HasValue)
+                                                    {
+                                                        @item.ModiteDate.Value.ToShortDateString()
+                                                    }
+                                                </td>
+                                                <td>
 
-                                                <button class="btn btn-outline-light" onclick="editCategory({Id:@item.Id,ImageOrVideo:'@item.ImageOrVideo',CreateDate:'@item.CreateDate',Address:'@item.Address',Subject:'@item.Subject',BeatyandHealthId:'@item.BeatyandHealthId'})"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
-                                                <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
-                                                    <input name="id" value="@item.Id" style="display: none" />
-                                                    <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
-                                                </form>
+                                                    <button class="btn btn-outline-light" onclick="editCategory({Id:@item.Id,ImageOrVideo:'@item.ImageOrVideo',CreateDate:'@item.CreateDate',Address:'@item.Address',Subject:'@item.Subject',BeatyandHealthId:'@item.BeatyandHealthId'})"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
+                                                        <input name="id" value="@item.Id" style="display: none" />
+                                                        <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
+                                                    </form>
 
-                                            </td>
+                                                </td>
 
-                                        </tr>
+                                            </tr>
 
 
                                         }
 
                                     </tbody>
                                 </table>
-                                <p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" asp-route-beatyandHealthId="@Model.IdRelated" /></p>
+                                <p><pager class="pager-container" list="@new StaticPagedList<RelativeofBeatyandhealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" asp-route-beatyandHealthId="@Model.SearchParamter.IdRelated" /></p>
                             </div>
                         </div>
                     </div>
@@ -180,7 +168,7 @@
 <section>
     @await Html.PartialAsync("_CreateEdit", new RelativeofBeatyandhealthy())
 </section>
-<p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" asp-route-beatyandHealthId="@Model.IdRelated" /></p>
+<p><pager class="pager-container" list="@new StaticPagedList<RelativeofBeatyandhealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" asp-route-beatyandHealthId="@Model.SearchParamter.IdRelated" /></p>
 @section Scripts
 {
     <script>

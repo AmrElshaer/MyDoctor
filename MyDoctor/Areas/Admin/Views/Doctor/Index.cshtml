@@ -1,9 +1,5 @@
-﻿
-@using MyDoctor.Areas.Admin.Models
-@using MyDoctor.IRepository
-@using MyDoctor.Models
-@using PagedList.Core.Mvc
-@model MyDoctor.Areas.Admin.Models.SearchResult<MyDoctor.Models.Doctor>
+﻿@using PagedList.Core.Mvc
+@model SearchResult<Doctor>
 @inject ICategoryRepository CategoryRepository
 @await Html.PartialAsync("_Message");
 <!--**********************************
@@ -54,15 +50,15 @@
                                         <input type="date" class="form-control" id="createTo" name="createTo">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="BeatyandHealthId">Category</label>
-                                        <select name="BeatyandHealthId" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll(),"Id","Category"))">
+                                        <label for="IdRelated">Department</label>
+                                        <select name="IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll(),"Id","Category",Model.SearchParamter.IdRelated))">
 
                                             <option disabled selected> -- select an option -- </option>
                                         </select>
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="createTo">Name</label>
-                                        <input name="query" type="text" class="form-control" id="validationCustom01" value="@Model.SearchQuery" placeholder="Search">
+                                        <input name="searchQuery" type="text" class="form-control" id="validationCustom01" value="@Model.SearchParamter.SearchQuery" placeholder="Search">
                                     </div>
                                     <div class="col-lg-12 col-md-6 text-center">
 
@@ -121,8 +117,11 @@
                                                     @item.Telephone
                                                 </td>
                                                 <td>
+                                                    @item.Password
+                                                </td>
+                                                <td>
 
-                                                    <button class="btn btn-outline-light" onclick="editCategory(@item.ToJson())"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                                    <button class="btn btn-outline-light" onclick="editCategory(@item.ToJson("Doctors"))"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
                                                     <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
                                                         <input name="id" value="@item.Id" style="display: none" />
                                                         <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
@@ -137,7 +136,7 @@
 
                                     </tbody>
                                 </table>
-                                <p><pager class="pager-container" list="@Model.ItemsList" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchQuery" asp-route-createFrom="@Model.CreateFrom" asp-route-createTo="@Model.CreateTo" /></p>
+                                <p><pager class="pager-container" list="@new StaticPagedList<Doctor>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" /></p>
                             </div>
                         </div>
                     </div>

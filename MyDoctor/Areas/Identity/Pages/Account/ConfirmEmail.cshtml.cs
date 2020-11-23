@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyDoctor.Models;
+using MYDoctor.Infrastructure.Identity;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {

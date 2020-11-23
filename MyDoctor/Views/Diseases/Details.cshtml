@@ -1,5 +1,5 @@
-﻿
-@model MyDoctor.ViewModels.DiseaseViewModel
+﻿@using MYDoctor.Core.Application.ViewModel
+@model DiseaseViewModel
 @{
 
     var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
@@ -60,7 +60,7 @@
                                         <ul>
                                             @foreach (var diseasemedicin in Model.Disease.DiseaseMedicins)
                                             {
-                                                <li>@diseasemedicin.Medicin.Name</li>
+                                                <li>@diseasemedicin.Disease.DiseaseName</li>
                                             }
                                         </ul>
                                     </p>

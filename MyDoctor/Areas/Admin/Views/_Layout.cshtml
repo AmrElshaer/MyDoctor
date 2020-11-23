@@ -1,8 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using System.Security.Claims;
-@using MyDoctor.IRepository;
-@using MyDoctor.ViewModels;
-@using MyDoctor.Models;
+@using MYDoctor.Infrastructure.Identity;
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject ICategoryRepository CategoryRepository

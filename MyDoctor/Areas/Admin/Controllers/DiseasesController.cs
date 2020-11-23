@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MyDoctor.Data;
-using MyDoctor.IRepository;
-using MyDoctor.Models;
+using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -22,11 +18,11 @@ namespace MyDoctor.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Index(string query, int? page, DateTime? createFrom, DateTime? createTo)
+        public IActionResult Index(SearchParamter searchParamter)
         {
-            var pageNumber = page ?? 1;
-            var pageSize = 5;
-            var model = _diseasesRepository.GetSearchResult(query, pageNumber, pageSize, createFrom, createTo);
+            searchParamter.Page = searchParamter.Page ?? 1;
+            searchParamter.PageSize = 5;
+            var model = _diseasesRepository.GetSearchResult(searchParamter);
             return View(model);
         }
         [HttpPost]

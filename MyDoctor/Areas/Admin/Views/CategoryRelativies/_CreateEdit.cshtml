@@ -1,7 +1,6 @@
-﻿
-
-@using MyDoctor.IRepository
-@model MyDoctor.Models.RelativeofBeatyandhealthy
+﻿@using MYDoctor.Core.Domain.Entities
+@using MYDoctor.Core.Application.IRepository
+@model RelativeofBeatyandhealthy
 @inject ICategoryRepository CategoryRepository
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -15,7 +14,7 @@
             <div class="modal-body">
                 <form method="post" asp-action="CreateEdit" id="CreateEdit">
                     <div class="form-group" style="display: none">
-                        
+
                         <input asp-for="Id" value="@Model.Id">
                     </div>
                     <div class="form-group">
@@ -27,13 +26,13 @@
                     </div>
                     <div class="form-group">
                         <label for="BeatyandHealthId" class="col-form-label">Category</label>
-                        
+
                         <select asp-for="BeatyandHealthId" class="form-control">
 
-                            @foreach(var category in CategoryRepository.GetAll())
+                            @foreach (var category in CategoryRepository.GetAll())
                             {
 
-                                <option   value="@category.Id" label="@category.Category"></option>
+                                <option value="@category.Id" label="@category.Category"></option>
 
                             }
                         </select>

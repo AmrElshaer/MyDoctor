@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,13 +6,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MyDoctor.Models;
-using System.Web;
-using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using MyDoctor.Helper;
-using MyDoctor.ViewModels;
+using MYDoctor.Infrastructure.Identity;
+using MYDoctor.Core.Application.Common.Enum;
+using MYDoctor.Infrastructure.File;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
@@ -25,17 +19,17 @@ namespace MyDoctor.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHostingEnvironment _ihostEnv;
+        private readonly IFileConfig _fileConfig;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(
-           IHostingEnvironment hostingEnvironment,
+           IFileConfig fileConfig,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            ILogger<RegisterModel> logger)
         {
-            _ihostEnv = hostingEnvironment;
+            _fileConfig = fileConfig;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -77,7 +71,7 @@ namespace MyDoctor.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
 
             {
-                string uniquename = RegisterHelper.ConfigImagePath(Input.ImagePath,_ihostEnv);
+                string uniquename = _fileConfig.AddFile(Input.ImagePath,"images");
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, ImagePath=uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 

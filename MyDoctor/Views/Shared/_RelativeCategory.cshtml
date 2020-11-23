@@ -1,9 +1,9 @@
-﻿@using MyDoctor.Areas.Admin.Models
+﻿@using MYDoctor.Core.Domain.Entities
 @model IEnumerable<RelativeofBeatyandhealthy>
 @{
 
-    var badges=new string[]{ "badge-dark","badge-secondary", "badge-info", "badge-light" };
-    var random=new Random();
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
 }
 <div class="row">
     <div class="col-12 m-b-30">
@@ -11,25 +11,25 @@
         <p class="text-muted"></p>
         <div class="row">
             @foreach (var relativeCategory in Model)
-                    {
-                        <div class="col-md-6 col-lg-3">
-                            <div class="card">
-                                <div class="card-header bg-white">
-                                    <h5 class="card-title">@relativeCategory.Address</h5>
-                                    <h6 class="mb-2 badge @badges[random.Next(0, (badges.Length - 1))]">#@relativeCategory.BeatyandHealthy.Category</h6>
-                                </div>
-                                <img class="img-fluid" src="@relativeCategory.ImageOrVideo" alt="">
-                                <div class="card-body">
-                                    <p class="card-text">@relativeCategory.Subject.MaxString(100, String.Empty)</p>
-                                </div>
-                                <div class="card-footer">
-                                    <p class="card-text d-inline">
-                                        <img style="max-width: 17px" src="/Content/img/clock.svg" /><small class="ml-2 text-muted">@relativeCategory.CreateDate.Value.ToShortDateString()</small>
-                                    </p><a asp-controller="RelativeofBeatyandhealthies" asp-route-id="@relativeCategory.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
-                                </div>
-                            </div>
+            {
+                <div class="col-md-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title">@relativeCategory.Address</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0, (badges.Length - 1))]">#@relativeCategory.BeatyandHealthy.Category</h6>
                         </div>
-                    }
+                        <img class="img-fluid" src="@relativeCategory.ImageOrVideo" alt="">
+                        <div class="card-body">
+                            <p class="card-text">@relativeCategory.Subject.MaxString(100, String.Empty)</p>
+                        </div>
+                        <div class="card-footer">
+                            <p class="card-text d-inline">
+                                <img style="max-width: 17px" src="/Content/img/clock.svg" /><small class="ml-2 text-muted">@relativeCategory.CreateDate.Value.ToShortDateString()</small>
+                            </p><a asp-controller="RelativeofBeatyandhealthies" asp-route-id="@relativeCategory.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

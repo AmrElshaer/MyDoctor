@@ -1,4 +1,4 @@
-﻿@using MyDoctor.Areas.Admin.Models
+﻿@using MYDoctor.Core.Domain.Entities
 @model IEnumerable<Disease>
 @{
 
@@ -17,7 +17,7 @@
                     <div class="card">
                         <div class="card-header bg-white">
                             <h5 class="card-title">@disease.DiseaseName<span class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]" style="float: right">@disease.BeatyandHealthy.Category</span></h5>
-                            
+
                         </div>
                         <img class="img-fluid" src="@disease.Image" alt="">
                         <div class="card-body">

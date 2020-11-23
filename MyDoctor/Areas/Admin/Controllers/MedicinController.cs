@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.IRepository;
-using MyDoctor.Models;
+using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -15,11 +16,11 @@ namespace MyDoctor.Areas.Admin.Controllers
             _medicinRepository = categoryRepository;
         }
 
-        public IActionResult Index(string query, int? page, DateTime? createFrom, DateTime? createTo)
+        public IActionResult Index(SearchParamter searchParamter)
         {
-            var pageNumber = page ?? 1;
-            var pageSize = 5;
-            var model = _medicinRepository.GetSearchResult(query, pageNumber, pageSize, createFrom, createTo);
+             searchParamter.Page = searchParamter.Page ?? 1;
+            searchParamter.PageSize = 5;
+            var model = _medicinRepository.GetSearchResult(searchParamter);
 
             return View(model);
         }

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.IRepository;
-using MyDoctor.Models;
+using Microsoft.EntityFrameworkCore;
+using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -18,11 +20,11 @@ namespace MyDoctor.Areas.Admin.Controllers
             _categoryRepository = categoryRepository;
         }
       
-        public IActionResult Index(string query, int? page,DateTime? createFrom,DateTime? createTo)
+        public IActionResult Index(SearchParamter searchParamter)
         {
-            var pageNumber = page??1;
-            var pageSize = 5;
-            var model = _categoryRepository.GetSearchResult(query, pageNumber, pageSize, createFrom, createTo);
+            searchParamter.Page=searchParamter.Page??1;
+            searchParamter.PageSize = 5;
+            var model = _categoryRepository.GetSearchResult(searchParamter);
             
             return View(model);
         }
@@ -53,14 +55,14 @@ namespace MyDoctor.Areas.Admin.Controllers
             
         }
 
-        public  IActionResult ExportToExcel(string query, DateTime? createFrom, DateTime? createTo)
+        public async Task<IActionResult> ExportToExcel(SearchParamter searchParamter)
         {
-            var categories = _categoryRepository.GetAll(x =>
-                (query == null || x.Category.ToLower().Contains(query.ToLower()))
-                && (createFrom == null || x.CreateDate >= createFrom)
-                && (createTo == null || x.CreateDate <= createTo)
+            var categories =await _categoryRepository.GetAll(x =>
+                (searchParamter.SearchQuery == null || x.Category.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
+                && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
                 , c => c.OrderByDescending(a => a.Id)
-                );
+                ).ToListAsync();
             using (var workbook=new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Category");
@@ -103,7 +105,7 @@ namespace MyDoctor.Areas.Admin.Controllers
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
                     var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    return File(content, contentType);
+                    return File(content, contentType,fileDownloadName:"Categories.xlsx");
                 }
                 
             }

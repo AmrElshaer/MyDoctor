@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.IRepository;
-using MyDoctor.Models;
+using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -17,25 +18,22 @@ namespace MyDoctor.Areas.Admin.Controllers
             _categoryRelativiesRepository = categoryRelativiesRepository;
         
 
-        public IActionResult Index(string query, int? page, DateTime? createFrom, DateTime? createTo,
-            int? beatyandHealthId)
+        public IActionResult Index(SearchParamter searchParamter)
         {
-            var pageNumber = page ?? 1;
-            var pageSize = 5;
-            var model = _categoryRelativiesRepository.GetSearchResult(query, pageNumber, pageSize, createFrom,
-                createTo, beatyandHealthId);
+            searchParamter.Page = searchParamter.Page ?? 1;
+            searchParamter.PageSize = 5;
+            var model = _categoryRelativiesRepository.GetSearchResult(searchParamter);
             return View(model);
         }
 
-        public IActionResult ExportToExcel(string query, int? page, DateTime? createFrom, DateTime? createTo,
-            int? beatyandHealthId)
+        public IActionResult ExportToExcel(SearchParamter searchParamter)
         {
             var relativescategories = _categoryRelativiesRepository.GetAll(
                 x =>
-                (query == null || x.Address.ToLower().Contains(query.ToLower()))
-                && (createFrom == null || x.CreateDate >= createFrom)
-                && (createTo == null || x.CreateDate <= createTo)
-                && (beatyandHealthId == null || x.BeatyandHealthy.Id == beatyandHealthId.Value),
+                (searchParamter.SearchQuery == null || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
+                && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
+                && (searchParamter.IdRelated == null || x.BeatyandHealthy.Id == searchParamter.IdRelated.Value),
                 rc => rc.OrderByDescending(a => a.Id),
                 rc=>rc.BeatyandHealthy
                 

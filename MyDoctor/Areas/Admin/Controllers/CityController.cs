@@ -1,9 +1,8 @@
 ﻿using System;
-using MyDoctor.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.IRepository;
-using Microsoft.EntityFrameworkCore;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {

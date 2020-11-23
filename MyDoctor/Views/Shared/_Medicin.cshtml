@@ -1,33 +1,33 @@
-﻿@using MyDoctor.Areas.Admin.Models
+﻿@using MYDoctor.Core.Domain.Entities
 @model IEnumerable<Medicin>
-    <div class="row">
-        <div class="col-12 m-b-30">
+<div class="row">
+    <div class="col-12 m-b-30">
 
-            <h4 class="d-inline"><img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="ml-2">Medicin</span></h4>
-            <p class="text-muted"></p>
-            <div class="row">
-                @foreach (var medicin in Model)
-                {
-                    <div class="col-md-6 col-lg-3">
-                        <div class="card">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title">@medicin.Name</h5>
-                                <h6 class="card-subtitle mb-2 text-muted" style="text-align: right;"> <img style="max-width: 17px;" class="mr-2" src="/Content/img/price-tag.svg" />@medicin.Price</h6>
-                            </div>
-                            <img class="img-fluid" src="@medicin.Image" alt="">
-                            <div class="card-body">
-                                <p class="card-text">@medicin.Affects.MaxString(100,string.Empty)</p>
-                            </div>
-                            <div class="card-footer">
-                                <p class="card-text d-inline">
-                                    <img style="max-width:17px" src="/Content/img/clock.svg" /><small class="ml-2 text-muted">@medicin.CreateDate.Value.ToShortDateString()</small>
-                                </p><a asp-action="Details" asp-controller="Medicins" asp-route-id="@medicin.Id" class="card-link float-right"><small>See</small></a>
-                            </div>
+        <h4 class="d-inline"><img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="ml-2">Medicin</span></h4>
+        <p class="text-muted"></p>
+        <div class="row">
+            @foreach (var medicin in Model)
+            {
+                <div class="col-md-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title">@medicin.Name</h5>
+                            <h6 class="card-subtitle mb-2 text-muted" style="text-align: right;"> <img style="max-width: 17px;" class="mr-2" src="/Content/img/price-tag.svg" />@medicin.Price</h6>
+                        </div>
+                        <img class="img-fluid" src="@medicin.Image" alt="">
+                        <div class="card-body">
+                            <p class="card-text">@medicin.Affects.MaxString(100, string.Empty)</p>
+                        </div>
+                        <div class="card-footer">
+                            <p class="card-text d-inline">
+                                <img style="max-width:17px" src="/Content/img/clock.svg" /><small class="ml-2 text-muted">@medicin.CreateDate.Value.ToShortDateString()</small>
+                            </p><a asp-action="Details" asp-controller="Medicins" asp-route-id="@medicin.Id" class="card-link float-right"><small>See</small></a>
                         </div>
                     </div>
-                }
+                </div>
+            }
 
 
-            </div>
         </div>
     </div>
+</div>

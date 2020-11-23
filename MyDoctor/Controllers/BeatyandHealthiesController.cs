@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.IRepository;
+using MYDoctor.Core.Application.IRepository;
+
 namespace MyDoctor.Controllers
 {
     public class BeatyandHealthiesController : Controller

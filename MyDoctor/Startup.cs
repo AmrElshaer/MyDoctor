@@ -1,20 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyDoctor.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyDoctor.Models;
-using MyDoctor.Helper;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using MyDoctor.Areas.Identity.Services;
-using MyDoctor.IRepository;
-using MyDoctor.Repository;
-
+using MYDoctor.Infrastructure;
 namespace MyDoctor
 {
     public class Startup
@@ -29,44 +17,16 @@ namespace MyDoctor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-            services.Configure<CookiePolicyOptions>(options =>
-            { 
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
            
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-           .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddTransient<IEmailSender, EmailSender>();
-            //Inject Claim Factory
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, DoctorClaimsPrincipalFactory>();
-            services.ConfigureApplicationCookie(o => o.LoginPath = "/identity/Account/Login");
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            //Dependency Repository
-            services.AddScoped<IDoctorRepository, DoctorRepository>();
-            services.AddScoped<IDiseasesRepository, DiseasesRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ICategoryRelativiesRepository, CategoryRelativiesRepository>();
-            services.AddScoped<IMedicinRepository,MedicinRepository>();
-            services.AddScoped<ICountryRepository, CountryRepository>();
-            services.AddScoped<ICityRepository,CityRepository>();
+            services.AddApplication();
+            services.AddInfrastructure(Configuration);
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public  void Configure(IApplicationBuilder app, IHostingEnvironment env,UserManager<ApplicationUser> userManager,RoleManager<IdentityRole>roleManager)
+        public  void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-             SeedData.AddRoles(roleManager);
-             SeedData.AddUsers(userManager);
+             
             if (env.IsDevelopment())
             {
                

@@ -1,4 +1,4 @@
-﻿@model MyDoctor.Models.City
+﻿@model City
 <div class="modal fade" id="CreateEditCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" asp-controller="City" asp-action="CreateEdit"  id="CreateEdit">
+                <form  asp-controller="City" asp-action="CreateEdit"  id="CityCreateEdit">
                     <div class="form-group" style="display:none">
                         <label for="id-name" class="col-form-label">id</label>
                         <input name="Id" type="text" class="form-control" id="cityId" value="@Model.Id">
@@ -28,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CityCreateEdit').submit()">Save</button>
             </div>
         </div>
     </div>

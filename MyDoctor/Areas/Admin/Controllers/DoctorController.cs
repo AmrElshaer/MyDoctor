@@ -2,40 +2,44 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MyDoctor.IRepository;
+using MYDoctor.Core.Application.Common.Search;
+using Entities= MYDoctor.Core.Domain.Entities;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Infrastructure.File;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
     public class DoctorController : BaseController
     {
         private readonly IDoctorRepository _doctorRepository;
-       
+        private readonly IFileConfig _fileConfig;
 
-        public DoctorController(IDoctorRepository doctorRepository)
+        public DoctorController(IDoctorRepository doctorRepository,IFileConfig fileConfig)
         {
             _doctorRepository = doctorRepository;
+            _fileConfig = fileConfig;
         }
 
-        public IActionResult Index(string query, int? page,int? beatyandHealthId)
+        public IActionResult Index(SearchParamter searchParamter)
         {
-            var pageNumber = page ?? 1;
-            var pageSize = 5;
-            var model = _doctorRepository.GetSearchResult(query, pageNumber, pageSize,beatyandHealthId);
+            searchParamter.Page = searchParamter.Page ?? 1;
+            searchParamter.PageSize = 5;
+            var model = _doctorRepository.GetSearchResult(searchParamter);
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateEdit(MyDoctor.Models.Doctor doctor,IFormFile image)
+        public async Task<ActionResult> CreateEdit(Entities.Doctor doctor,IFormFile image)
         {
             
             if (ModelState.IsValid)
             {
                 try
                 {
-                    
-                    await _doctorRepository.CreateEdit(doctor,image);
+                    if (image != null)
+                         doctor.ImagePath= _fileConfig.AddFile(image, "images");
+                    await _doctorRepository.CreateEdit(doctor);
                     AddMessage("Doctor Save Success-full", "Message", true);
-
                 }
                 catch (Exception)
                 {
@@ -58,6 +62,7 @@ namespace MyDoctor.Areas.Admin.Controllers
         {
             try
             {
+                
                 await _doctorRepository.DeleteDoctorAsync(id);
                 
                 AddMessage("Doctor Delete Success", "Message", true);
