@@ -7,6 +7,7 @@ Project is created with:
 * Sql Server
 * EntityFrameworkCore(Code First Approach)
 * SignalR
+* FrontEnd(Html,Css,Js,Jquery,Bootstrap)
 * C#
 
 ## Pattern and Architecture
