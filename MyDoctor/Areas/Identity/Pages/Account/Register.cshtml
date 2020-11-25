@@ -16,6 +16,15 @@
                                     <input asp-for="Input.Email" class="form-control" placeholder="Email" required />
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </div>
+
+                                <div class="form-group">
+                                    <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
                                 <div class="form-group">
                                     <div class="custom-file">
 
@@ -24,14 +33,6 @@
                                     </div>
 
                                     <span asp-validation-for="Input.ImagePath" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <input asp-for="Input.Password" class="form-control" placeholder="Password" />
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Password" />
-                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                 </div>
                                 <button class="btn login-form__btn submit w-100">Sign Up</button>
                             </form>

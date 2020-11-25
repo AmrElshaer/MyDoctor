@@ -1,18 +1,70 @@
 ﻿@using MyDoctor.Models
 @{
-   
+
     var message = TempData.Get<Message>("Message");
-
+    var errors= TempData.Get<IEnumerable<Error>>("Error");
 }
 
-@switch (message)
+@if (message != null)
 {
-    case null:
-        break;
-    case Message mess when mess.IsSuccess:
-        <h4 class="alert alert-info">@mess.Content</h4>
-        break;
-    default:
-        <h4 class="alert alert-danger">@message.Content</h4>
-        break;
+
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            @if (message.IsSuccess)
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>@message.Content
+                </div>
+            }
+            else
+            {
+
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>@message.Content
+                </div>
+            }
+
+
+
+        </div>
+
+
+    </div>
+
+
+
 }
+@if (errors!=null)
+{
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            @foreach (var item in errors)
+            {
+                foreach (var error in item.ErrorMessages)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>@error
+                    </div>
+                }
+
+            }
+        </div>
+
+
+    </div>
+
+
+
+}
+
+

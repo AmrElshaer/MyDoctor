@@ -102,12 +102,15 @@ namespace MyDoctor.Areas.Admin.Controllers
                 try
                 {
                     await _categoryRelativiesRepository.CreateEdit(relativeCategory);
-                    AddMessage("Relative Category Save Success-full", "Message", true);
+                    AddMessage("Relative Category Save Success-full", true);
                 }
                 catch (Exception)
                 {
-                    AddMessage("Error When Save Relative Category", "Message");
+                    AddMessage("Error When Save Relative Category");
                 }
+            }
+            else {
+                AddError(ModelState);
             }
 
             return RedirectToAction(nameof(Index));
@@ -118,11 +121,11 @@ namespace MyDoctor.Areas.Admin.Controllers
             try
             {
                 await _categoryRelativiesRepository.DeleteAsync(id);
-                AddMessage("Relative Category Delete Success", "Message", true);
+                AddMessage("Relative Category Delete Success", true);
             }
             catch (Exception e)
             {
-                AddMessage("Relative Category Delete Failed", "Message");
+                AddMessage("Relative Category Delete Failed");
             }
 
             return RedirectToAction(nameof(Index));

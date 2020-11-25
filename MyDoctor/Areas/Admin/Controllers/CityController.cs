@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Mvc;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
@@ -18,31 +19,38 @@ namespace MyDoctor.Areas.Admin.Controllers
         
         public async Task<IActionResult> CreateEdit(City city)
         {
-            if (city.Id > 0)
+            if (ModelState.IsValid)
             {
-                await _cityRepository.UpdateAsync(city);
-                AddMessage("City Update Success", "Message", true);
+                if (city.Id > 0)
+                {
+                    await _cityRepository.UpdateAsync(city);
+                    AddMessage("City Update Success", true);
+                }
+                else
+                {
+                    await _cityRepository.InsertAsync(city);
+                    AddMessage("City Create Success", true);
+                }
             }
-            else
-            {
-                await _cityRepository.InsertAsync(city);
-                AddMessage("City Create Success", "Message", true);
+            else {
+                AddError(ModelState);
             }
 
             return RedirectToAction(nameof(Index));
         }
         public async Task<ActionResult> Delete(int id)
         {
+
             try
             {
                 await _cityRepository.DeleteAsync(id);
-                AddMessage("City Delete Success", "Message", true);
+                AddMessage("City Delete Success", true);
 
 
             }
             catch (Exception e)
             {
-                AddMessage("City Delete Failed", "Message");
+                AddMessage("City Delete Failed");
 
             }
             return RedirectToAction(nameof(Index));

@@ -40,15 +40,19 @@ namespace MyDoctor.Areas.Admin.Controllers
                        diseasSelect.ToList().ForEach(d=> medicin.DiseaseMedicins.Add(new DiseaseMedicin() { DiseaseId =Convert.ToInt32(d)}));
                     }
                     await _medicinRepository.CreateEdit(medicin);
-                    AddMessage("Medicin Save Success-full", "Message", true);
+                    AddMessage("Medicin Save Success-full", true);
 
                 }
                 catch (Exception)
                 {
-                    AddMessage("Error When Save Medicin", "Message");
+                    AddMessage("Error When Save Medicin");
                 }
 
 
+            }
+            else
+            {
+                AddError(ModelState);
             }
 
             return RedirectToAction(nameof(Index));
@@ -63,13 +67,13 @@ namespace MyDoctor.Areas.Admin.Controllers
             try
             {
                 await _medicinRepository.DeleteAsync(id);
-                AddMessage("Medicin Delete Success", "Message", true);
+                AddMessage("Medicin Delete Success", true);
 
 
             }
             catch (Exception e)
             {
-                AddMessage("Medicin Delete Failed", "Message");
+                AddMessage("Medicin Delete Failed");
 
 
             }

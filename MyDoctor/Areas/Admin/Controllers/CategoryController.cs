@@ -38,16 +38,19 @@ namespace MyDoctor.Areas.Admin.Controllers
             {
                 try
                 {
-                   await _categoryRepository.CreateEdit(healthBeatyandHealthy);
-                   AddMessage("Category Save Success-full","Message",true);
-                 
+                    await _categoryRepository.CreateEdit(healthBeatyandHealthy);
+                    AddMessage("Category Save Success-full", isSuccess: true);
+
                 }
                 catch (Exception)
                 {
-                    AddMessage("Error When Save Category", "Message");
+                    AddMessage("Error When Save Category");
                 }
-            
-               
+
+
+            }
+            else {
+                AddError(ModelState);
             }
             
             return RedirectToAction(nameof(Index));
@@ -116,13 +119,13 @@ namespace MyDoctor.Areas.Admin.Controllers
             try
             {  
                  await _categoryRepository.DeleteAsync(id);
-                 AddMessage("Category Delete Success","Message",true);
+                 AddMessage("Category Delete Success",true);
                 
 
             }
             catch (Exception e)
             {
-                AddMessage("Category Delete Failed", "Message");
+                AddMessage("Category Delete Failed");
 
                 
             }

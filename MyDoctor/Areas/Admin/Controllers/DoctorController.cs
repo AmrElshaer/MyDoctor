@@ -31,24 +31,25 @@ namespace MyDoctor.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateEdit(Entities.Doctor doctor,IFormFile image)
         {
-            
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     if (image != null)
-                         doctor.ImagePath= _fileConfig.AddFile(image, "images");
+                        doctor.ImagePath = _fileConfig.AddFile(image, "images");
                     await _doctorRepository.CreateEdit(doctor);
-                    AddMessage("Doctor Save Success-full", "Message", true);
+                    AddMessage("Doctor Save Success-full", true);
                 }
                 catch (Exception)
                 {
-                    
-                    AddMessage("Error When Save Doctor", "Message");
+
+                    AddMessage("Error When Save Doctor");
 
                 }
-
-
+            }
+            else {
+                AddError(ModelState);
             }
 
             return RedirectToAction(nameof(Index));
@@ -65,13 +66,13 @@ namespace MyDoctor.Areas.Admin.Controllers
                 
                 await _doctorRepository.DeleteDoctorAsync(id);
                 
-                AddMessage("Doctor Delete Success", "Message", true);
+                AddMessage("Doctor Delete Success", true);
 
 
             }
             catch (Exception e)
             {
-                AddMessage("Doctor Delete Failed", "Message");
+                AddMessage("Doctor Delete Failed");
 
 
             }

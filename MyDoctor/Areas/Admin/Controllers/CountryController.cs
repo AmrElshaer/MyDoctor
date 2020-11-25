@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.IRepository;
@@ -21,15 +22,23 @@ namespace MyDoctor.Areas.Admin.Controllers
             return View(countries);
         }
         public async Task<IActionResult> CreateEdit(Country country) {
-            if (country.Id > 0)
+            if (ModelState.IsValid)
             {
-                await _countryRepository.UpdateAsync(country);
-                AddMessage("Country Update Success", "Message", true);
+                if (country.Id > 0)
+                {
+                    await _countryRepository.UpdateAsync(country);
+                    AddMessage("Country Update Success", true);
+                }
+                else
+                {
+                    await _countryRepository.InsertAsync(country);
+                    AddMessage("Country Create Success", true);
+                }
             }
-            else { 
-                  await  _countryRepository.InsertAsync(country);
-                 AddMessage("Country Create Success", "Message",true);
+            else {
+                AddError(ModelState);
             }
+            
                
             return RedirectToAction(nameof(Index));
         }
@@ -38,13 +47,13 @@ namespace MyDoctor.Areas.Admin.Controllers
             try
             {
                 await _countryRepository.DeleteAsync(id);
-                AddMessage("Country Delete Success", "Message", true);
+                AddMessage("Country Delete Success", true);
 
 
             }
             catch (Exception e)
             {
-                AddMessage("Country Delete Failed", "Message");
+                AddMessage("Country Delete Failed");
 
             }
             return RedirectToAction(nameof(Index));

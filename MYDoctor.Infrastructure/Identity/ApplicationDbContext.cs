@@ -15,7 +15,11 @@ namespace MYDoctor.Infrastructure.Identity
         {
             
         }
-      
+
+        public ApplicationDbContext()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new RoleConfiguration());

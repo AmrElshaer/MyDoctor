@@ -34,12 +34,15 @@ namespace MyDoctor.Areas.Admin.Controllers
                 try
                 {
                     await _diseasesRepository.CreateEdit(disease);
-                    AddMessage("Save Disease Is success-ful",isSuccess:true);
+                    AddMessage("Save Disease Is success-ful", isSuccess: true);
                 }
                 catch (Exception e)
                 {
                     AddMessage("Save Disease Is Not success-ful");
                 }
+            }
+            else {
+                AddError(ModelState);
             }
             return RedirectToAction(nameof(Index));
         }

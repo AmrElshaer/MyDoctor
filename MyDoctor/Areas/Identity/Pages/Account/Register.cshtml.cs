@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using MYDoctor.Infrastructure.Identity;
 using MYDoctor.Core.Application.Common.Enum;
 using MYDoctor.Infrastructure.File;
+using System.Linq;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
@@ -18,21 +19,17 @@ namespace MyDoctor.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IHostingEnvironment _ihostEnv;
         private readonly IFileConfig _fileConfig;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
-
         public RegisterModel(
            IFileConfig fileConfig,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger)
+            SignInManager<ApplicationUser> signInManager
+           )
         {
             _fileConfig = fileConfig;
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
         }
 
         [BindProperty]
@@ -71,21 +68,37 @@ namespace MyDoctor.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
 
             {
-                string uniquename = _fileConfig.AddFile(Input.ImagePath,"images");
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, ImagePath=uniquename };
+
+                string uniquename = null;
+                if (Input.ImagePath!=null)
+                        _fileConfig.AddFile(Input.ImagePath, "images");
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, ImagePath = uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                
+
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-                    await  _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email),nameof(Roles.Client));
+                    await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email), nameof(Roles.Client));
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                else { 
+                      foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
+              
+            }
+            else {
+                ModelState.Values.Where(v => v.Errors.Any()).ToList().ForEach(a =>
+                {
+                    a.Errors.ToList().ForEach(err =>
+                    {
+                        ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                    });
+
+                });
+                
             }
 
             // If we got this far, something failed, redisplay form

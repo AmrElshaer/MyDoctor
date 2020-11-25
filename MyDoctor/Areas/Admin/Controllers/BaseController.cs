@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MyDoctor.Common;
 using MyDoctor.Models;
 
@@ -9,16 +11,20 @@ namespace MyDoctor.Areas.Admin.Controllers
     [Area(nameof(Admin))]
     public class BaseController : Controller
     {
-        protected void  AddMessage(string content,string key="Message",bool isSuccess=false)
+        protected void  AddMessage(string content,bool isSuccess=false)
         {
            
-            TempData.Put(key, new Message()
+            TempData.Put("Message", new Message()
             {
                 Content = content,
                 IsSuccess = isSuccess
             });
         }
-
+        protected void AddError(ModelStateDictionary modelState)
+        {
+            TempData.Put("Error",modelState.Values.Where(v=>v.Errors.Any()).Select(a=>new Error {
+                ErrorMessages=a.Errors.Select(v=>v.ErrorMessage)}));
+        }
         protected void WorkSheetExcelStyle(IXLWorksheet worksheet)
         {
             worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;

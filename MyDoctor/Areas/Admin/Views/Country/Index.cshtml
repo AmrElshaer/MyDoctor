@@ -1,9 +1,4 @@
 ﻿@model IEnumerable<Country>
-
-@{
-    await Html.RenderPartialAsync("_Message");
-
-}
 <!--**********************************
           Content body start
       ***********************************-->
@@ -20,6 +15,7 @@
     <!-- row -->
 
     <div class="container-fluid">
+        @await Html.PartialAsync("_Message")
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -31,7 +27,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -39,16 +35,16 @@
                         <div class="active-member">
                             <div class="table-responsive">
                                 <table class="table table-xs mb-0">
-                                   
+
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
                                             <tr>
 
                                                 <td>
-                                                   @item.Name
+                                                    @item.Name
                                                 </td>
-                                               
+
                                                 <td>
 
                                                     <button class="btn btn-outline-light" onclick="editCategory({Id:@item.Id,Name:'@item.Name'})" data-toggle="modal" data-target="#exampleModal"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
@@ -58,7 +54,7 @@
                                                         <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
                                                     </form>
                                                     <button type="button" class="btn mb-1 btn-flat btn-outline-light" data-toggle="modal" data-target="#Cities_@item.Id"><img src="~/Content/img/home.svg" style="max-width:25px" /></button>
-                                                    <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#CreateEditCity" onclick="AddCity(@item.Id)"><img src="~/Content/img/plus.svg" style="max-width:25px"  /><span class="ml-2">City</span></button>
+                                                    <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#CreateEditCity" onclick="AddCity(@item.Id)"><img src="~/Content/img/plus.svg" style="max-width:25px" /><span class="ml-2">City</span></button>
                                                     <section>
                                                         @await Html.PartialAsync("_Cities", (item.Cities as IEnumerable<City>, item.Id))
                                                     </section>
