@@ -9,6 +9,7 @@ Project is created with:
 * SignalR
 * FrontEnd(Html,Css,Js,Jquery,Bootstrap)
 * C#
+* Fluent Validation
 
 ## Pattern and Architecture
 Project is created with:
