@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MYDoctor.Core.Application.Common.Search;
-
+using MYDoctor.Core.Application.ViewModel;
 using MYDoctor.Core.Domain.Entities;
 
 namespace MYDoctor.Core.Application.IRepository
@@ -11,5 +11,7 @@ namespace MYDoctor.Core.Application.IRepository
         SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter);
 
         Task CreateEdit(RelativeofBeatyandhealthy category);
+       
+        Task<RelativeBeatyandhealthyViewModel> GetRelativeCategoryAsync(int id, int numberRelated);
     }
 }

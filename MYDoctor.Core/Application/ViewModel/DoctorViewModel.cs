@@ -15,7 +15,6 @@ namespace MYDoctor.Core.Application.ViewModel
             this.Doctors = doctors;
             this.DoctorSearch = doctorSearch;
         }
-        public IEnumerable<Doctor> Doctors { get; set; }
         public DoctorSearch DoctorSearch { get; set; }
     }
 }

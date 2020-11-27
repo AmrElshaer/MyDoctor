@@ -1,0 +1,89 @@
+﻿@using MYDoctor.Core.Application.ViewModel
+@model RelativeBeatyandhealthyViewModel
+@{
+
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
+}
+<!--**********************************
+          Content body start
+      ***********************************-->
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.RelativeofBeatyandhealthy.Address</a></li>
+            </ol>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+
+
+        <!--Start Slider-->
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">@Model.RelativeofBeatyandhealthy.Address</h4>
+                        <div class="basic-list-group">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <img class="img-fluid" src="@Model.RelativeofBeatyandhealthy.ImageOrVideo" />
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">Indications</h5><small class="text-muted">@Model.RelativeofBeatyandhealthy.CreateDate.Value.ToShortDateString()</small>
+                                    </div>
+                                    <p class="mb-1">@Model.RelativeofBeatyandhealthy.Subject.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            @foreach (var relaiveCategory in Model.RelativeCategories)
+            {
+                <div class="col-md-12 col-lg-3">
+
+                    <div class="card">
+                        <img class="img-fluid" src="@relaiveCategory.ImageOrVideo" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">@relaiveCategory.Address</h5>
+                            <h6 class="mb-2 badge @badges[random.Next(0,(badges.Length-1))]">@relaiveCategory.BeatyandHealthy.Category</h6>
+                            <p class="card-text">@relaiveCategory.Subject.MaxString(100, String.Empty)</p>
+                            <a asp-controller="RelativesCategory" asp-route-id="@relaiveCategory.Id" asp-action="Details" class="card-link float-right"><small>See</small></a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            }
+        </div>
+        <!--End Slider-->
+        <!--Start Department-->
+        @await Html.PartialAsync("_Category", Model.Categories.ToList())
+        <!--End Department-->
+        <!--Start Relative Department-->
+        @await Html.PartialAsync("_Medicin", Model.Medicins.ToList())
+        <!--End Relative Department-->
+        <!--Start Disease-->
+        @await Html.PartialAsync("_Disease", Model.Diseases.ToList())
+        <!--End  Disease-->
+        <!--Start Doctor-->
+        @await Html.PartialAsync("_Doctor", Model.Doctors.ToList())
+        <!--End  Disease-->
+
+    </div>
+
+
+</div>
+
+<!--**********************************
+    Content body end
+***********************************-->

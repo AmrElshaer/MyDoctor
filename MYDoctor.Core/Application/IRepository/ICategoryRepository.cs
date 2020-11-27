@@ -1,6 +1,6 @@
 ﻿
 using System.Threading.Tasks;
-using System;
+using System.Collections.Generic;
 using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
@@ -13,7 +13,7 @@ namespace MYDoctor.Core.Application.IRepository
         SearchResult<BeatyandHealthy> GetSearchResult(SearchParamter searchParamter);
         Task CreateEdit(BeatyandHealthy category);
         Task<BaseViewModel> GetBoardViewModel(int pageSize);
-
+        Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval);
 
     }
 }

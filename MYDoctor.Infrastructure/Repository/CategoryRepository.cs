@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,21 @@ namespace MYDoctor.Infrastructure.Repository
         
         public CategoryRepository(ApplicationDbContext context) : base(context)
         {}
+        public async Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval) {
+            var categories =await GetAll(c=>c.Category.ToLower().Contains(searchval)).Select(c=>new GeneralSearchResult{Controller="BeatyandHealthies",Action="Details",Id=c.Id,Image=c.Image,Title=c.Category}).ToListAsync();
+            var relativeofBeatyandhealthies =await _context.RelativeofBeatyandhealthy.Where(c=>c.Address.ToLower().Contains(searchval)).Select(r=>new GeneralSearchResult() {Controller="RelativesCategory",Action="Details",Id=r.Id,Image=r.ImageOrVideo,Title=r.Address,Content=r.Subject.Substring(0,50) }).ToListAsync();
+            var doctors =await _context.Doctor.Where(c=>c.Name.ToLower().Contains(searchval)).Select(d=>new GeneralSearchResult() { Controller="Doctor",Action="Profile",Image= $"/images/{d.ImagePath}",Title=d.Name,Id=d.Id,Content=d.Others.Substring(0, 50) }).ToListAsync();
+            var medicins =await _context.Medicin.Where(c=>c.Name.ToLower().Contains(searchval)).Select(m=>new GeneralSearchResult() {Controller="Medicins",Image=m.Image,Title=m.Name,Action="Details",Id=m.Id,Content=m.Indications.Substring(0, 50) }).ToListAsync();
+            var diseases =await _context.Disease.Where(c=>c.DiseaseName.ToLower().Contains(searchval)).Select(d=>new GeneralSearchResult() { Controller="Diseases",Action="Details",Id=d.Id,Image=d.Image,Title=d.DiseaseName,Content=d.Subject.Substring(0,50)}).ToListAsync();
+            var resuilt = new List<GeneralSearchResult>();
+            resuilt.AddRange(categories);
+            resuilt.AddRange(doctors);
+            resuilt.AddRange(medicins);
+            resuilt.AddRange(diseases);
+            resuilt.AddRange(relativeofBeatyandhealthies);
+            return resuilt;
 
+        }
         public SearchResult<BeatyandHealthy> GetSearchResult(SearchParamter searchParamter)
         {
             var searchHits = GetAll(x =>

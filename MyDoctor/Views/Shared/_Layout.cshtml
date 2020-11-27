@@ -70,15 +70,11 @@
                 </div>
                 <div class="header-left">
                     <div class="input-group icons">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
-                        </div>
-                        <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
-                        <div class="drop-down animated flipInX d-md-none">
-                            <form action="#">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </form>
-                        </div>
+                        <input type="search" id="GeneralSearch" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
+
+                    </div>
+                    <div id="SearchContent">
+
                     </div>
                 </div>
                 <div class="header-right">
@@ -357,6 +353,28 @@
     <script src="/Content/js/gleek.js"></script>
     <script src="/Content/js/styleSwitcher.js"></script>
     <script src="/Content/js/dashboard-1.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('#GeneralSearch').keyup(() => {
+                var searchvalue = $('#GeneralSearch').val();
+                
+                    $.ajax({
+                        url: `/DashBoard/GeneralSearch?searchVal=${searchvalue}`,
+                        success: function (data) {
+                            $('#SearchContent').html(data);
+                        },
+                        error: function () {
+                            console.log("error");
+                        }
+
+
+                    });
+                
+               
+
+            });
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 

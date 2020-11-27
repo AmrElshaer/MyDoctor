@@ -1,0 +1,31 @@
+﻿@model IEnumerable<MYDoctor.Core.Application.Common.Search.GeneralSearchResult>
+@if (Model!=null&&Model.Any())
+{
+        <div class="dropdown-menu show">
+            <div class="dropdown-content-body">
+                <ul id="SearchContent">
+                    @foreach (var item in Model)
+                    {
+                        <li>
+                            <a href="/@item.Controller/@item.Action/@item.Id">
+                                <img class="float-left mr-3 avatar-img" src="@item.Image" alt="">
+                                <div class="notification-content">
+                                    <div class="notification-heading">@item.Title</div>
+                                    @if (!string.IsNullOrEmpty(item.Content))
+                                    {
+                                        <div class="notification-text">@item.Content</div>
+                                    }
+
+                                </div>
+                            </a>
+                        </li>
+
+                    }
+
+                </ul>
+
+            </div>
+        </div>
+}
+
+
