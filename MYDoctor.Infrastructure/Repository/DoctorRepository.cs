@@ -7,8 +7,8 @@ using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Infrastructure.File;
+using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
-using MYDoctor.Infrastructure.Repository;
 namespace MYDoctor.Infrastructure.Repository
 {
     public class DoctorRepository:BaseRepository<Doctor>,IDoctorRepository
@@ -77,13 +77,7 @@ namespace MYDoctor.Infrastructure.Repository
                 d => d.OrderByDescending(a => a.Id),
                    d=>d.Category
                 );
-            var subset = searchHits.Skip((searchParamter.Page.Value - 1) * searchParamter.PageSize).Take(searchParamter.PageSize);
-            var count = searchHits.Count();
-            var searchResult = new SearchResult<Doctor>()
-            {
-                ItemsList = subset,
-                SearchParamter=searchParamter
-            };
+            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
         public async Task DeleteDoctorAsync(int id)

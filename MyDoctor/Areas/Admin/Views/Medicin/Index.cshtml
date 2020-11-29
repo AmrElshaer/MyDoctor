@@ -114,7 +114,7 @@
                                                 </td>
                                                 <td>
 
-                                                    <button class="btn btn-outline-light" onclick="editCategory('@item.ToJson()')"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                                    <button class="btn btn-outline-light" onclick="editCategory('@item.ToJson("Medicins")')"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
                                                     <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
                                                         <input name="id" value="@item.Id" style="display: none" />
                                                         <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
