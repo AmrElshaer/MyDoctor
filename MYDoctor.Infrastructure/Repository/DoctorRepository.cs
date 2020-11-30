@@ -15,11 +15,13 @@ namespace MYDoctor.Infrastructure.Repository
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFileConfig _fileConfig;
+        private readonly ITableTrackNotification _tableTrackNotification;
 
-        public DoctorRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager,IFileConfig fileConfig) :base(context)
+        public DoctorRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification ,UserManager<ApplicationUser> userManager,IFileConfig fileConfig) :base(context)
         {
             _userManager = userManager;
             _fileConfig = fileConfig;
+            _tableTrackNotification = tableTrackNotification;
         }
         public async Task<IEnumerable<Doctor>> GetDoctorsAsync(DoctorSearch doctorSearch) {
             var doctors = await GetAll(
@@ -41,10 +43,11 @@ namespace MYDoctor.Infrastructure.Repository
             {
                 await InsertAsync(doctor);
                 await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(doctor.Email), "Doctor");
-                
+                await _tableTrackNotification.InsertAsync(doctor.Name, doctor.Others, "Doctor", "Profile", $"/images/${doctor.ImagePath}", doctor.Id);
+
             }
 
-            
+
         }
 
         private async Task EditDoctor(Doctor doctor)

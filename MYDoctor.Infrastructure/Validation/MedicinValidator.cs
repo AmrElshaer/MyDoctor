@@ -14,12 +14,6 @@ namespace MYDoctor.Infrastructure.Validation
             RuleFor(m=>m.Name).NotEmpty();
             RuleFor(m => m.Price).NotEmpty();
             RuleFor(m=>m.Indications).NotEmpty();
-            RuleFor(m => m).Custom((medicin,context)=> {
-                if (!medicin.DiseaseMedicins.Any())
-                {
-                    context.AddFailure(nameof(DiseaseMedicin),"You Must Select Disease Related for this Medicin");
-                }
-            });
         }
     }
 }

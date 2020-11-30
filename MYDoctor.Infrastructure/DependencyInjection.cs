@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Infrastructure.File;
 using MYDoctor.Infrastructure.Identity;
+using MYDoctor.Infrastructure.Notification;
 using MYDoctor.Infrastructure.Repository;
 
 namespace MYDoctor.Infrastructure
@@ -15,10 +16,11 @@ namespace MYDoctor.Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("MYDoctor.Infrastructure")));
-           
             //Inject Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
            .AddEntityFrameworkStores<ApplicationDbContext>();
+            //SignalR Config
+            services.AddSignalR();
             //Inject Repository
             services.AddScoped<IDoctorRepository,DoctorRepository>();
             services.AddScoped<IDiseasesRepository, DiseasesRepository>();
@@ -27,6 +29,8 @@ namespace MYDoctor.Infrastructure
             services.AddScoped<IMedicinRepository, MedicinRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
+            services.AddScoped<ITableTrackNotification, TableTrackNotification>();
+            services.AddScoped<ITableTrackUserRepository, TableTrackUserRepository>();
             services.AddTransient<IFileConfig, FileConfig>();
             return services;
         }

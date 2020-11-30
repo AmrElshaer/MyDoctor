@@ -168,7 +168,7 @@
 
             });
             if (disease.DiseaseMedicins) {
-                $("input[name='Diseases']").each(function () {
+                $("input[name='DiseaseMedicins']").each(function () {
                     var diseasesId = disease.DiseaseMedicins.map(dm => dm.DiseaseId);
                     if (diseasesId.includes(+$(this).val())) {
                         console.log('checked');

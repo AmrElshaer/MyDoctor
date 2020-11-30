@@ -75,7 +75,6 @@ namespace MYDoctor.Infrastructure.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
 
@@ -91,7 +90,7 @@ namespace MYDoctor.Infrastructure.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                
                 throw;
             }
 

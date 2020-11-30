@@ -16,8 +16,11 @@ namespace MYDoctor.Infrastructure.Repository
 {
     public class DiseasesRepository:BaseRepository<Disease>,IDiseasesRepository
     {
-        public DiseasesRepository(ApplicationDbContext context) : base(context)
+        private readonly ITableTrackNotification _tableTrackNotification;
+
+        public DiseasesRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification) : base(context)
         {
+            _tableTrackNotification = tableTrackNotification;
         }
 
         public async Task CreateEdit(Disease disease)
@@ -31,8 +34,10 @@ namespace MYDoctor.Infrastructure.Repository
             {
                 disease.CreateDate = DateTime.Now;
                 await InsertAsync(disease);
+                await _tableTrackNotification.InsertAsync(disease.DiseaseName, disease.Subject, "Diseases", "Details", disease.Image, disease.Id);
+
             }
-            
+
         }
 
         public async Task<BaseViewModel> GetDiseaseAsync(int id, int numberRelated)

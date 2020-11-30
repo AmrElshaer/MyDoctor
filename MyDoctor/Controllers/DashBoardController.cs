@@ -1,20 +1,25 @@
-﻿
-using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MYDoctor.Core.Application.Common.Search;
+using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.IRepository;
-using Newtonsoft.Json;
+using MYDoctor.Infrastructure.Notification;
 
 namespace MyDoctor.Controllers
 {
     public class DashBoardController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
-        public DashBoardController(ICategoryRepository categoryRepository)
+        private readonly ITableTrackUserRepository _tableTrackUserRepository;
+        private readonly ITableTrackNotification _tableTrackNotification;
+
+        public DashBoardController(ICategoryRepository categoryRepository,ITableTrackUserRepository tableTrackUserRepository,ITableTrackNotification tableTrackNotification)
         {
             _categoryRepository = categoryRepository;
+            _tableTrackUserRepository = tableTrackUserRepository;
+            _tableTrackNotification = tableTrackNotification;
         }
         public async Task<IActionResult>  Index()
         {
@@ -25,6 +30,14 @@ namespace MyDoctor.Controllers
         {
                 var result =await _categoryRepository.GeneralSearchAsync(searchVal);
                 return PartialView("_GeneralSearchContent",result);
+        }
+        public async Task UpdateUserTrack() 
+        {
+
+            if (User.Identity.IsAuthenticated)
+            {
+               await  _tableTrackUserRepository.RefreshUserNofificationAsync(User.Identity.Name);
+            }
         }
     }
 }

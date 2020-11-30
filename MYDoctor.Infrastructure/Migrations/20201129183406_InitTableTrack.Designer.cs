@@ -4,14 +4,16 @@ using MYDoctor.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MYDoctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201129183406_InitTableTrack")]
+    partial class InitTableTrack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +45,9 @@ namespace MYDoctor.Infrastructure.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "1", ConcurrencyStamp = "fbd3da17-45bd-44aa-8542-cdc6d74ccbe1", Name = "Admin", NormalizedName = "Admin" },
-                        new { Id = "2", ConcurrencyStamp = "b8662be8-e7bc-4616-a842-1198055486e7", Name = "Client", NormalizedName = "Client" },
-                        new { Id = "3", ConcurrencyStamp = "1aa5bcae-4ef2-45ee-911b-fed7bd80f9b5", Name = "Doctor", NormalizedName = "Doctor" }
+                        new { Id = "1", ConcurrencyStamp = "5d9c184d-10ac-4202-8e57-229e5e534679", Name = "Admin", NormalizedName = "Admin" },
+                        new { Id = "2", ConcurrencyStamp = "4a16a557-5d02-41b8-a140-38324280fcbe", Name = "Client", NormalizedName = "Client" },
+                        new { Id = "3", ConcurrencyStamp = "6eb26f52-779d-4f39-9bab-3e39be18b2d8", Name = "Doctor", NormalizedName = "Doctor" }
                     );
                 });
 
@@ -347,21 +349,6 @@ namespace MYDoctor.Infrastructure.Migrations
                     b.ToTable("TableTracks");
                 });
 
-            modelBuilder.Entity("MYDoctor.Core.Domain.Entities.TableTrackUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("LastUpdateSee");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TableTrackUsers");
-                });
-
             modelBuilder.Entity("MYDoctor.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -415,7 +402,7 @@ namespace MYDoctor.Infrastructure.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "1", AccessFailedCount = 0, ConcurrencyStamp = "6f5aae16-6473-405c-86de-412406152b05", Email = "Admin@Admin.com", EmailConfirmed = false, LockoutEnabled = true, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEK3EXpyIq4dyHCtOmIUzkx332PdXiL6cVHIxskomi/gQ55j10oY6k/g/qTJ5q8T2Qg==", PhoneNumberConfirmed = false, SecurityStamp = "baec1316-a2f1-48d5-a02e-c248404ece61", TwoFactorEnabled = false, UserName = "Admin@Admin.com" }
+                        new { Id = "1", AccessFailedCount = 0, ConcurrencyStamp = "63db1712-6a75-4987-a333-4bba29a5cab1", Email = "Admin@Admin.com", EmailConfirmed = false, LockoutEnabled = true, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAECMhLKatlK2bGaSClhHK1GdPBpZSdafSTWh/m/o+RwUuS//o+ClJtweboXddmSySOQ==", PhoneNumberConfirmed = false, SecurityStamp = "7eaad654-4b8c-442d-a81a-64a198f16c3c", TwoFactorEnabled = false, UserName = "Admin@Admin.com" }
                     );
                 });
 

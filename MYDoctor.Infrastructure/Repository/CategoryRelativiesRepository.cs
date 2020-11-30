@@ -15,8 +15,11 @@ namespace MYDoctor.Infrastructure.Repository
 {
     public class CategoryRelativiesRepository:BaseRepository<RelativeofBeatyandhealthy>,ICategoryRelativiesRepository
     {
-        public CategoryRelativiesRepository(ApplicationDbContext context) : base(context)
+        private readonly ITableTrackNotification _tableTrackNotification;
+
+        public CategoryRelativiesRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification) : base(context)
         {
+            _tableTrackNotification = tableTrackNotification;
         }
 
         public SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter)
@@ -48,8 +51,7 @@ namespace MYDoctor.Infrastructure.Repository
             {
                 category.CreateDate = DateTime.Now.Date;
                 await InsertAsync(category);
-
-
+                await _tableTrackNotification.InsertAsync(category.Address, category.Subject, "RelativesCategory", "Details", category.ImageOrVideo, category.Id);
             }
 
 

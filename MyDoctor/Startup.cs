@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MYDoctor.Infrastructure;
+using MYDoctor.Infrastructure.Notification;
+
 namespace MyDoctor
 {
     public class Startup
@@ -45,7 +47,10 @@ namespace MyDoctor
             
 
             app.UseAuthentication();
-
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<TablesTrackerHup>("/tablesTrackerHup");
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "adminarea", template: "{area:exists}/{controller=Diseases}/{action=Index}/{id?}");

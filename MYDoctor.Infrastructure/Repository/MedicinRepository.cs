@@ -16,10 +16,11 @@ namespace MYDoctor.Infrastructure.Repository
 {
     public class MedicinRepository:BaseRepository<Medicin>,IMedicinRepository
     {
-      
-        public MedicinRepository(ApplicationDbContext context) : base(context)
+        private readonly ITableTrackNotification _tableTrackNotification;
+
+        public MedicinRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification) : base(context)
         {
-           
+            _tableTrackNotification = tableTrackNotification;
         }
 
         public SearchResult<Medicin> GetSearchResult(SearchParamter searchParamter)
@@ -71,17 +72,18 @@ namespace MYDoctor.Infrastructure.Repository
                 //Update Only Simple Properties
                 _context.Entry(medicine).CurrentValues.SetValues(medicin);
                 await _context.SaveChangesAsync();
-               
-
+                
             }
             else
             {
                 medicin.CreateDate = DateTime.Now.Date;
                 await InsertAsync(medicin);
+                //Add To Notification Table
+                await _tableTrackNotification.InsertAsync(medicin.Name, medicin.Indications, "Medicins", "Details", medicin.Image, medicin.Id);
 
 
             }
-           
+
         }
         public async Task<IEnumerable<Medicin>> GEtMedicinsAsync(MedicinSearch medicinSearch) {
             var medicins = await GetAll(

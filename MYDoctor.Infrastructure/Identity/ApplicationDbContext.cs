@@ -40,6 +40,8 @@ namespace MYDoctor.Infrastructure.Identity
         public DbSet<Medicin> Medicin { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<TableTrack> TableTracks { get; set; }
         public DbSet<DiseaseMedicin> DiseaseMedicins { get; set; }
+        public DbSet<TableTrackUser> TableTrackUsers { get; set; }
     }
 }

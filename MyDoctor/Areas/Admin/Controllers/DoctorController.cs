@@ -41,7 +41,7 @@ namespace MyDoctor.Areas.Admin.Controllers
                     await _doctorRepository.CreateEdit(doctor);
                     AddMessage("Doctor Save Success-full", true);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
 
                     AddMessage("Error When Save Doctor");

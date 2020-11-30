@@ -29,16 +29,13 @@ namespace MyDoctor.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateEdit(Medicin medicin)
         {
-
+            ValidateDiseasSelect(medicin);
             if (ModelState.IsValid)
             {
                 try
                 {
 
-                    if (Request.Form.TryGetValue("Diseases", out var diseasSelect))
-                    {
-                       diseasSelect.ToList().ForEach(d=> medicin.DiseaseMedicins.Add(new DiseaseMedicin() { DiseaseId =Convert.ToInt32(d)}));
-                    }
+
                     await _medicinRepository.CreateEdit(medicin);
                     AddMessage("Medicin Save Success-full", true);
 
@@ -60,7 +57,18 @@ namespace MyDoctor.Areas.Admin.Controllers
 
         }
 
-        
+        private void ValidateDiseasSelect(Medicin medicin)
+        {
+            if (Request.Form.TryGetValue("DiseaseMedicins", out var diseasSelect))
+            {
+                diseasSelect.ToList().ForEach(d => medicin.DiseaseMedicins.Add(new DiseaseMedicin() { DiseaseId = Convert.ToInt32(d) }));
+            }
+            else
+            {
+                ModelState.AddModelError("Disease", "You Must Select Disease Related for this Medicin");
+            }
+        }
+
 
         public async Task<ActionResult> Delete(int id)
         {
