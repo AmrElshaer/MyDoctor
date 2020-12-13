@@ -12,6 +12,8 @@ using MYDoctor.Infrastructure.Identity;
 using MYDoctor.Core.Application.Common.Enum;
 using MYDoctor.Infrastructure.File;
 using System.Linq;
+using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
@@ -19,17 +21,21 @@ namespace MyDoctor.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserProfileRepository _userProfileRepository;
         private readonly IFileConfig _fileConfig;
         private readonly UserManager<ApplicationUser> _userManager;
+
         public RegisterModel(
            IFileConfig fileConfig,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<ApplicationUser> signInManager,
+            IUserProfileRepository userProfileRepository
            )
         {
             _fileConfig = fileConfig;
             _userManager = userManager;
             _signInManager = signInManager;
+            _userProfileRepository = userProfileRepository;
         }
 
         [BindProperty]
@@ -66,12 +72,8 @@ namespace MyDoctor.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
-
             {
-
-                string uniquename = null;
-                if (Input.ImagePath!=null)
-                        _fileConfig.AddFile(Input.ImagePath, "images");
+                string uniquename = SaveUserImage();
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, ImagePath = uniquename };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -79,30 +81,32 @@ namespace MyDoctor.Areas.Identity.Pages.Account
                 {
                     await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(Input.Email), nameof(Roles.Client));
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _userProfileRepository.InsertAsync(Input.Email,uniquename);
                     return LocalRedirect(returnUrl);
                 }
-                else { 
-                      foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
-              
+                result.Errors.ToList().ForEach(error => ModelState.AddModelError(string.Empty, error.Description));
             }
             else {
-                ModelState.Values.Where(v => v.Errors.Any()).ToList().ForEach(a =>
-                {
-                    a.Errors.ToList().ForEach(err =>
-                    {
-                        ModelState.AddModelError(string.Empty, err.ErrorMessage);
-                    });
-
-                });
-                
+                AddError();
             }
-
-            // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private string SaveUserImage() {
+            if (Input.ImagePath == null)
+                return null;
+            return _fileConfig.AddFile(Input.ImagePath, "images");
+            
+        }
+        private void AddError() {
+            ModelState.Values.Where(v => v.Errors.Any()).ToList().ForEach(a =>
+            {
+                a.Errors.ToList().ForEach(err =>
+                {
+                    ModelState.AddModelError(string.Empty, err.ErrorMessage);
+                });
+
+            });
+
         }
     }
 }

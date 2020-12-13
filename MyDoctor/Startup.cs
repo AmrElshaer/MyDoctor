@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MYDoctor.Infrastructure;
+using MYDoctor.Infrastructure.Message;
 using MYDoctor.Infrastructure.Notification;
 
 namespace MyDoctor
@@ -44,12 +45,11 @@ namespace MyDoctor
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            
-
             app.UseAuthentication();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<TablesTrackerHup>("/tablesTrackerHup");
+                routes.MapHub<MessageHup>("/messageHup");
             });
             app.UseMvc(routes =>
             {

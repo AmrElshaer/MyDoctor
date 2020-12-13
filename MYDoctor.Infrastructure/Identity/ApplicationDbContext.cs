@@ -31,6 +31,8 @@ namespace MYDoctor.Infrastructure.Identity
             builder.ApplyConfiguration(new RelativeofBeatyandhealthyConfiguration());
             builder.ApplyConfiguration(new DiseaseMedicinConfiguration());
             builder.ApplyConfiguration(new CityConfiguration());
+            builder.ApplyConfiguration(new UserProfileConfiguration());
+            builder.ApplyConfiguration(new InboxMessageConfiguration());
             base.OnModelCreating(builder);
         }
         public DbSet<Disease> Disease { get; set; }
@@ -43,5 +45,7 @@ namespace MYDoctor.Infrastructure.Identity
         public DbSet<TableTrack> TableTracks { get; set; }
         public DbSet<DiseaseMedicin> DiseaseMedicins { get; set; }
         public DbSet<TableTrackUser> TableTrackUsers { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<InboxMessage> InboxMessages { get; set; }
     }
 }

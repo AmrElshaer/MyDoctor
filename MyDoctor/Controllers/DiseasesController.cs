@@ -29,10 +29,13 @@ namespace MyDoctor.Controllers
         }
       
         // GET: Diseases/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-         
-            var disease = await _diseasesRepository.GetDiseaseAsync(id,4);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var disease = await _diseasesRepository.GetDiseaseAsync(id.Value,4);
             if (disease == null) return NotFound();
 
             return View(disease);

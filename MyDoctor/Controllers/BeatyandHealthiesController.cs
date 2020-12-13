@@ -13,12 +13,14 @@ namespace MyDoctor.Controllers
             _categoryRepository = categoryRepository;
             
         }
-
-
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            
-            var beatyandHealthy = await _categoryRepository.GetCategoryAsync(id,4);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var beatyandHealthy = await _categoryRepository.GetCategoryAsync(id.Value,4);
             if (beatyandHealthy == null) return NotFound();
             return View(beatyandHealthy);
         }

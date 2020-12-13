@@ -18,8 +18,12 @@ namespace MyDoctor.Controllers
             return View(new MedicinViewModel(medicins, medicinSearch));
 
         }
-        public async Task<IActionResult> Details(int id) {
-            var medicin = await _medicinRepository.GetMedicinAsync(id,4);
+        public async Task<IActionResult> Details(int? id) {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var medicin = await _medicinRepository.GetMedicinAsync(id.Value,4);
             return View(medicin);
         
         }

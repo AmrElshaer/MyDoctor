@@ -1,0 +1,82 @@
+﻿@using MYDoctor.Core.Domain.Common.Enum
+@using System.Security.Claims
+@model IEnumerable<InboxMessageViewModel>
+@{
+    var userChat = Context.Request.Query["fromName"];
+    var imagePath = User.FindFirstValue(Claims.ImagePath.ToString());
+}
+<!--**********************************
+           Content body start
+       ***********************************-->
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Message</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="email-left-box">
+                            <div class="mail-list mt-4">
+                                <a asp-controller="Messages" asp-action="Index" asp-area=""  class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>Inbox</b></a>
+                                <a asp-controller="Messages" asp-action="SentMessage" asp-area="" class="list-group-item border-0 p-r-0"><i class="fa fa-paper-plane font-18 align-middle mr-2"></i>Sent</a>
+                            </div>
+                            <h5 class="mt-5 m-b-10">Categories</h5>
+                            <div class="list-group mail-list">
+                                <a asp-controller="Messages" asp-action="Support" asp-area="" class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>Support</a>
+                            </div>
+                        </div>
+                        <div class="email-right-box">
+                            <div class="read-content">
+                                <div id="CurrentChat">
+                                    @foreach (var message in Model)
+                                    {
+                                        <div class="media pt-5">
+                                            <img class="mr-3 rounded-circle" style="max-width:40px" src="@message.FromImage">
+                                            <div class="media-body">
+                                                <h5 class="m-b-3">@message.FromName</h5>
+                                                <p class="m-b-2">@message.CreateDate</p>
+                                            </div>
+
+                                        </div>
+                                        <p>@message.Content</p>
+                                    }
+                                </div>
+
+
+                                <div class="form-group p-t-15">
+                                    <input style="display:none" id="ToUser" value="@userChat" />
+                                    <input style="display:none" id="ImagePath" value="@imagePath" />
+                                    <input style="display:none" id="FromUser" value="@User.Identity.Name" />
+                                    <textarea class="w-100 p-20 l-border-1" id="Content" cols="30" rows="5" placeholder="It's really an amazing.I want to know more about it..!"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="text-right">
+                                <button class="btn btn-primaryw-md m-b-30" type="button" id="SendButton">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+@section Scripts{
+    <script src="~/js/SendChat.js"></script>
+    <script src="~/js/ReciveChat.js"></script>
+}
+<!--**********************************
+    Content body end
+***********************************-->

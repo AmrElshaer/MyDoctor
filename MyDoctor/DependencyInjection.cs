@@ -13,11 +13,12 @@ namespace MyDoctor
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             
-            services.ConfigureApplicationCookie(o => o.LoginPath = "/identity/Account/Login");
+           
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>()).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
             //Inject Claim Factory
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, DoctorClaimsPrincipalFactory>();
             return services;

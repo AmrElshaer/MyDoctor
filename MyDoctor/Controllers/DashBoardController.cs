@@ -1,25 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.IRepository;
-using MYDoctor.Infrastructure.Notification;
-
 namespace MyDoctor.Controllers
 {
     public class DashBoardController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly ITableTrackUserRepository _tableTrackUserRepository;
-        private readonly ITableTrackNotification _tableTrackNotification;
+        private readonly IInboxMessageRepsitory _inboxMessageRepsitory;
 
-        public DashBoardController(ICategoryRepository categoryRepository,ITableTrackUserRepository tableTrackUserRepository,ITableTrackNotification tableTrackNotification)
+        public DashBoardController(IInboxMessageRepsitory inboxMessageRepsitory,ICategoryRepository categoryRepository,ITableTrackUserRepository tableTrackUserRepository)
         {
             _categoryRepository = categoryRepository;
             _tableTrackUserRepository = tableTrackUserRepository;
-            _tableTrackNotification = tableTrackNotification;
+            _inboxMessageRepsitory = inboxMessageRepsitory;
+
+
         }
         public async Task<IActionResult>  Index()
         {
@@ -39,5 +35,13 @@ namespace MyDoctor.Controllers
                await  _tableTrackUserRepository.RefreshUserNofificationAsync(User.Identity.Name);
             }
         }
+        public async Task UpdateMessages() {
+            if (User.Identity.IsAuthenticated)
+            {
+                await _inboxMessageRepsitory.MakeMessagesSeeAsync(User.Identity.Name);
+            }
+        }
+
+
     }
 }

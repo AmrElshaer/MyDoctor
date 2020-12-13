@@ -17,11 +17,14 @@ namespace MYDoctor.Infrastructure
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("MYDoctor.Infrastructure")));
             //Inject Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-           .AddEntityFrameworkStores<ApplicationDbContext>();
-            //SignalR Config
-            services.AddSignalR();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.ConfigureApplicationCookie(o => {
+                o.LoginPath = new Microsoft.AspNetCore.Http.PathString("/identity/Account/Login");
+            });
+           
             //Inject Repository
+            services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            services.AddScoped<IInboxMessageRepsitory, InboxMessageRepsitory>();
             services.AddScoped<IDoctorRepository,DoctorRepository>();
             services.AddScoped<IDiseasesRepository, DiseasesRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -32,6 +35,8 @@ namespace MYDoctor.Infrastructure
             services.AddScoped<ITableTrackNotification, TableTrackNotification>();
             services.AddScoped<ITableTrackUserRepository, TableTrackUserRepository>();
             services.AddTransient<IFileConfig, FileConfig>();
+            //SignalR Config
+            services.AddSignalR();
             return services;
         }
     }

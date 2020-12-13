@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MYDoctor.Infrastructure.Notification
 {
    
-    public  class TablesTrackerHup:Hub,ITableTrackerHup
+    public  class TablesTrackerHup:Hub
     {
         private readonly IHubContext<TablesTrackerHup> _hubContext;
         private readonly ITableTrackNotification _tableTrackNotification;

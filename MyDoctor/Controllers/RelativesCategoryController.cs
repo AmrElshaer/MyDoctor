@@ -15,10 +15,13 @@ namespace MyDoctor.Controllers
         {
             _relativeCategoryRepository = categoryRelativiesRepository;
         }
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-
-            var beatyandHealthy = await _relativeCategoryRepository.GetRelativeCategoryAsync(id, 4);
+            if (id==null)
+            {
+                return NotFound();
+            }
+            var beatyandHealthy = await _relativeCategoryRepository.GetRelativeCategoryAsync(id.Value, 4);
             if (beatyandHealthy == null) return NotFound();
             return View(beatyandHealthy);
         }

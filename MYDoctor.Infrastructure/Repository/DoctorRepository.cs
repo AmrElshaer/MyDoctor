@@ -16,12 +16,13 @@ namespace MYDoctor.Infrastructure.Repository
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFileConfig _fileConfig;
         private readonly ITableTrackNotification _tableTrackNotification;
-
-        public DoctorRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification ,UserManager<ApplicationUser> userManager,IFileConfig fileConfig) :base(context)
+        private readonly IUserProfileRepository _userProfileRepository;
+        public DoctorRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification,IUserProfileRepository userProfileRepository ,UserManager<ApplicationUser> userManager,IFileConfig fileConfig) :base(context)
         {
             _userManager = userManager;
             _fileConfig = fileConfig;
             _tableTrackNotification = tableTrackNotification;
+            _userProfileRepository = userProfileRepository;
         }
         public async Task<IEnumerable<Doctor>> GetDoctorsAsync(DoctorSearch doctorSearch) {
             var doctors = await GetAll(
@@ -96,11 +97,14 @@ namespace MYDoctor.Infrastructure.Repository
 
         public async Task CreateEdit(Doctor doctor)
         {
-            if (doctor.Id >0)
+            if (doctor.Id > 0)
                 await EditDoctor(doctor);
             else
-              await RegisterDoctor(doctor);
-           
+            {
+                await RegisterDoctor(doctor);
+                await _userProfileRepository.InsertAsync(doctor.Email, doctor.ImagePath);
+
+            }
         }
     }
 }

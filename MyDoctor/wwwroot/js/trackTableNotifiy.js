@@ -4,7 +4,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/tablesTrackerHup")
 
 connection.on("notifiyTableTracker", function (listTableTracks) {
     $("#NotificationContent").html('');
-    $('#NumberOfNotification').html(listTableTracks.length);
+    $('#NumberOfNotification').html(listTableTracks.length == 0 ? "" : listTableTracks.length);
     if (listTableTracks.length==0) {
         $("#NotificationContent").append("You Have Last Update")
     }
