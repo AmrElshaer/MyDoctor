@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Infrastructure.File;
+using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
 using MYDoctor.Infrastructure.Notification;
 using MYDoctor.Infrastructure.Repository;
@@ -34,7 +36,14 @@ namespace MYDoctor.Infrastructure
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<ITableTrackNotification, TableTrackNotification>();
             services.AddScoped<ITableTrackUserRepository, TableTrackUserRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
             services.AddTransient<IFileConfig, FileConfig>();
+            //Inject Helper
+            services.AddTransient<IDoctorHelper, DoctorHelper>();
+            services.AddTransient<IDiseaseHelper,DiseaseHelper>();
+            services.AddTransient<IPostHelper, PostHelper>();
+            services.AddTransient<IMedicinHelper, MedicinHelper>();
+            services.AddTransient<IRelativeCategoryHelper, RelativeCategoryHelper>();
             //SignalR Config
             services.AddSignalR();
             return services;

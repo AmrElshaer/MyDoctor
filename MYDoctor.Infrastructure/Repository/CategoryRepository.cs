@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Application.ViewModel;
 using MYDoctor.Core.Domain.Entities;
@@ -15,10 +16,20 @@ namespace MYDoctor.Infrastructure.Repository
 {
     public class CategoryRepository:BaseRepository<BeatyandHealthy>,ICategoryRepository
     {
-        
-        
-        public CategoryRepository(ApplicationDbContext context) : base(context)
-        {}
+        private readonly IDoctorHelper _doctorHelper;
+        private readonly IDiseaseHelper _diseaseHelper;
+        private readonly IPostHelper _postHelper;
+        private readonly IMedicinHelper _medicinHelper;
+        private readonly IRelativeCategoryHelper _relativeCategoryHelper;
+
+        public CategoryRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper) : base(context)
+        {
+            _doctorHelper = doctorHelper;
+            _diseaseHelper = diseaseHelper;
+            _postHelper = postHelper;
+            _relativeCategoryHelper = relativeCategoryHelper;
+            _medicinHelper = medicinHelper;
+        }
         public async Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval) {
             var categories = await GetAll(c => c.Category.ToLower().Contains(searchval)).Select(c => new GeneralSearchResult(c.Id, "BeatyandHealthies", "Details", c.Category, c.Image,null)).ToListAsync();
             var relativeofBeatyandhealthies =await _context.RelativeofBeatyandhealthy.Where(c=>c.Address.ToLower().Contains(searchval)).Select(r=>new GeneralSearchResult(r.Id,"RelativesCategory","Details", r.Address,r.ImageOrVideo,r.Subject.Substring(0,50) )).ToListAsync();
@@ -48,16 +59,17 @@ namespace MYDoctor.Infrastructure.Repository
         public async Task<BaseViewModel> GetCategoryAsync(int categoryId, int numberRelated)
         {
 
-            var cateogry = await GetByIdAsync(categoryId, c => c.Diseases, c => c.Medicins, c => c.Doctors, c => c.RelativeofBeatyandhealthies);
+            var cateogry = await GetByIdAsync(categoryId, c => c.Diseases, c => c.Medicins, c => c.Doctors, c => c.RelativeofBeatyandhealthies,c=>c.Posts);
 
             var result = new BeatyandHealthViewModel()
             {
                 BeatyandHealthy = cateogry,
                 Categories = await GetAll(a => a.Id != categoryId).ToListAsync(),
-                Doctors =await GetRelativesDoctors(cateogry,numberRelated),
-                Medicins =await GetRelativesMedicins(cateogry,numberRelated),
-                Diseases = await GetRelativesDiseases(cateogry,numberRelated),
-                RelativeCategories =await GetRelativesCategories(cateogry,numberRelated)
+                Doctors = await _doctorHelper.GetRelativesDoctors(cateogry.Doctors, numberRelated, d => d.CategoryId != cateogry.Id),
+                Medicins = await _medicinHelper.GetRelativesMedicins(cateogry.Medicins, numberRelated, d => d.BeatyandHealthyId != cateogry.Id),
+                Diseases = await _diseaseHelper.GetRelativesDiseases(cateogry.Diseases, numberRelated, d => d.BeatyandHealthyId != cateogry.Id),
+                RelativeCategories = await _relativeCategoryHelper.GetRelativesCategory(cateogry.RelativeofBeatyandhealthies, numberRelated, d => d.BeatyandHealthId != cateogry.Id),
+                Posts = await _postHelper.GetRelativesPosts(cateogry.Posts, numberRelated, p => p.CategoryId != cateogry.Id)
             };
             return result;
         }
@@ -93,38 +105,5 @@ namespace MYDoctor.Infrastructure.Repository
             
 
         }
-        private async Task<IEnumerable<Doctor>> GetRelativesDoctors(BeatyandHealthy category, int numberRelated)
-        {
-            var relativeDoctors = category.Doctors;
-            if ((relativeDoctors.Any(), relativeDoctors.Count() >= numberRelated) == (true, true))
-                return relativeDoctors;
-            var doctors = await _context.Doctor.Include(d => d.Category).Where(d => d.CategoryId != category.Id).Take(numberRelated - relativeDoctors.Count()).ToListAsync();
-            return relativeDoctors.AppendData(doctors);
-        }
-        private async Task<IEnumerable<Medicin>> GetRelativesMedicins(BeatyandHealthy category, int numberRelated)
-        {
-            var relativeMedicin = category.Medicins;
-            if ((relativeMedicin.Any(), relativeMedicin.Count() >= numberRelated) == (true, true))
-                return relativeMedicin;
-            var medicins = await _context.Medicin.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthyId != category.Id).Take(numberRelated - relativeMedicin.Count()).ToListAsync();
-            return relativeMedicin.AppendData(medicins);
-        }
-        private async Task<IEnumerable<Disease>> GetRelativesDiseases(BeatyandHealthy category, int numberRelated)
-        {
-            var relativeDisease = category.Diseases;
-            if ((relativeDisease.Any(), relativeDisease.Count() >= numberRelated) == (true, true))
-                return relativeDisease;
-            var medicins = await _context.Disease.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthyId != category.Id).Take(numberRelated - relativeDisease.Count()).ToListAsync();
-            return relativeDisease.AppendData(medicins);
-        }
-        private async Task<IEnumerable<RelativeofBeatyandhealthy>> GetRelativesCategories(BeatyandHealthy category, int numberRelated)
-        {
-            var relativeCategories = category.RelativeofBeatyandhealthies;
-            if ((relativeCategories.Any(), relativeCategories.Count() >= numberRelated) == (true, true))
-                return relativeCategories;
-            var medicins = await _context.RelativeofBeatyandhealthy.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthId != category.Id).Take(numberRelated - relativeCategories.Count()).ToListAsync();
-            return relativeCategories.AppendData(medicins);
-        }
-
     }
 }

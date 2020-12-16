@@ -13,6 +13,7 @@ namespace MYDoctor.Core.Domain.Entities
             Doctors = new HashSet<Doctor>();
             Diseases = new HashSet<Disease>();
             Medicins= new HashSet<Medicin>();
+            Posts = new HashSet<Post>();
 
         }
         
@@ -24,5 +25,6 @@ namespace MYDoctor.Core.Domain.Entities
         public ICollection<Medicin> Medicins { get; set; }
         public ICollection<Disease> Diseases { get; set; }
         public  ICollection<Doctor>Doctors { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }

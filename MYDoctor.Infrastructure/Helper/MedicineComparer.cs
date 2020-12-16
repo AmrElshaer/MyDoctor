@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MYDoctor.Core.Domain.Entities;
 
-namespace MYDoctor.Infrastructure
+namespace MYDoctor.Helper.Infrastructure
 {
     public class MedicineComparer:IEqualityComparer<DiseaseMedicin>
     {

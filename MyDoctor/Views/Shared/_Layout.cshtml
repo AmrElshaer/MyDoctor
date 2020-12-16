@@ -133,7 +133,16 @@
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative" data-toggle="dropdown">
                                 <span class="activity active"></span>
-                                <img src="/images/@imagePath" height="40" width="40" alt="">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+
+                                    <img src="/images/@imagePath" height="40" width="40" alt="">
+                                }
+                                else
+                                {
+                                    <img src="~/images/LoginImage.jpg" height="40" width="40" alt="">
+                                }
+
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
@@ -190,8 +199,8 @@
                                 <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                             </a>
                             <ul aria-expanded="false">
-                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="Admin">Home</a></li>
-
+                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="Admin">Admin</a></li>
+                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="">Client</a></li>
                             </ul>
                         </li>
 

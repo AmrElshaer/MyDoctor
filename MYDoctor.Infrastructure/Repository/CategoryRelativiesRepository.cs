@@ -10,16 +10,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using MYDoctor.Infrastructure.Helper;
 using System.Collections.Generic;
+using MYDoctor.Core.Application.IHelper;
 
 namespace MYDoctor.Infrastructure.Repository
 {
     public class CategoryRelativiesRepository:BaseRepository<RelativeofBeatyandhealthy>,ICategoryRelativiesRepository
     {
         private readonly ITableTrackNotification _tableTrackNotification;
-
-        public CategoryRelativiesRepository(ApplicationDbContext context,ITableTrackNotification tableTrackNotification) : base(context)
+        private readonly IDoctorHelper _doctorHelper;
+        private readonly IDiseaseHelper _diseaseHelper;
+        private readonly IPostHelper _postHelper;
+        private readonly IMedicinHelper _medicinHelper;
+        private readonly IRelativeCategoryHelper _relativeCategoryHelper;
+        public CategoryRelativiesRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper, ITableTrackNotification tableTrackNotification) : base(context)
         {
             _tableTrackNotification = tableTrackNotification;
+            _doctorHelper = doctorHelper;
+            _diseaseHelper = diseaseHelper;
+            _postHelper = postHelper;
+            _relativeCategoryHelper = relativeCategoryHelper;
+            _medicinHelper = medicinHelper;
         }
 
         public SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter)
@@ -61,49 +71,21 @@ namespace MYDoctor.Infrastructure.Repository
         public async Task<RelativeBeatyandhealthyViewModel> GetRelativeCategoryAsync(int id, int numberRelated)
         {
             var relativeCategory = await _table.Include(r=>r.BeatyandHealthy).Include(r=>r.BeatyandHealthy.Doctors).Include(r=>r.BeatyandHealthy.Medicins)
-                .Include(r=>r.BeatyandHealthy.Diseases).Include(r=>r.BeatyandHealthy.RelativeofBeatyandhealthies).AsNoTracking().FirstOrDefaultAsync(r=>r.Id==id);
+                .Include(r=>r.BeatyandHealthy.Diseases).Include(r=>r.BeatyandHealthy.RelativeofBeatyandhealthies)
+                .Include(c=>c.BeatyandHealthy.Posts).FirstOrDefaultAsync(r=>r.Id==id);
 
             var result = new RelativeBeatyandhealthyViewModel()
             {
                 RelativeofBeatyandhealthy = relativeCategory,
-                Categories = await _context.BeatyandHealthy.Where(a => a.Id != relativeCategory.BeatyandHealthy.Id).Take(numberRelated).ToListAsync(),
-                Doctors = await GetRelativesDoctors(relativeCategory,numberRelated),
-                Medicins = await GetRelativesMedicins(relativeCategory,numberRelated),
-                Diseases =await GetRelativesDiseases(relativeCategory,numberRelated),
-                RelativeCategories = await GetRelativesCategories(relativeCategory,numberRelated)
+                Categories = await _context.BeatyandHealthy.Where(a => a.Id != relativeCategory.BeatyandHealthId).OrderByDescending(a => a.Id).Take(numberRelated).ToListAsync(),
+                Doctors = await _doctorHelper.GetRelativesDoctors(relativeCategory.BeatyandHealthy.Doctors, numberRelated, d => d.CategoryId != relativeCategory.BeatyandHealthId),
+                Medicins = await _medicinHelper.GetRelativesMedicins(relativeCategory.BeatyandHealthy.Medicins, numberRelated, d => d.BeatyandHealthyId != relativeCategory.BeatyandHealthId),
+                Diseases = await _diseaseHelper.GetRelativesDiseases(relativeCategory.BeatyandHealthy.Diseases, numberRelated, d => d.BeatyandHealthyId != relativeCategory.BeatyandHealthId),
+                RelativeCategories = await _relativeCategoryHelper.GetRelativesCategory(relativeCategory.BeatyandHealthy.RelativeofBeatyandhealthies, numberRelated, d => d.BeatyandHealthId != relativeCategory.BeatyandHealthId),
+                Posts = await _postHelper.GetRelativesPosts(relativeCategory.BeatyandHealthy.Posts, numberRelated, p => p.CategoryId != relativeCategory.BeatyandHealthId)
             };
             return result;
         }
-        private async Task<IEnumerable<Doctor>> GetRelativesDoctors(RelativeofBeatyandhealthy relativeCategory, int numberRelated) {
-            var relativeDoctors = relativeCategory.BeatyandHealthy.Doctors;
-            if ((relativeDoctors.Any(), relativeDoctors.Count() >= numberRelated) == (true, true))
-                  return relativeDoctors;
-            var doctors = await _context.Doctor.Include(d => d.Category).Where(d => d.CategoryId != relativeCategory.BeatyandHealthId).Take(numberRelated - relativeDoctors.Count()).ToListAsync();
-            return relativeDoctors.AppendData(doctors);
-        }
-        private async Task<IEnumerable<Medicin>> GetRelativesMedicins(RelativeofBeatyandhealthy relativeCategory, int numberRelated)
-        {
-            var relativeMedicin = relativeCategory.BeatyandHealthy.Medicins;
-            if ((relativeMedicin.Any(), relativeMedicin.Count() >= numberRelated) == (true, true))
-                return relativeMedicin;
-            var medicins = await _context.Medicin.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthyId != relativeCategory.BeatyandHealthId).Take(numberRelated - relativeMedicin.Count()).ToListAsync();
-            return relativeMedicin.AppendData(medicins);
-        }
-        private async Task<IEnumerable<Disease>> GetRelativesDiseases(RelativeofBeatyandhealthy relativeCategory, int numberRelated)
-        {
-            var relativeDisease = relativeCategory.BeatyandHealthy.Diseases;
-            if ((relativeDisease.Any(), relativeDisease.Count() >= numberRelated) == (true, true))
-                return relativeDisease;
-            var medicins = await _context.Disease.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthyId != relativeCategory.BeatyandHealthId).Take(numberRelated - relativeDisease.Count()).ToListAsync();
-            return relativeDisease.AppendData(medicins);
-        }
-        private async Task<IEnumerable<RelativeofBeatyandhealthy>> GetRelativesCategories(RelativeofBeatyandhealthy relativeCategory, int numberRelated)
-        {
-            var relativeCategories = relativeCategory.BeatyandHealthy.RelativeofBeatyandhealthies;
-            if ((relativeCategories.Any(), relativeCategories.Count() >= numberRelated) == (true, true))
-                return relativeCategories;
-            var medicins = await _context.RelativeofBeatyandhealthy.Include(d => d.BeatyandHealthy).Where(d => d.BeatyandHealthId != relativeCategory.BeatyandHealthId).Take(numberRelated - relativeCategories.Count()).ToListAsync();
-            return relativeCategories.AppendData(medicins);
-        }
+        
     }
 }

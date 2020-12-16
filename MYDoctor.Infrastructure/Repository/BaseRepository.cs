@@ -80,8 +80,18 @@ namespace MYDoctor.Infrastructure.Repository
 
         }
 
+        public async Task<T> GetFirstAsync(Expression<Func<T,bool>> predicate) {
+            var resuilt = await _table.FirstOrDefaultAsync(predicate);
+            return resuilt;
+        }
+        public async Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
 
-
+            var entity = _table.AsQueryable();
+            includes.ToList().ForEach(a => entity = entity.Include(a));
+            var resuilt = await entity.FirstOrDefaultAsync(predicate);
+            return resuilt;
+        }
         public async Task UpdateAsync(T obj)
         {
             try { _table.Attach(obj);

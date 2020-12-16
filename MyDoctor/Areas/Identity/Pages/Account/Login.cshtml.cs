@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MYDoctor.Infrastructure.Identity;
 using MYDoctor.Core.Application.Common.Enum;
+using MYDoctor.Infrastructure.Repository;
+using MYDoctor.Core.Application.IRepository;
 
 namespace MyDoctor.Areas.Identity.Pages.Account
 {
@@ -21,13 +22,15 @@ namespace MyDoctor.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IDoctorRepository _doctorRepository;
 
-        public LoginModel(ApplicationDbContext context,SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger,UserManager<ApplicationUser>userManager)
+        public LoginModel(IDoctorRepository doctorRepository,ApplicationDbContext context,SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger,UserManager<ApplicationUser>userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _context = context;
+            _doctorRepository = doctorRepository;
         }
 
         [BindProperty]
@@ -92,7 +95,8 @@ namespace MyDoctor.Areas.Identity.Pages.Account
                             return RedirectToAction("Index", "DashBoard", new { area = nameof(Roles.Admin) });
 
                         case nameof(Roles.Doctor):
-                            return RedirectToAction("Index", "DashBoard", new { area = nameof(Roles.Doctor) });
+                            var doctor = await _doctorRepository.GetFirstAsync(a=>a.Email==user.Email);
+                            return RedirectToAction("Profile", "Doctor", new { area = string.Empty,id=doctor.Id});
                         default:
                             return RedirectToAction("Index", "DashBoard", new { area = string.Empty });
 
