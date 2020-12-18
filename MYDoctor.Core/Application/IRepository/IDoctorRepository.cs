@@ -1,4 +1,5 @@
 ﻿using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.ViewModel;
 using MYDoctor.Core.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace MYDoctor.Core.Application.IRepository
         Task DeleteDoctorAsync(int id);
         Task CreateEdit(Doctor doctor);
         SearchResult<Doctor> GetSearchResult(SearchParamter searchParamter);
-        
+        Task<DoctorViewModel> DoctorProfileAsync(int id);
+
+
     }
 }

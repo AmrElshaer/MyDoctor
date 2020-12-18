@@ -1,0 +1,108 @@
+﻿@using MYDoctor.Core.Application.ViewModel
+@using MYDoctor.Core.Application.IRepository
+@inject IUserProfileRepository userProfileRepository
+@model PostViewModel
+@{
+    var user = await userProfileRepository.GetFirstAsync(a => a.Email == User.Identity.Name);
+    var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
+    var random = new Random();
+}
+<!--**********************************
+          Content body start
+      ***********************************-->
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Blogs</a></li>
+            </ol>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+
+
+        <!--Start Slider-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media media-reply">
+                            <img class="mr-3 circle-rounded" src="~/images/@Model.Post.User.ImagePath" width="50" height="50" alt="@Model.Post.User.Name">
+                            <div class="media-body">
+                                <div class="d-sm-flex justify-content-between mb-2">
+                                    <h5 class="mb-sm-0">@Model.Post.User.Name<small class="text-muted ml-3">@Model.Post.CreateDate.ToShortTimeString()</small></h5>
+                                    <div class="media-reply__link">
+                                        <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-up"></i></button>
+                                        <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-down"></i></button>
+                                        <button class="btn btn-transparent p-0 ml-3 font-weight-bold">@Model.Post.Category.Category</button>
+                                    </div>
+                                </div>
+
+                                <p>@Model.Post.Content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            @foreach (var post in Model.Posts)
+            {
+                <div class="col-md-12 col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="media media-reply">
+                                <img class="mr-3 circle-rounded" src="~/images/@post.User.ImagePath" width="50" height="50" alt="@post.User.Name">
+                                <div class="media-body">
+                                    <div class="d-sm-flex justify-content-between mb-2">
+                                        <h5 class="mb-sm-0">@post.User.Name</h5>
+                                        <div class="media-reply__link">
+                                            <button class="btn btn-transparent p-0 mr-3"><span class="badge badge-pill gradient-2 mr-1" id="LikeNumber">@post.Likes.Count()</span><i style="@(post.Likes.FirstOrDefault(l=>l.UserProfileId==user.Id)!=null?"color:red":"")" onclick="addLike(@post.Id)" class="fa fa-thumbs-up"></i></button>
+                                            <button class="btn btn-transparent p-0 mr-3"><span class="badge gradient-3 badge-pill gradient-1 mr-1" id="DisLikeNumber">@post.DisLikes.Count()</span><i style="@(post.DisLikes.FirstOrDefault(l=>l.UserProfileId==user.Id)!=null?"color:red":"")" onclick="addDisLike(@post.Id)" class="fa fa-thumbs-down"></i></button>
+                                        </div>
+                                    </div>
+                                    <p class="font-weight-bold">@(post.Category?.Category)</p>
+                                    <small class="text-muted">@post.CreateDate.ToString()</small>
+
+                                    <p>@post.Content</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            }
+        </div>
+        <!--End Slider-->
+        <!--Start Department-->
+        @await Html.PartialAsync("_Category", Model.Categories.ToList())
+        <!--End Department-->
+        <!--Start Relative Department-->
+        @await Html.PartialAsync("_RelativeCategory", Model.RelativeCategories.ToList())
+        <!--End Relative Department-->
+        <!--Start Disease-->
+        @await Html.PartialAsync("_Disease", Model.Diseases.ToList())
+        <!--End  Disease-->
+        <!--Start Doctor-->
+        @await Html.PartialAsync("_Doctor", Model.Doctors.ToList())
+        <!--End  Disease-->
+
+    </div>
+
+
+</div>
+
+<!--**********************************
+    Content body end
+***********************************-->
+@section Scripts{ 
+<script src="~/js/LikeDisLike.js">
+</script>
+
+}

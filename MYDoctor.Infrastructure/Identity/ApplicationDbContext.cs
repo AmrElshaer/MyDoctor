@@ -49,5 +49,7 @@ namespace MYDoctor.Infrastructure.Identity
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<InboxMessage> InboxMessages { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<DisLike> DisLikes { get; set; }
     }
 }

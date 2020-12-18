@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MYDoctor.Core.Application.IRepository;
 namespace MyDoctor.Controllers
 {
+    [Authorize]
     public class DashBoardController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;

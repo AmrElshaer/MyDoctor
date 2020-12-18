@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Application.ViewModel;
 using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Infrastructure.File;
 using MYDoctor.Infrastructure.Helper;
@@ -94,7 +95,18 @@ namespace MYDoctor.Infrastructure.Repository
                 _fileConfig.DeleteFile(doctor.ImagePath, "images");
             await _context.SaveChangesAsync();
         }
-
+        public async Task<DoctorViewModel> DoctorProfileAsync(int id) {
+            var doctor = await GetByIdAsync(id, d => d.Category);
+            var doctorProfile = await _context.UserProfiles.Include(a => a.Posts).ThenInclude(p=>p.Likes)
+                .Include(a => a.Posts).ThenInclude(p=>p.DisLikes)
+                .Include(a=>a.Posts).ThenInclude(p=>p.Category).FirstOrDefaultAsync(a => a.Email == doctor.Email);
+            var doctorVM = new DoctorViewModel()
+            {
+                Doctor=doctor,
+                Posts=doctorProfile?.Posts
+            };
+            return doctorVM;
+        }
         public async Task CreateEdit(Doctor doctor)
         {
             if (doctor.Id > 0)

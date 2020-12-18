@@ -81,7 +81,8 @@ namespace MYDoctor.Infrastructure.Repository
                 Doctors = await _context.Doctor.Include(rc => rc.Category).Take(pageSize).ToListAsync(),
                 Medicins = await _context.Medicin.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync(),
                 Diseases = await _context.Disease.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync(),
-                RelativeCategories = await _context.RelativeofBeatyandhealthy.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync()
+                RelativeCategories = await _context.RelativeofBeatyandhealthy.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync(),
+                Posts=await _context.Posts.Include(p=>p.Likes).Include(p=>p.DisLikes).Include(p=>p.Category).Include(p=>p.User).OrderByDescending(a=>a.Id).Take(pageSize).ToListAsync()
             };
             return result;
         }

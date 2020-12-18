@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
+using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Infrastructure.File;
 using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
@@ -37,6 +38,8 @@ namespace MYDoctor.Infrastructure
             services.AddScoped<ITableTrackNotification, TableTrackNotification>();
             services.AddScoped<ITableTrackUserRepository, TableTrackUserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
+            services.AddScoped<IDisLikeRepository, DisLikeRepository>();
             services.AddTransient<IFileConfig, FileConfig>();
             //Inject Helper
             services.AddTransient<IDoctorHelper, DoctorHelper>();

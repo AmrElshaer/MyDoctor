@@ -14,7 +14,6 @@ namespace MYDoctor.Infrastructure.Configurations
                 Name = admin,
                 Email = admin,
             });
-          
         }
     }
 }

@@ -27,7 +27,7 @@ namespace MyDoctor.Controllers
         }
 
         public async Task<IActionResult> Profile(int id) {
-            var doctor = await _doctorRepository.GetByIdAsync(id, d => d.Category);
+            var doctor = await _doctorRepository.DoctorProfileAsync(id);
             return View(doctor);
         }
 
