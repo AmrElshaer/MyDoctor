@@ -95,15 +95,14 @@ namespace MYDoctor.Infrastructure.Repository
                 _fileConfig.DeleteFile(doctor.ImagePath, "images");
             await _context.SaveChangesAsync();
         }
-        public async Task<DoctorViewModel> DoctorProfileAsync(int id) {
-            var doctor = await GetByIdAsync(id, d => d.Category);
-            var doctorProfile = await _context.UserProfiles.Include(a => a.Posts).ThenInclude(p=>p.Likes)
-                .Include(a => a.Posts).ThenInclude(p=>p.DisLikes)
-                .Include(a=>a.Posts).ThenInclude(p=>p.Category).FirstOrDefaultAsync(a => a.Email == doctor.Email);
+        public async Task<DoctorViewModel> DoctorProfileAsync(string doctorEmail) {
+            var doctor = await GetFirstAsync(d=>d.Email==doctorEmail, d => d.Category);
+            var posts = await _context.Posts.Include(p=>p.Likes).Include(p=>p.DisLikes)
+                .Include(p=>p.Category).Include(p=>p.User).Where(a => a.User.Email == doctorEmail).ToListAsync();
             var doctorVM = new DoctorViewModel()
             {
                 Doctor=doctor,
-                Posts=doctorProfile?.Posts
+                Posts=posts
             };
             return doctorVM;
         }

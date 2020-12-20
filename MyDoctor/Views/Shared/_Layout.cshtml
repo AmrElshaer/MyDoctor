@@ -2,15 +2,17 @@
 @using System.Security.Claims
 @using MYDoctor.Core.Application.IRepository
 @using MYDoctor.Infrastructure.Identity
-@using MYDoctor.Core.Domain.Common.Enum 
-@using MYDoctor.Core.Application.Common.Enum 
+@using MYDoctor.Core.Domain.Common.Enum
+@using MYDoctor.Core.Application.Common.Enum
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject ICategoryRepository CategoryRepository
+@inject IUserProfileRepository UserProfileRepo
 @{
     var imagePath = User.FindFirstValue(Claims.ImagePath.ToString());
-
-   
+    var isAdmin = User.IsInRole(Roles.Admin.ToString());
+    var isDoctor = User.IsInRole(Roles.Doctor.ToString());
+    var userId =await UserProfileRepo.GetFirstAsync(a=>a.Email==User.Identity.Name);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +34,7 @@
         .avatar-icon {
             height: 2rem;
         }
+
         .icon-menu:before {
             content: "\e601";
         }
@@ -74,10 +77,10 @@
         ***********************************-->
         <div class="header">
             <div class="header-content clearfix">
-                
+
                 <div class="nav-control">
                     <div class="hamburger">
-                        
+
                         <span class="toggle-icon"><i class="icon-menu"></i></span>
                     </div>
                 </div>
@@ -149,23 +152,40 @@
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
                                     <ul>
-                                        <li>
-                                            <a asp-action="Profile" asp-controller="UserProfile" asp-route-id=""><i class="icon-user"></i> <span>Profile</span></a>
-                                        </li>
-                                        <li>
-                                            @if (User.Identity.IsAuthenticated)
-                                            {
+
+
+
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <li>
+                                                @if (isAdmin)
+                                                {
+                                                    <a asp-action="Index" asp-controller="DashBoard" asp-area="Admin"><i class="icon-user"></i> <span>Profile</span></a>
+
+                                                }
+                                                else if (isDoctor)
+                                                {
+                                                    <a asp-action="Profile" asp-controller="Doctor"><i class="icon-user"></i> <span>Profile</span></a>
+
+                                                }
+                                                else
+                                                {
+                                                    <a asp-action="Profile" asp-controller="UserProfile"><i class="icon-user"></i> <span>Profile</span></a>
+
+                                                }
+                                            </li>
+                                            <li>
                                                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
                                                     <a href="javascript:document.getElementById('logoutForm').submit()"><i class="icon-key"></i> <span>Logout</span></a>
                                                 </form>
-                                            }
-                                            else
-                                            {
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
                                                 <a asp-area="Identity" asp-page="/Account/Login"><i class="icon-key"></i> <span>Login</span></a>
-                                            }
-
-
-                                        </li>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                             </div>
@@ -279,8 +299,8 @@
     <script src="/Content/js/styleSwitcher.js"></script>
     <script src="/Content/js/dashboard-1.js"></script>
     <script src="~/js/GeneralSearch.js"></script>
-        <script src="~/js/signalr/dist/browser/signalr.js"></script>
-        <script src="~/js/trackTableNotifiy.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/trackTableNotifiy.js"></script>
     <script src="~/js/Notification.js"></script>
     <script src="~/js/ReciveMessage.js"></script>
     <script src="~/js/UpdateMessage.js"></script>
