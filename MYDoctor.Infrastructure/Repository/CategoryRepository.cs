@@ -30,6 +30,12 @@ namespace MYDoctor.Infrastructure.Repository
             _relativeCategoryHelper = relativeCategoryHelper;
             _medicinHelper = medicinHelper;
         }
+        public async Task<IEnumerable<BeatyandHealthy>> GetAdminBoard() {
+            var board = await _context.BeatyandHealthy.Include(c=>c.RelativeofBeatyandhealthies)
+                .Include(c=>c.Medicins).Include(c=>c.Diseases).Include(c=>c.Doctors).Include(c=>c.Posts).ThenInclude(p=>p.User).ToListAsync();
+            return board;
+        
+        }
         public async Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval) {
             var categories = await GetAll(c => c.Category.ToLower().Contains(searchval)).Select(c => new GeneralSearchResult(c.Id, "BeatyandHealthies", "Details", c.Category, c.Image,null)).ToListAsync();
             var relativeofBeatyandhealthies =await _context.RelativeofBeatyandhealthy.Where(c=>c.Address.ToLower().Contains(searchval)).Select(r=>new GeneralSearchResult(r.Id,"RelativesCategory","Details", r.Address,r.ImageOrVideo,r.Subject.Substring(0,50) )).ToListAsync();

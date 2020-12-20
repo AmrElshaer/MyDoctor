@@ -14,6 +14,6 @@ namespace MYDoctor.Core.Application.IRepository
         Task CreateEdit(BeatyandHealthy category);
         Task<BaseViewModel> GetBoardViewModel(int pageSize);
         Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval);
-
+        Task<IEnumerable<BeatyandHealthy>> GetAdminBoard();
     }
 }
