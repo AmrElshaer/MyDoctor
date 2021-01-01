@@ -1,29 +1,30 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
 @model LoginModel
-<div class="login-form-bg h-100">
+@inject IViewLocalizer ViewLocalizer
+<div class="login-form-bg h-100 mt-4">
     <div class="container h-100">
         <div class="row justify-content-center h-100">
             <div class="col-xl-6">
                 <div class="form-input-content">
                     <div class="card login-form mb-0">
                         <div class="card-body pt-5">
-                            <a class="text-center" href="#"> <h4>MyDoctor</h4></a>
-        
+                            <a class="text-center" href="#"> <h4>@ViewLocalizer["MyDoctor"]</h4></a>
                             <form class="mt-5 mb-5 login-input" method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-group">
 
-                                    <input asp-for="Input.Email" class="form-control" placeholder="Email" />
+                                    <input asp-for="Input.Email" class="form-control" placeholder="@ViewLocalizer["Email"]" />
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                                    <input asp-for="Input.Password" class="form-control" placeholder="@ViewLocalizer["Password"]" />
                                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                                 </div>
-                                <button class="btn login-form__btn submit w-100">Sign In</button>
+                                <button class="btn login-form__btn submit w-100">@ViewLocalizer["Sign In"]</button>
                             </form>
-                            <p class="mt-5 login-form__footer">Dont have account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary">Sign Up</a> now</p>
-                            <p class="mt-5 login-form__footer"><a asp-page="./ForgotPassword" class="text-primary">ForgotPassword</a> now</p>
+                            <p class="mt-5 login-form__footer">@ViewLocalizer["Dont have account"]? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary">@ViewLocalizer["Sign Up"]</a></p>
+                            <p class="mt-5 login-form__footer"><a asp-page="./ForgotPassword" class="text-primary">@ViewLocalizer["ForgotPassword"]</a></p>
                         </div>
                     </div>
                 </div>

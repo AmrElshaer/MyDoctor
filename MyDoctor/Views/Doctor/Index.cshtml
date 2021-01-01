@@ -1,8 +1,7 @@
-﻿@using MYDoctor.Core.Application.IRepository
-@using MYDoctor.Core.Application.ViewModel
-@inject ICategoryRepository CategoryRepository
+﻿@inject ICategoryRepository CategoryRepository
 @inject ICountryRepository CountryRepository
 @inject ICityRepository CityRepository
+@inject IViewLocalizer ViewLocalizer
 @{
     var category = CategoryRepository.GetAll().ToList();
 }
@@ -19,8 +18,8 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Doctors</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["MyDoctor"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["Doctors"]</a></li>
             </ol>
         </div>
     </div>
@@ -31,14 +30,14 @@
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Doctors</h4>
+                        <h4 class="card-title">@ViewLocalizer["Doctors"]</h4>
                         <p class="text-muted">
                             <code></code>
                         </p>
                         <form id="accordion-one" class="accordion">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa" aria-hidden="true"></i>Department</h5>
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa" aria-hidden="true"></i>@ViewLocalizer["Department"]</h5>
                                 </div>
                                 <div id="collapseOne" class="collapse" data-parent="#accordion-one">
                                     <div class="card-body">
@@ -56,7 +55,7 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa" aria-hidden="true"></i>Country</h5>
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa" aria-hidden="true"></i>@ViewLocalizer["Country"]</h5>
                                 </div>
                                 <div id="collapseTwo" class="collapse" data-parent="#accordion-one">
                                     <div class="card-body">
@@ -74,7 +73,7 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa" aria-hidden="true"></i>City</h5>
+                                    <h5 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa" aria-hidden="true"></i>@ViewLocalizer["City"]</h5>
                                 </div>
                                 <div id="collapseThree" class="collapse" data-parent="#accordion-one">
                                     <div class="card-body">
@@ -96,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <button class="btn btn-dark">Search</button>
+                                <button class="btn btn-dark">@ViewLocalizer["Search"]</button>
                             </div>
                         </form>
                     </div>
@@ -116,7 +115,7 @@
                                 <span><img style="max-width: 17px" src="/Content/img/home.svg" /><small class="ml-2 text-muted">@doctor.City</small></span>
 
 
-                            </p><a asp-controller="Doctor" asp-route-id="@doctor.Id" asp-action="Profile" class="card-link float-right"><small>See</small></a>
+                            </p><a asp-controller="Doctor" asp-route-id="@doctor.Id" asp-action="Profile" class="card-link float-right"><small>@ViewLocalizer["See"]</small></a>
                         </div>
                     </div>
                 </div>

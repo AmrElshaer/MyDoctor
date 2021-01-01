@@ -1,5 +1,6 @@
 ﻿@using PagedList.Core.Mvc
 @model SearchResult<Disease>
+@inject IViewLocalizer ViewLocalizer
 <!--**********************************
           Content body start
       ***********************************-->
@@ -8,8 +9,8 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Control Panel</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Diseases</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["Control Panel"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["Diseases"]</a></li>
             </ol>
         </div>
     </div>
@@ -41,15 +42,15 @@
                             <form>
                                 <div class="form-row">
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createFrom">From</label>
+                                        <label for="createFrom">@ViewLocalizer["From"]</label>
                                         <input type="date" class="form-control" id="createFrom" name="createFrom">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createTo">To</label>
+                                        <label for="createTo">@ViewLocalizer["To"]</label>
                                         <input type="date" class="form-control" id="createTo" name="createTo">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createTo">Disease Name</label>
+                                        <label for="createTo">@ViewLocalizer["Disease Name"]</label>
                                         <input name="searchQuery" type="text" class="form-control" id="validationCustom01" value="@Model.SearchParamter.SearchQuery" placeholder="Search">
                                     </div>
                                     <div class="col-lg-12 col-md-6 text-center">
@@ -74,20 +75,20 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                DiseaseName
+                                                @ViewLocalizer["Disease Name"]
                                             </th>
                                             <th>
-                                                Subject
+                                                @ViewLocalizer["Subject"]
                                             </th>
 
                                             <th>
-                                                Protection
+                                                @ViewLocalizer["Protection"]
                                             </th>
                                             <th>
-                                                Category
+                                                @ViewLocalizer["Category"]
                                             </th>
                                             <th>
-                                                Reasons
+                                                @ViewLocalizer["Reasons"]
                                             </th>
                                             <th></th>
 

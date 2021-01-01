@@ -2,11 +2,12 @@
 @using MYDoctor.Core.Application.IRepository
 @model RelativeofBeatyandhealthy
 @inject ICategoryRepository CategoryRepository
+@inject IViewLocalizer ViewLocalizer
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Relative Category</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["Relative Category"]</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -18,14 +19,14 @@
                         <input asp-for="Id" value="@Model.Id">
                     </div>
                     <div class="form-group">
-                        <label for="" class="col-form-label">Address</label>
+                        <label for="" class="col-form-label">@ViewLocalizer["Address"]</label>
                         <input asp-for="Address" value="@Model.Address" type="url" class="form-control">
                     </div>
                     <div class="form-group" style="display: none">
                         <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
                     </div>
                     <div class="form-group">
-                        <label for="BeatyandHealthId" class="col-form-label">Category</label>
+                        <label for="BeatyandHealthId" class="col-form-label">@ViewLocalizer["Category"]</label>
 
                         <select asp-for="BeatyandHealthId" class="form-control">
 
@@ -40,11 +41,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="ImageOrVideo" class="col-form-label">Media Url</label>
+                        <label for="ImageOrVideo" class="col-form-label">@ViewLocalizer["Media Url"]</label>
                         <input asp-for="ImageOrVideo" value="@Model.ImageOrVideo" type="url" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="Subject" class="col-form-label">Subject</label>
+                        <label for="Subject" class="col-form-label">@ViewLocalizer["Subject"]</label>
                         <textarea type="text" class="form-control" asp-for="Subject">
                               @Model.Subject
                         </textarea>
@@ -53,8 +54,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
             </div>
         </div>
     </div>

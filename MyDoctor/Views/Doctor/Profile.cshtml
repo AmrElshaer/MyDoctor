@@ -1,6 +1,6 @@
-﻿@using MYDoctor.Core.Application.IRepository
-@inject ICategoryRepository categoryRepository
+﻿@inject ICategoryRepository categoryRepository
 @inject IUserProfileRepository userProfileRepository
+@inject IViewLocalizer ViewLocalizer
 @model DoctorViewModel
 @{ 
     var user =await userProfileRepository.GetFirstAsync(a=>a.Email==User.Identity.Name);
@@ -13,8 +13,8 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["MyDoctor"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["DoctorPage"]</a></li>
             </ol>
         </div>
     </div>
@@ -37,18 +37,18 @@
                             <div class="row mb-5">
 
                                 <div class="col-12 text-center">
-                                    <a class="btn btn-danger px-5" asp-action="MessageDetail" asp-controller="Messages" asp-route-fromName="@Model.Doctor.Email">Message</a>
+                                    <a class="btn btn-danger px-5" asp-action="MessageDetail" asp-controller="Messages" asp-route-fromName="@Model.Doctor.Email">@ViewLocalizer["Message"]</a>
                                 </div>
                             </div>
                         }
 
 
-                        <h4>About Me</h4>
+                    <h4>@ViewLocalizer["About Me"]</h4>
                         <p class="text-muted">@Model.Doctor.Others</p>
                         <ul class="card-profile__info">
-                            <li class="mb-1"><strong class="text-dark mr-4">Mobile</strong> <span>@Model.Doctor.Telephone</span></li>
-                            <li><strong class="text-dark mr-4">Email</strong> <span>@Model.Doctor.Email</span></li>
-                            <li><strong class="text-dark mr-4">Department</strong> <span>@Model.Doctor.Category.Category</span></li>
+                            <li class="mb-1"><strong class="text-dark mr-4">@ViewLocalizer["Mobile"]</strong> <span>@Model.Doctor.Telephone</span></li>
+                            <li><strong class="text-dark mr-4">@ViewLocalizer["Email"]</strong> <span>@Model.Doctor.Email</span></li>
+                            <li><strong class="text-dark mr-4">@ViewLocalizer["Department"]</strong> <span>@Model.Doctor.Category.Category</span></li>
                         </ul>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="d-flex align-items-center">
 
-                                    <button class="btn btn-primary px-3 ml-4">Send</button>
+                                    <button class="btn btn-primary px-3 ml-4">@ViewLocalizer["Send"]</button>
                                 </div>
                             </form>
                         </div>

@@ -1,5 +1,6 @@
 ﻿@using MYDoctor.Core.Application.ViewModel
 @model DashBoardViewModel
+@inject IViewLocalizer ViewLocalizer
 
 @{
     ViewData["Title"] = "Home";
@@ -13,8 +14,8 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["MyDoctor"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["Home"]</a></li>
             </ol>
         </div>
     </div>

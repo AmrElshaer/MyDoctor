@@ -1,9 +1,6 @@
-﻿@using MYDoctor.Core.Domain.Entities
-@using MYDoctor.Core.Application.IRepository
-@using MYDoctor.Core.Application.Common.Search
-@using MYDoctor.Core.Application.Common
-@model SearchResult<RelativeofBeatyandhealthy>
+﻿@model SearchResult<RelativeofBeatyandhealthy>
 @inject ICategoryRepository CategoryRepository
+@inject IViewLocalizer ViewLocalizer
 @{
     ViewData["Title"] = "Index";
 }
@@ -15,8 +12,8 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Control Panel</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Relative Departments</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["Control Panel"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["Relative Departments"]</a></li>
             </ol>
         </div>
     </div>
@@ -49,19 +46,19 @@
                             <form>
                                 <div class="form-row">
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createFrom">From</label>
+                                        <label for="createFrom">@ViewLocalizer["From"]</label>
                                         <input type="date" class="form-control" id="createFrom" name="createFrom">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createTo">To</label>
+                                        <label for="createTo">@ViewLocalizer["To"]</label>
                                         <input type="date" class="form-control" id="createTo" name="createTo">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="">Address</label>
+                                        <label for="">@ViewLocalizer["Address"]</label>
                                         <input name="searchQuery" type="text" class="form-control" id="validationCustom01" value="@Model.SearchParamter.SearchQuery" placeholder="Search">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="BeatyandHealthId">Category</label>
+                                        <label for="BeatyandHealthId">@ViewLocalizer["Category"]</label>
                                         <select name="IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll().ToList(),"Id","Category",Model.SearchParamter.IdRelated))">
                                         </select>
                                     </div>
@@ -88,20 +85,20 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                Address
+                                                @ViewLocalizer["Address"]
                                             </th>
 
                                             <th>
-                                                Category
+                                                @ViewLocalizer["Category"]
                                             </th>
                                             <th>
-                                                Content
+                                                @ViewLocalizer["Content"] 
                                             </th>
                                             <th>
-                                                CreateDate
+                                                @ViewLocalizer["CreateDate"]   
                                             </th>
                                             <th>
-                                                ModifiyDate
+                                                @ViewLocalizer["ModifiyDate"] 
                                             </th>
                                             <th></th>
 
@@ -118,7 +115,7 @@
                                                 </td>
                                                 <td>
 
-                                                    @item.Subject.MaxString(100, "SeeMore")
+                                                    @item.Subject.MaxString(100, ViewLocalizer["See More"].ToString())
 
 
                                                 </td>

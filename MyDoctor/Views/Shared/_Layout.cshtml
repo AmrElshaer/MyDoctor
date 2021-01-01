@@ -1,18 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
-@using MYDoctor.Core.Application.IRepository
 @using MYDoctor.Infrastructure.Identity
 @using MYDoctor.Core.Domain.Common.Enum
 @using MYDoctor.Core.Application.Common.Enum
+@using Microsoft.AspNetCore.Localization
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject ICategoryRepository CategoryRepository
 @inject IUserProfileRepository UserProfileRepo
+@inject IViewLocalizer ViewLocalizer
 @{
     var imagePath = User.FindFirstValue(Claims.ImagePath.ToString());
     var isAdmin = User.IsInRole(Roles.Admin.ToString());
     var isDoctor = User.IsInRole(Roles.Doctor.ToString());
-    var userId =await UserProfileRepo.GetFirstAsync(a=>a.Email==User.Identity.Name);
+    var userId = await UserProfileRepo.GetFirstAsync(a => a.Email == User.Identity.Name);
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +32,6 @@
 
 <body>
     <style>
-
         .avatar-icon {
             height: 2rem;
         }
@@ -77,7 +78,6 @@
         ***********************************-->
         <div class="header">
             <div class="header-content clearfix">
-
                 <div class="nav-control">
                     <div class="hamburger">
 
@@ -124,15 +124,13 @@
                         </li>
                         <li class="icons dropdown d-none d-md-flex">
                             <a href="javascript:void(0)" class="log-user" data-toggle="dropdown">
-                                <span>English</span>  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                                <span>@ViewLocalizer[requestCulture.RequestCulture.UICulture.DisplayName]</span>  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
                             </a>
                             <div class="drop-down dropdown-language animated fadeIn  dropdown-menu">
-                                <div class="dropdown-content-body">
-                                    <ul>
-                                        <li><a href="javascript:void()">English</a></li>
-                                        <li><a href="javascript:void()">Dutch</a></li>
-                                    </ul>
-                                </div>
+
+                                @await Html.PartialAsync("_SelectLanguagePartial")
+
+
                             </div>
                         </li>
                         <li class="icons dropdown">
@@ -160,30 +158,30 @@
                                             <li>
                                                 @if (isAdmin)
                                                 {
-                                                    <a asp-action="Index" asp-controller="DashBoard" asp-area="Admin"><i class="icon-user"></i> <span>Profile</span></a>
+                                                    <a asp-action="Index" asp-controller="DashBoard" asp-area="Admin"><i class="icon-user"></i> <span>@ViewLocalizer["Profile"]</span></a>
 
                                                 }
                                                 else if (isDoctor)
                                                 {
-                                                    <a asp-action="Profile" asp-controller="Doctor"><i class="icon-user"></i> <span>Profile</span></a>
+                                                    <a asp-action="Profile" asp-controller="Doctor"><i class="icon-user"></i> <span>@ViewLocalizer["Profile"]</span></a>
 
                                                 }
                                                 else
                                                 {
-                                                    <a asp-action="Profile" asp-controller="UserProfile"><i class="icon-user"></i> <span>Profile</span></a>
+                                                    <a asp-action="Profile" asp-controller="UserProfile"><i class="icon-user"></i> <span>@ViewLocalizer["Profile"]</span></a>
 
                                                 }
                                             </li>
                                             <li>
                                                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm">
-                                                    <a href="javascript:document.getElementById('logoutForm').submit()"><i class="icon-key"></i> <span>Logout</span></a>
+                                                    <a href="javascript:document.getElementById('logoutForm').submit()"><i class="icon-key"></i> <span>@ViewLocalizer["Logout"]</span></a>
                                                 </form>
                                             </li>
                                         }
                                         else
                                         {
                                             <li>
-                                                <a asp-area="Identity" asp-page="/Account/Login"><i class="icon-key"></i> <span>Login</span></a>
+                                                <a asp-area="Identity" asp-page="/Account/Login"><i class="icon-key"></i> <span>@ViewLocalizer["Login"]</span></a>
                                             </li>
                                         }
                                     </ul>
@@ -205,36 +203,49 @@
                 <ul class="metismenu" id="menu">
                     @if (User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()))
                     {
-                        <li class="nav-label">Dashboard</li>
+                    <li class="nav-label">@ViewLocalizer["Dashboard"]</li>
                         <li>
                             <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                                <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                                <i class="icon-speedometer menu-icon"></i><span class="nav-text">@ViewLocalizer["Dashboard"]</span>
                             </a>
                             <ul aria-expanded="false">
-                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="Admin">Admin</a></li>
-                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="">Client</a></li>
+                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="Admin">@ViewLocalizer["Admin"]</a></li>
+                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="">@ViewLocalizer["Client"]</a></li>
                             </ul>
                         </li>
 
-                        <li>
+                        <li class="mega-menu mega-menu-sm">
                             <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                                <img style="max-width:20px" src="~/Content/img/equalizer (1).png" /><span class="nav-text ml-2">Control Panel</span>
+                                <img style="max-width:20px" src="~/Content/img/equalizer (1).png" /><span class="nav-text ml-2">@ViewLocalizer["Control Panel"]</span>
                             </a>
                             <ul aria-expanded="false">
-                                <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">Departments</a></li>
-                                <li><a asp-controller="CategoryRelativies" asp-action="Index" asp-area="Admin">RelativesDepartment</a></li>
-                                <li><a asp-controller="Diseases" asp-action="Index" asp-area="Admin">Diseases</a></li>
-                                <li><a asp-controller="Doctor" asp-action="Index" asp-area="Admin">Doctors</a></li>
-                                <li><a asp-controller="Medicin" asp-action="Index" asp-area="Admin">Medicins</a></li>
-                                <li><a asp-controller="Country" asp-action="Index" asp-area="Admin">Country</a></li>
+                                <li><a asp-controller="Category" asp-action="Index" asp-area="Admin">@ViewLocalizer["Departments"]</a></li>
+                                <li><a asp-controller="CategoryRelativies" asp-action="Index" asp-area="Admin">@ViewLocalizer["RelativesDepartment"]</a></li>
+                                <li><a asp-controller="Diseases" asp-action="Index" asp-area="Admin">@ViewLocalizer["Diseases"]</a></li>
+                                <li><a asp-controller="Doctor" asp-action="Index" asp-area="Admin">@ViewLocalizer["Doctors"]</a></li>
+                                <li><a asp-controller="Medicin" asp-action="Index" asp-area="Admin">@ViewLocalizer["Medicins"]</a></li>
+                                <li><a asp-controller="Country" asp-action="Index" asp-area="Admin">@ViewLocalizer["Country"]</a></li>
 
                             </ul>
                         </li>
                     }
+                    else
+                    {
+                        <li class="nav-label">@ViewLocalizer["Dashboard"]</li>
+                        <li>
+                            <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                                <i class="icon-speedometer menu-icon"></i><span class="nav-text">@ViewLocalizer["Home"]</span>
+                            </a>
+                            <ul aria-expanded="false">
+                                <li><a asp-controller="DashBoard" asp-action="Index" asp-area="">@ViewLocalizer["Home"]</a></li>
+                            </ul>
+                        </li>
 
-                    <li>
+                    }
+
+                    <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-grid menu-icon"></i><span class="nav-text">Departments</span>
+                            <i class="icon-grid menu-icon"></i><span class="nav-text">@ViewLocalizer["Departments"]</span>
                         </a>
                         <ul aria-expanded="false">
                             @foreach (var beatyandHealthy in CategoryRepository.GetAll())
@@ -246,32 +257,31 @@
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">Message</span>
+                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">@ViewLocalizer["Message"]</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="./email-inbox.html">Notification</a></li>
-                            <li><a asp-controller="Messages" asp-area="" asp-action="Index">Support</a></li>
+                            <li><a asp-controller="Messages" asp-area="" asp-action="Index">@ViewLocalizer["Support"]</a></li>
 
                         </ul>
                     </li>
 
                     <li>
                         <a asp-controller="Doctor" asp-action="Index" asp-area="">
-                            <img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="nav-text ml-2">Doctors</span>
+                            <img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="nav-text ml-2">@ViewLocalizer["Doctors"]</span>
                         </a>
 
                     </li>
 
                     <li>
                         <a asp-controller="Medicins" asp-action="Index" asp-area="">
-                            <img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="nav-text ml-2">Medicin</span>
+                            <img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="nav-text ml-2">@ViewLocalizer["Medicins"]</span>
                         </a>
 
                     </li>
 
                     <li>
                         <a asp-controller="Diseases" asp-action="Index" asp-area="">
-                            <img style="max-width:17px" src="/Content/img/heartbeat.svg" /><span class="nav-text ml-2">Disease</span>
+                            <img style="max-width:17px" src="/Content/img/heartbeat.svg" /><span class="nav-text ml-2">@ViewLocalizer["Diseases"]</span>
                         </a>
 
                     </li>
@@ -304,6 +314,17 @@
     <script src="~/js/Notification.js"></script>
     <script src="~/js/ReciveMessage.js"></script>
     <script src="~/js/UpdateMessage.js"></script>
+    @if (requestCulture.RequestCulture.UICulture.Name == "ar")
+    {
+
+        <script>
+            "use strict"
+            html.attr("dir", "rtl");
+            html.addClass('rtl');
+            body.attr("direction", "rtl");
+        </script>
+    }
+
     @RenderSection("Scripts", required: false)
 
 </body>

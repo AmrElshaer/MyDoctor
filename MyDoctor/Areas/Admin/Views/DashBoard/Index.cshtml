@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BeatyandHealthy>
+﻿@inject IViewLocalizer ViewLocalizer
+@model IEnumerable<BeatyandHealthy>
 @{
     ViewData["Title"] = "DashBoard";
 }
@@ -13,8 +14,8 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Admin</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["Dashboard"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["Admin"]</a></li>
             </ol>
         </div>
     </div>
@@ -28,7 +29,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title"><i class="icon-grid menu-icon mr-2"></i><span>@category.Category</span></h4>
-                            @{ 
+                            @{
                                 var categoryId = category.Id;
                                 var home = $"home{categoryId}";
                                 var doctor = $"doctor{categoryId}";
@@ -41,72 +42,72 @@
                             <div class="default-tab">
                                 <ul class="nav nav-tabs mb-3" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#@home">Home</a>
+                                        <a class="nav-link active" data-toggle="tab" href="#@home">@ViewLocalizer["Home"]</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#@doctor">Doctors</a>
+                                        <a class="nav-link" data-toggle="tab" href="#@doctor">@ViewLocalizer["Doctors"]</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#@relative">Relatives Department</a>
+                                        <a class="nav-link" data-toggle="tab" href="#@relative">@ViewLocalizer["Relatives Department"]</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#@medicin">Medicins</a>
+                                        <a class="nav-link" data-toggle="tab" href="#@medicin">@ViewLocalizer["Medicins"]</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#@post">Posts</a>
+                                        <a class="nav-link" data-toggle="tab" href="#@post">@ViewLocalizer["Posts"]</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#@disease">Diseases</a>
+                                        <a class="nav-link" data-toggle="tab" href="#@disease">@ViewLocalizer["Diseases"]</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="@home" role="tabpanel">
                                         <div class="row">
                                             <div class="col-6">
-                                                <img class="img-responsive"  src="@category.Image" />
+                                                <img class="img-responsive" src="@category.Image" />
 
                                             </div>
                                             <div class="col-6">
-                                                
 
-                                                <p><img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="nav-text ml-2">Doctors</span><span class="ml-2 mr-2">:</span><span class="badge badge-pill gradient-2">@category.Doctors.Count()</span></p>
-                                                <p><img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="nav-text ml-2">Medicin</span><span class="ml-2 mr-2">:</span><span class="badge gradient-3 badge-pill gradient-1">@category.Medicins.Count()</span></p>
-                                                <p><img style="max-width:17px" src="/Content/img/heartbeat.svg" /><span class="nav-text ml-2">Disease</span><span class="ml-2 mr-2">:</span><span class="badge badge-pill gradient-2">@category.Diseases.Count()</span></p>
-                                                <p><img src="~/Content/img/post.png" /><span class="nav-text ml-2">Post</span><span class="ml-2 mr-2">:</span><span class="badge gradient-3 badge-pill gradient-1">@category.Posts.Count()</span></p>
+
+                                                <p><img style="max-width:17px" src="/Content/img/doctor.svg" /><span class="nav-text ml-2">@ViewLocalizer["Doctors"]</span><span class="ml-2 mr-2">:</span><span class="badge badge-pill gradient-2">@category.Doctors.Count()</span></p>
+                                                <p><img style="max-width:17px" src="/Content/img/medicine.svg" /><span class="nav-text ml-2">@ViewLocalizer["Medicins"]</span><span class="ml-2 mr-2">:</span><span class="badge gradient-3 badge-pill gradient-1">@category.Medicins.Count()</span></p>
+                                                <p><img style="max-width:17px" src="/Content/img/heartbeat.svg" /><span class="nav-text ml-2">@ViewLocalizer["Diseases"]</span><span class="ml-2 mr-2">:</span><span class="badge badge-pill gradient-2">@category.Diseases.Count()</span></p>
+                                                <p><img src="~/Content/img/post.png" /><span class="nav-text ml-2">@ViewLocalizer["Posts"]</span><span class="ml-2 mr-2">:</span><span class="badge gradient-3 badge-pill gradient-1">@category.Posts.Count()</span></p>
                                                 <p><img style="max-width: 17px" src="/Content/img/clock.svg" /> <span class="ml-2 mr-2">:</span>@category.CreateDate.ToString()</p>
                                             </div>
                                         </div>
-                                        
-                                        
+
+
                                     </div>
                                     <div class="tab-pane fade" id="@doctor">
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Name</th>
-                                                        <th>Kind</th>
-                                                        <th>Telephone</th>
+                                                        <th>@ViewLocalizer["Image"]</th>
+                                                        <th>@ViewLocalizer["Name"]</th>
+                                                        <th>@ViewLocalizer["Kind"]</th>
+                                                        <th>@ViewLocalizer["Telephone"]</th>
                                                     </tr>
                                                 </thead>
-                                               <tbody>
-                                                   @foreach (var doctorItem in category.Doctors)
-                                                   {
-                                                       <tr>
-                                                           <td><img style="max-width:80px" src="/images/@doctorItem.ImagePath" class=" rounded-circle mr-3" alt=""></td>
-                                                           <td>@doctorItem.Name</td>
-                                                           <td>@doctorItem.Kind</td>
-                                                           <td>@doctorItem.Telephone</td>
-                                                       </tr>
-                                                   }
-                                               </tbody>
+                                                <tbody>
+                                                    @foreach (var doctorItem in category.Doctors)
+                                                    {
+                                                        <tr>
+                                                            <td><img style="max-width:80px" src="/images/@doctorItem.ImagePath" class=" rounded-circle mr-3" alt=""></td>
+                                                            <td>@doctorItem.Name</td>
+                                                            <td>@doctorItem.Kind</td>
+                                                            <td>@doctorItem.Telephone</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Name</th>
-                                                        <th>Kind</th>
-                                                        <th>Telephone</th>
+                                                        <th>@ViewLocalizer["Image"]</th>
+                                                        <th>@ViewLocalizer["Name"]</th>
+                                                        <th>@ViewLocalizer["Kind"]</th>
+                                                        <th>@ViewLocalizer["Telephone"]</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -117,10 +118,10 @@
                                             <table class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Address</th>
-                                                        <th>Content</th>
-                                                       
+                                                        <th>@ViewLocalizer["Image"]</th>
+                                                        <th>@ViewLocalizer["Address"]</th>
+                                                        <th>@ViewLocalizer["Content"]</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -129,15 +130,15 @@
                                                         <tr>
                                                             <td><img style="max-width:50px" src="@relativeItem.ImageOrVideo" class=" rounded-circle mr-3" alt=""></td>
                                                             <td>@relativeItem.Address</td>
-                                                            <td>@relativeItem.Subject.MaxString(150,".....")</td>
+                                                            <td>@relativeItem.Subject.MaxString(150, ".....")</td>
                                                         </tr>
                                                     }
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Address</th>
-                                                        <th>Content</th>
+                                                        <th>@ViewLocalizer["Image"]</th>
+                                                        <th>@ViewLocalizer["Address"]</th>
+                                                        <th>@ViewLocalizer["Content"]</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -148,10 +149,10 @@
                                             <table class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Name</th>
-                                                        <th>Affects</th>
-                                                        <th>Indications</th>
+                                                        <th>@ViewLocalizer["Image"]</th>
+                                                        <th>@ViewLocalizer["Name"]</th>
+                                                        <th>@ViewLocalizer["Affects"]</th>
+                                                        <th>@ViewLocalizer["Indications"]</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -160,17 +161,17 @@
                                                         <tr>
                                                             <td><img style="max-width:50px" src="@medicinItem.Image" class=" rounded-circle mr-3" alt=""></td>
                                                             <td>@medicinItem.Name</td>
-                                                            <td>@medicinItem.Affects.MaxString(150,".....")</td>
-                                                            <td>@medicinItem.Indications.MaxString(150,".....")</td>
+                                                            <td>@medicinItem.Affects.MaxString(150, ".....")</td>
+                                                            <td>@medicinItem.Indications.MaxString(150, ".....")</td>
                                                         </tr>
                                                     }
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Name</th>
-                                                        <th>Affects</th>
-                                                        <th>Indications</th>
+                                                        <th>@ViewLocalizer["Image"]</th>
+                                                        <th>@ViewLocalizer["Name"]</th>
+                                                        <th>@ViewLocalizer["Affects"]</th>
+                                                        <th>@ViewLocalizer["Indications"]</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -181,8 +182,8 @@
                                             <table class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>User</th>
-                                                        <th>Content</th>
+                                                        <th>@ViewLocalizer["Name"]</th>
+                                                        <th>@ViewLocalizer["Content"]</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -191,14 +192,14 @@
                                                         <tr>
                                                             <td><img style="max-width:60px" src="/images/@postItem.User.ImagePath" class=" rounded-circle mr-3" alt="">@postItem.User.Name</td>
                                                             <td>@postItem.Content.MaxString(250, ".....")</td>
-                                                            
+
                                                         </tr>
                                                     }
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>User</th>
-                                                        <th>Content</th>
+                                                        <th>@ViewLocalizer["Name"]</th>
+                                                        <th>@ViewLocalizer["Content"]</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -209,27 +210,27 @@
                                             <table class="table table-striped table-bordered zero-configuration">
                                                 <thead>
                                                     <tr>
-                                                        <th>Subject</th>
-                                                        <th>Reasons</th>
-                                                        <th>Protection</th>
+                                                        <th>@ViewLocalizer["Subject"]</th>
+                                                        <th>@ViewLocalizer["Reasons"]</th>
+                                                        <th>@ViewLocalizer["Protection"]</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach (var diseaseItem in category.Diseases)
                                                     {
-                                                    <tr>
-                                                        <td><img style="max-width:50px" src="@diseaseItem.Image" class=" rounded-circle mr-3" alt="">@diseaseItem.Subject.MaxString(150,"...")</td>
-                                                        <td>@diseaseItem.Reasons.MaxString(150, ".....")</td>
-                                                        <td>@diseaseItem.Protection.MaxString(150, ".....")</td>
+                                                        <tr>
+                                                            <td><img style="max-width:50px" src="@diseaseItem.Image" class=" rounded-circle mr-3" alt="">@diseaseItem.Subject.MaxString(150, "...")</td>
+                                                            <td>@diseaseItem.Reasons.MaxString(150, ".....")</td>
+                                                            <td>@diseaseItem.Protection.MaxString(150, ".....")</td>
 
-                                                    </tr>
+                                                        </tr>
                                                     }
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Subject</th>
-                                                        <th>Reasons</th>
-                                                        <th>Protection</th>
+                                                        <th>@ViewLocalizer["Subject"]</th>
+                                                        <th>@ViewLocalizer["Reasons"]</th>
+                                                        <th>@ViewLocalizer["Protection"]</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>

@@ -2,6 +2,7 @@
 @inject ICategoryRepository CategoryRepository
 @inject ICountryRepository CountryRepository
 @inject ICityRepository CityRepository
+@inject IViewLocalizer ViewLocalizer
 <style>
 
 
@@ -19,7 +20,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Disease</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["Doctor"]</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -35,72 +36,70 @@
                         <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
                     </div>
                     <div class="form-group">
-                        <label for="Name" class="col-form-label">Name</label>
+                        <label for="Name" class="col-form-label">@ViewLocalizer["Name"]</label>
                         <input value="@Model.Name" asp-for="Name" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="Email" class="col-form-label">Email</label>
+                        <label for="Email" class="col-form-label">@ViewLocalizer["Email"]</label>
                         <input value="@Model.Email" asp-for="Email" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="CategoryId" class="col-form-label">Specific</label>
+                        <label for="CategoryId" class="col-form-label">@ViewLocalizer["Category"]</label>
 
                         <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList( CategoryRepository.GetAll(),"Id","Category"))">
                         </select>
 
                     </div>
                     <div class="form-group">
-                        <label for="image-name" class="col-form-label">Image</label>
+                        <label for="image-name" class="col-form-label">@ViewLocalizer["Image"]</label>
                         <input name="image" type="file" class="form-control">
                     </div>
                     <div style="display: none">
-                        <input asp-for="ImagePath"/>
+                        <input asp-for="ImagePath" />
                     </div>
                     <div class="form-group">
-                        <label for="Telephone" class="col-form-label">Telephone</label>
+                        <label for="Telephone" class="col-form-label">@ViewLocalizer["Telephone"]</label>
                         <input value="@Model.Telephone" asp-for="Telephone" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="Kind" class="col-form-label">Kind</label>
+                        <label for="Kind" class="col-form-label">@ViewLocalizer["Kind"]</label>
                         <select asp-for="Kind" class="form-control" asp-items="@Html.GetEnumSelectList(typeof(Kind))"></select>
                     </div>
                     <div class="form-group">
-                        <label for="Country" class="col-form-label">Country</label>
+                        <label for="Country" class="col-form-label">@ViewLocalizer["Country"]</label>
                         <select id="CountryList" asp-for="Country" class="form-control" asp-items="@(new SelectList( CountryRepository.GetAll(),"Name","Name"))">
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="City" class="col-form-label">City</label>
+                        <label for="City" class="col-form-label">@ViewLocalizer["City"]</label>
                         <select id="CityList" asp-for="City" class="form-control" asp-items="@(new SelectList( CityRepository.GetAll(),"Name","Name"))">
-                            </select>
+                        </select>
                     </div>
                     <div class="form-group">
 
-                        <input asp-for="Password" class="form-control form-control-user" placeholder="Password" />
+                        <input asp-for="Password" class="form-control form-control-user" placeholder="@ViewLocalizer["Password"]" />
                         <span asp-validation-for="Password" class="text-danger"></span>
 
                     </div>
 
                     <div class="form-group">
 
-                        <input asp-for="ConfirmPassword" class="form-control form-control-user" placeholder="ConfirmPassword" />
+                        <input asp-for="ConfirmPassword" class="form-control form-control-user" placeholder="@ViewLocalizer["ConfirmPassword"]" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
 
                     </div>
                     <div class="form-group">
 
-                        <label for="City" class="col-form-label">Others</label>
-                        <textarea class="form-control"  asp-for="Others">
+                        <label for="City" class="col-form-label">@ViewLocalizer["Others"]</label>
+                        <textarea class="form-control" asp-for="Others">
                             @Model.Others
                         </textarea>
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
             </div>
         </div>
     </div>

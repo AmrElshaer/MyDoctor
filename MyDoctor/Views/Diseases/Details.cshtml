@@ -1,5 +1,6 @@
 ﻿@using MYDoctor.Core.Application.ViewModel
 @model DiseaseViewModel
+@inject IViewLocalizer ViewLocalizer
 @{
 
     var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
@@ -13,7 +14,7 @@
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["MyDoctor"]</a></li>
                 <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Disease.DiseaseName</a></li>
             </ol>
         </div>

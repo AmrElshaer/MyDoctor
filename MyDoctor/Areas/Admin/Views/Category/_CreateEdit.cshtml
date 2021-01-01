@@ -1,9 +1,10 @@
 ﻿@model BeatyandHealthy
+@inject IViewLocalizer ViewLocalizer
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Category</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["Category"]</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -19,18 +20,18 @@
                         <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
                     </div>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Name</label>
+                        <label for="recipient-name" class="col-form-label">@ViewLocalizer["Name"]</label>
                         <input name="Category" value="@Model.Category" type="text" class="form-control" id="category-name">
                     </div>
                     <div class="form-group">
-                        <label for="image-name" class="col-form-label">Image Url</label>
+                        <label for="image-name" class="col-form-label">@ViewLocalizer["Image Url"]</label>
                         <input name="Image" value="@Model.Image" type="text" class="form-control" id="image-name">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
             </div>
         </div>
     </div>

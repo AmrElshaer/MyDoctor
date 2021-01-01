@@ -1,18 +1,19 @@
 ﻿using FluentValidation;
+using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
-using MYDoctor.Infrastructure.Identity;
 using System.Linq;
 
 namespace MYDoctor.Infrastructure.Validation
 {
     public class CategoryValidator : AbstractValidator<BeatyandHealthy>
     {
-        public CategoryValidator(ICategoryRepository categoryRepository)
+        public CategoryValidator(ICategoryRepository categoryRepository,IValidatorResource validatorResource)
         {
             _categoryRepository = categoryRepository;
-            RuleFor(b => b.Category).NotEmpty().Must(UniqueName).WithMessage("This Category is already exist");
-            RuleFor(b=>b.Image).NotEmpty();
+            RuleFor(b => b.Category).NotEmpty().WithMessage(d=>validatorResource.GetResource("NotEmpty",nameof(d.Category)))
+                .Must(UniqueName).WithMessage(d=>validatorResource.GetResource("IsExit",nameof(d.Category)));
+            RuleFor(b=>b.Image).NotEmpty().WithMessage(d=>validatorResource.GetResource("NotEmpty",nameof(d.Image)));
             
         }
 

@@ -1,16 +1,16 @@
 ﻿@using PagedList.Core.Mvc
 @model SearchResult<Doctor>
 @inject ICategoryRepository CategoryRepository
+@inject IViewLocalizer ViewLocalizer
 <!--**********************************
           Content body start
       ***********************************-->
 <div class="content-body">
-
     <div class="row page-titles mx-0">
         <div class="col p-md-0">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Control Panel</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Doctors</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["Control Panel"]</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@ViewLocalizer["Doctor"]</a></li>
             </ol>
         </div>
     </div>
@@ -42,22 +42,22 @@
                             <form>
                                 <div class="form-row">
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createFrom">From</label>
+                                        <label for="createFrom">@ViewLocalizer["From"]</label>
                                         <input type="date" class="form-control" id="createFrom" name="createFrom">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createTo">To</label>
+                                        <label for="createTo">@ViewLocalizer["To"]</label>
                                         <input type="date" class="form-control" id="createTo" name="createTo">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="IdRelated">Department</label>
+                                        <label for="IdRelated">@ViewLocalizer["Category"]</label>
                                         <select name="IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll(),"Id","Category",Model.SearchParamter.IdRelated))">
 
-                                            <option disabled selected> -- select an option -- </option>
+                                            <option disabled selected> -- @ViewLocalizer["select an option"] -- </option>
                                         </select>
                                     </div>
                                     <div class="col-lg-4 col-md-6">
-                                        <label for="createTo">Name</label>
+                                        <label for="createTo">@ViewLocalizer["Name"]</label>
                                         <input name="searchQuery" type="text" class="form-control" id="validationCustom01" value="@Model.SearchParamter.SearchQuery" placeholder="Search">
                                     </div>
                                     <div class="col-lg-12 col-md-6 text-center">
@@ -83,19 +83,19 @@
                                         <tr>
 
                                             <th>
-                                                Name
+                                                @ViewLocalizer["Name"]
                                             </th>
                                             <th>
-                                                Specific
+                                                @ViewLocalizer["Category"]
                                             </th>
                                             <th>
-                                                Email
+                                                @ViewLocalizer["Email"]
                                             </th>
                                             <th>
-                                                Telephone
+                                                @ViewLocalizer["Telephone"]
                                             </th>
                                             <th>
-                                                Password
+                                                @ViewLocalizer["Password"]
                                             </th>
                                             <th></th>
 

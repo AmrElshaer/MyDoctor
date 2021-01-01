@@ -1,6 +1,7 @@
 ﻿@using MYDoctor.Core.Domain.Entities
 @using MYDoctor.Core.Application.IRepository
 @inject IUserProfileRepository userProfileRepository
+@inject IViewLocalizer ViewLocalizer
 @model IEnumerable<Post>
 @{
     var user = await userProfileRepository.GetFirstAsync(a => a.Email == User.Identity.Name);
@@ -8,7 +9,8 @@
 <div class="row">
     <div class="col-12 m-b-30">
 
-        <h4 class="d-inline"><span class="ml-2">Blogs</span></h4>
+        <h4 class="d-inline"><span class="ml-2">
+    @ViewLocalizer["Blogs"]</span></h4>
         <p class="text-muted"></p>
         <div class="row">
             @foreach (var post in Model)
@@ -39,7 +41,7 @@
 
 
         </div>
-    </div>
+</div>
 </div>
 @section Scripts{
     <script src="~/js/LikeDisLike.js"></script>

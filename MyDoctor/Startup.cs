@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MyDoctor.Services;
 using MYDoctor.Infrastructure;
 using MYDoctor.Infrastructure.Message;
 using MYDoctor.Infrastructure.Notification;
@@ -46,6 +48,10 @@ namespace MyDoctor
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+            // will remember to write the cookie 
+            app.UseRequestLocalizationCookies();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<TablesTrackerHup>("/tablesTrackerHup");

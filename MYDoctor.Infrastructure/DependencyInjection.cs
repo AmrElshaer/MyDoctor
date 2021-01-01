@@ -4,12 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
-using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Infrastructure.File;
 using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
-using MYDoctor.Infrastructure.Notification;
 using MYDoctor.Infrastructure.Repository;
+using MYDoctor.Infrastructure.Validation;
 
 namespace MYDoctor.Infrastructure
 {
@@ -47,6 +46,7 @@ namespace MYDoctor.Infrastructure
             services.AddTransient<IPostHelper, PostHelper>();
             services.AddTransient<IMedicinHelper, MedicinHelper>();
             services.AddTransient<IRelativeCategoryHelper, RelativeCategoryHelper>();
+            services.AddSingleton<IValidatorResource, ValidatorResource>();
             //SignalR Config
             services.AddSignalR();
             return services;

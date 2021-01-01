@@ -1,10 +1,11 @@
 ﻿@model (IEnumerable<City> cities, int countryId)
+@inject IViewLocalizer ViewLocalizer
 <section>
     <div class="modal fade" id="EditCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">City</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["City"]</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -21,15 +22,15 @@
                             <input name="CountryId" id="CountryCityId" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Name</label>
+                            <label for="recipient-name" class="col-form-label">@ViewLocalizer["Name"]</label>
                             <input name="Name" type="text" class="form-control" id="cityName">
                         </div>
 
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
                 </div>
             </div>
         </div>
@@ -58,7 +59,7 @@
                                     </td>
 
                                     <td>
-                                        
+
                                         <button onclick="UpdateCity({Id:@item.Id,Name:'@item.Name',CountryId:'@item.CountryId'})" data-toggle="modal" data-target="#EditCity" class="btn btn-outline-light"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
                                         <form asp-action="Delete" id="deleteCategory" asp-controller="City" style="display: inline-block">
                                             <input name="id" value="@item.Id" style="display: none" />
@@ -78,8 +79,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 @model Medicin
 @inject ICategoryRepository CategoryRepository
 @inject IDiseasesRepository DiseasesRepository
+@inject IViewLocalizer ViewLocalizer
 @{
     var diseaselist = DiseasesRepository.GetAll().ToArray();
  }
@@ -22,7 +23,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Disease</h5>
+                <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["Medicin"]</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -38,7 +39,7 @@
                         <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
                     </div>
                     <div class="form-group">
-                        <label for="BeatyandHealthId" class="col-form-label">Category</label>
+                        <label for="BeatyandHealthId" class="col-form-label">@ViewLocalizer["Category"]</label>
 
                         <select asp-for="BeatyandHealthyId" class="form-control">
 
@@ -52,11 +53,11 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="image-name" class="col-form-label">Image Url</label>
+                        <label for="image-name" class="col-form-label">@ViewLocalizer["Image Url"]</label>
                         <input asp-for="Image" value="@Model.Image" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="DiseaseName" class="col-form-label">Name</label>
+                        <label for="DiseaseName" class="col-form-label">@ViewLocalizer["Name"]</label>
                         <input value="@Model.Name" asp-for="Name" class="form-control">
                     </div>
                     <div class="form-group">
@@ -64,15 +65,15 @@
                         <input value="@Model.Affects" asp-for="Affects" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="DiseaseName" class="col-form-label">Indications</label>
+                        <label for="DiseaseName" class="col-form-label">@ViewLocalizer["Indications"]</label>
                         <input value="@Model.Indications" asp-for="Indications" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="DiseaseName" class="col-form-label">Price</label>
+                        <label for="DiseaseName" class="col-form-label">@ViewLocalizer["Price"]</label>
                         <input value="@Model.Price" asp-for="Price" class="form-control">
                     </div>
 
-                    <label for="DiseaseName" class="col-form-label">Disease</label>
+                    <label for="DiseaseName" class="col-form-label">@ViewLocalizer["Disease"]</label>
                     @foreach (var disease in DiseasesRepository.GetAll())
                     {<div class="form-check">
                             <input type="checkbox" class="form-check-input" name="DiseaseMedicins" value="@disease.Id">
@@ -84,8 +85,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
             </div>
         </div>
     </div>
