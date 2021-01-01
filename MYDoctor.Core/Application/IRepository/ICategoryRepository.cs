@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
+using System.Linq;
 
 namespace MYDoctor.Core.Application.IRepository
 {
@@ -15,5 +16,6 @@ namespace MYDoctor.Core.Application.IRepository
         Task<BaseViewModel> GetBoardViewModel(int pageSize);
         Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval);
         Task<IEnumerable<BeatyandHealthy>> GetAdminBoard();
+        IQueryable<BeatyandHealthy> GetSearchHits(SearchParamter searchParamter);
     }
 }

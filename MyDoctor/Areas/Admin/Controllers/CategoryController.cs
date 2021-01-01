@@ -6,6 +6,7 @@ using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
 
@@ -15,9 +16,12 @@ namespace MyDoctor.Areas.Admin.Controllers
     public class CategoryController : BaseController
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository)
+        private readonly IExcelHelper _excelHelper;
+
+        public CategoryController(ICategoryRepository categoryRepository,IExcelHelper excelHelper)
         {
             _categoryRepository = categoryRepository;
+            _excelHelper = excelHelper;
         }
       
         public IActionResult Index(SearchParamter searchParamter)
@@ -60,49 +64,11 @@ namespace MyDoctor.Areas.Admin.Controllers
 
         public async Task<IActionResult> ExportToExcel(SearchParamter searchParamter)
         {
-            var categories =await _categoryRepository.GetAll(x =>
-                (searchParamter.SearchQuery == null || x.Category.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
-                && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
-                , c => c.OrderByDescending(a => a.Id)
-                ).ToListAsync();
+            var categories =await _categoryRepository.GetSearchHits(searchParamter).ToListAsync();
             using (var workbook=new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Category");
-                var current = 2;
-                // workSheetStyle
-                WorkSheetExcelStyle(worksheet);
-                worksheet.Columns("C").Width = 52;
-                // Title style
-                var titleCell = worksheet.Cell(current, 3);
-                TitleExcelStyle(titleCell, "Categories");
-                // Header Style Sheet
-                current += 2;
-                var numColumn = worksheet.Cell(current, 1);
-                var categoryColumn = worksheet.Cell(current, 2);
-                var imageColumn = worksheet.Cell(current, 3);
-                HeaderExcelStyle(numColumn, "Num");
-                HeaderExcelStyle(categoryColumn, "Category");
-                HeaderExcelStyle(imageColumn, "ImageUrl");
-
-                #region body
-
-                var number = 0;
-                foreach (var item in categories)
-                {
-                    current++;
-                    var numberrow = worksheet.Cell(current, 1);
-                    numberrow.Value = number++;
-                    numberrow.Style.Fill.BackgroundColor = XLColor.BabyBlue;
-                    var categoryrow = worksheet.Cell(current, 2);
-                    categoryrow.Value = item.Category;
-                    var imagerow = worksheet.Cell(current, 3);
-                    imagerow.Value = item.Image;
-                    imagerow.Hyperlink = new XLHyperlink(item.Image);
-                }
-
-                #endregion
-
+                _excelHelper.AddCategoryExcelConfig(worksheet,categories);
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);

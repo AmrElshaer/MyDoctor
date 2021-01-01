@@ -47,6 +47,7 @@ namespace MYDoctor.Infrastructure
             services.AddTransient<IMedicinHelper, MedicinHelper>();
             services.AddTransient<IRelativeCategoryHelper, RelativeCategoryHelper>();
             services.AddSingleton<IValidatorResource, ValidatorResource>();
+            services.AddSingleton<IExcelHelper, ExcelHelper>();
             //SignalR Config
             services.AddSignalR();
             return services;

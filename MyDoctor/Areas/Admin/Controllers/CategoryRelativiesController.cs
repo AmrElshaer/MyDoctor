@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
 
@@ -13,9 +14,14 @@ namespace MyDoctor.Areas.Admin.Controllers
     public class CategoryRelativiesController : BaseController
     {
         private readonly ICategoryRelativiesRepository _categoryRelativiesRepository;
+        private readonly IExcelHelper _excelHelper;
 
-        public CategoryRelativiesController(ICategoryRelativiesRepository categoryRelativiesRepository)=>
-            _categoryRelativiesRepository = categoryRelativiesRepository;
+        public CategoryRelativiesController(ICategoryRelativiesRepository categoryRelativiesRepository,IExcelHelper excelHelper) { 
+        
+         _categoryRelativiesRepository = categoryRelativiesRepository;
+            _excelHelper = excelHelper;
+        }
+           
         
 
         public IActionResult Index(SearchParamter searchParamter)
@@ -26,65 +32,13 @@ namespace MyDoctor.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult ExportToExcel(SearchParamter searchParamter)
+        public async Task<IActionResult> ExportToExcel(SearchParamter searchParamter)
         {
-            var relativescategories = _categoryRelativiesRepository.GetAll(
-                x =>
-                (searchParamter.SearchQuery == null || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
-                && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
-                && (searchParamter.IdRelated == null || x.BeatyandHealthy.Id == searchParamter.IdRelated.Value),
-                rc => rc.OrderByDescending(a => a.Id),
-                rc=>rc.BeatyandHealthy
-                
-                );
+            var relativescategories =await _categoryRelativiesRepository.SearchHits(searchParamter).ToListAsync();
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("RelativeCategory");
-                var current = 2;
-                // workSheetStyle
-                WorkSheetExcelStyle(worksheet);
-                worksheet.Columns("C").Width = 52;
-                worksheet.Columns("D").Width = 52;
-                worksheet.Columns("E").Width = 52;
-                // Title style
-                var titleCell = worksheet.Cell(current, 3);
-                TitleExcelStyle(titleCell, "RelativeCategories");
-                // Header Style Sheet
-                current += 2;
-                var numColumn = worksheet.Cell(current, 1);
-                var categoryColumn = worksheet.Cell(current, 2);
-                var imageColumn = worksheet.Cell(current, 3);
-                var address = worksheet.Cell(current, 4);
-                var subject = worksheet.Cell(current, 5);
-                HeaderExcelStyle(numColumn, "Num");
-                HeaderExcelStyle(categoryColumn, "Category");
-                HeaderExcelStyle(imageColumn, "ImageUrl");
-                HeaderExcelStyle(address, "Address");
-                HeaderExcelStyle(subject, "Subject");
-
-                #region body
-
-                var number = 0;
-                foreach (var item in relativescategories)
-                {
-                    current++;
-                    var numberrow = worksheet.Cell(current, 1);
-                    numberrow.Value = number++;
-                    numberrow.Style.Fill.BackgroundColor = XLColor.BabyBlue;
-                    var categoryrow = worksheet.Cell(current, 2);
-                    categoryrow.Value = item.BeatyandHealthy.Category;
-                    var imagerow = worksheet.Cell(current, 3);
-                    imagerow.Value = item.ImageOrVideo;
-                    imagerow.Hyperlink = new XLHyperlink(item.ImageOrVideo);
-                    var addressrow = worksheet.Cell(current, 4);
-                    addressrow.Value = item.Address;
-                    var subjectrow = worksheet.Cell(current, 5);
-                    subjectrow.Value = item.Subject;
-                }
-
-                #endregion
-
+                _excelHelper.AddRelativesCategoryExcelConfig(worksheet,relativescategories);
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);
@@ -123,7 +77,7 @@ namespace MyDoctor.Areas.Admin.Controllers
                 await _categoryRelativiesRepository.DeleteAsync(id);
                 AddMessage("Relative Category Delete Success", true);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 AddMessage("Relative Category Delete Failed");
             }

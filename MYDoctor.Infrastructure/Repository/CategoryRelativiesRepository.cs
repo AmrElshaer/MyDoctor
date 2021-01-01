@@ -34,20 +34,26 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = GetAll(
-                x =>
-                (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                && (!searchParamter.CreateFrom.HasValue|| x.CreateDate >= searchParamter.CreateFrom)
-                && (!searchParamter.CreateTo.HasValue|| x.CreateDate <= searchParamter.CreateTo)
-                && (!searchParamter.IdRelated.HasValue || x.BeatyandHealthy.Id == searchParamter.IdRelated),
-                rc => rc.OrderByDescending(a => a.Id),
-                rc=>rc.BeatyandHealthy
-                
-                );
-          
+            IQueryable<RelativeofBeatyandhealthy> searchHits = SearchHits(searchParamter);
+
             var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
+
+        public IQueryable<RelativeofBeatyandhealthy> SearchHits(SearchParamter searchParamter)
+        {
+            return GetAll(
+                x =>
+                (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
+                && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
+                && (!searchParamter.IdRelated.HasValue || x.BeatyandHealthy.Id == searchParamter.IdRelated),
+                rc => rc.OrderByDescending(a => a.Id),
+                rc => rc.BeatyandHealthy
+
+                );
+        }
+
         public async Task CreateEdit(RelativeofBeatyandhealthy category)
         {
             if (category.Id != 0)
@@ -86,6 +92,7 @@ namespace MYDoctor.Infrastructure.Repository
             };
             return result;
         }
-        
+
+       
     }
 }

@@ -32,7 +32,8 @@ namespace MYDoctor.Infrastructure.Repository
         }
         public async Task<IEnumerable<BeatyandHealthy>> GetAdminBoard() {
             var board = await _context.BeatyandHealthy.Include(c=>c.RelativeofBeatyandhealthies)
-                .Include(c=>c.Medicins).Include(c=>c.Diseases).Include(c=>c.Doctors).Include(c=>c.Posts).ThenInclude(p=>p.User).ToListAsync();
+                .Include(c=>c.Medicins).Include(c=>c.Diseases).Include(c=>c.Doctors)
+                .Include(c=>c.Posts).ThenInclude(p=>p.User).ToListAsync();
             return board;
         
         }
@@ -53,15 +54,22 @@ namespace MYDoctor.Infrastructure.Repository
         }
         public SearchResult<BeatyandHealthy> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = GetAll(x =>
-                (string.IsNullOrEmpty(searchParamter.SearchQuery)|| x.Category.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
-                && (!searchParamter.CreateTo.HasValue|| x.CreateDate <= searchParamter.CreateTo)
-                , c => c.OrderByDescending(a => a.Id)
-                );
-            var searchResult = PagingHelper.PagingModel(searchHits,searchParamter);
+            var searchHits = GetSearchHits(searchParamter);
+            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
+
+        
+        public IQueryable<BeatyandHealthy> GetSearchHits(SearchParamter searchParamter)
+        {
+            return GetAll(x =>
+                            (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Category.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                            && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
+                            && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
+                            , c => c.OrderByDescending(a => a.Id)
+                            );
+        }
+
         public async Task<BaseViewModel> GetCategoryAsync(int categoryId, int numberRelated)
         {
 
