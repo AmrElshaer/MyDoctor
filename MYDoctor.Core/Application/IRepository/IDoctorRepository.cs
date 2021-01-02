@@ -11,7 +11,7 @@ namespace MYDoctor.Core.Application.IRepository
         Task DeleteDoctorAsync(int id);
         Task CreateEdit(Doctor doctor);
         SearchResult<Doctor> GetSearchResult(SearchParamter searchParamter);
-        Task<DoctorViewModel> DoctorProfileAsync(string doctorEmail);
+        Task<DoctorViewModel> DoctorProfileAsync(int id);
 
 
     }

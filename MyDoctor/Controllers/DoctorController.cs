@@ -26,9 +26,9 @@ namespace MyDoctor.Controllers
             
         }
 
-        public async Task<IActionResult> Profile() {
-            var userEmail = User.Identity.Name;
-            var doctor = await _doctorRepository.DoctorProfileAsync(userEmail);
+        public async Task<IActionResult> Profile(int id) {
+        
+            var doctor = await _doctorRepository.DoctorProfileAsync(id);
             return View(doctor);
         }
 
