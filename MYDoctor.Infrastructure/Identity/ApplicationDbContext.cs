@@ -24,16 +24,22 @@ namespace MYDoctor.Infrastructure.Identity
         {
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.ApplyConfiguration(new DiseaseConfiguration());
             builder.ApplyConfiguration(new DoctorConfiguration());
             builder.ApplyConfiguration(new MedicinConfiguration());
             builder.ApplyConfiguration(new RelativeofBeatyandhealthyConfiguration());
             builder.ApplyConfiguration(new DiseaseMedicinConfiguration());
             builder.ApplyConfiguration(new CityConfiguration());
-            builder.ApplyConfiguration(new UserProfileConfiguration());
             builder.ApplyConfiguration(new InboxMessageConfiguration());
             builder.ApplyConfiguration(new PostConfiguration());
+            builder.Entity<UserProfile>().HasData(new UserProfile()
+            {
+                Id = 1,
+                Email = "Admin@Admin.com",
+                Name = "Admin@Admin.com"
+            })
+            
+            ;
             base.OnModelCreating(builder);
         }
         public DbSet<Disease> Disease { get; set; }

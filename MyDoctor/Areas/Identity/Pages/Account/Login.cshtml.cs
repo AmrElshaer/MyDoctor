@@ -86,7 +86,12 @@ namespace MyDoctor.Areas.Identity.Pages.Account
                 {
                     
                     var user = await _userManager.FindByNameAsync(Input.Email);
+                    
                     var roles= await _userManager.GetRolesAsync(user);
+                    if (!roles.Any()&&user.Id == "1")
+                    {
+                       await AddAdminRole(user.Id);
+                    }
                     switch (roles.FirstOrDefault())
                     {
                         
@@ -115,6 +120,12 @@ namespace MyDoctor.Areas.Identity.Pages.Account
             
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task AddAdminRole(string id)
+        {
+           var user=await _userManager.FindByIdAsync(id);
+           await _userManager.AddToRoleAsync(user,Roles.Admin.ToString());
         }
     }
 }

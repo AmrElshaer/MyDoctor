@@ -115,7 +115,7 @@
                                                 </td>
                                                 <td>
 
-                                                    @item.Subject.MaxString(100, ViewLocalizer["See More"].ToString())
+                                                    @item.Subject.MaxString(100,"See More")
 
 
                                                 </td>
@@ -134,7 +134,7 @@
                                                 </td>
                                                 <td>
 
-                                                    <button class="btn btn-outline-light" onclick="editCategory({Id:@item.Id,ImageOrVideo:'@item.ImageOrVideo',CreateDate:'@item.CreateDate',Address:'@item.Address',Subject:'@item.Subject',BeatyandHealthId:'@item.BeatyandHealthId'})"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                                    <button class="btn btn-outline-light" onclick="editCategory({ Id:@item.Id, ImageOrVideo: '@item.ImageOrVideo', CreateDate: '@item.CreateDate', Address: '@item.Address.ToString()', Subject: '@item.Subject', BeatyandHealthId: '@item.BeatyandHealthId' })"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
                                                     <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
                                                         <input name="id" value="@item.Id" style="display: none" />
                                                         <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
@@ -165,14 +165,13 @@
 <section>
     @await Html.PartialAsync("_CreateEdit", new RelativeofBeatyandhealthy())
 </section>
-<p><pager class="pager-container" list="@new StaticPagedList<RelativeofBeatyandhealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" asp-route-beatyandHealthId="@Model.SearchParamter.IdRelated" /></p>
 @section Scripts
 {
     <script>
         "use strict";
 
         function editCategory(relativecategory) {
-            console.log("Edit");
+            console.log(relativecategory);
             $('#Id').val(relativecategory.Id);
             $('#ImageOrVideo').val(relativecategory.ImageOrVideo);
             $('#Address').val(relativecategory.Address);

@@ -23,7 +23,6 @@ namespace MYDoctor.Infrastructure
             services.ConfigureApplicationCookie(o => {
                 o.LoginPath = new Microsoft.AspNetCore.Http.PathString("/identity/Account/Login");
             });
-           
             //Inject Repository
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IInboxMessageRepsitory, InboxMessageRepsitory>();

@@ -4,14 +4,16 @@ using MYDoctor.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MYDoctor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210129151913_UpdateUserProfile")]
+    partial class UpdateUserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +45,9 @@ namespace MYDoctor.Infrastructure.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "1", ConcurrencyStamp = "0a7482f7-c62c-4e43-b34c-b6e07413f9a2", Name = "Admin", NormalizedName = "Admin" },
-                        new { Id = "2", ConcurrencyStamp = "5d0226cb-5852-4c24-80f3-72641724bd4d", Name = "Client", NormalizedName = "Client" },
-                        new { Id = "3", ConcurrencyStamp = "e6f09ba8-3456-4c48-8f8f-c4c26d932304", Name = "Doctor", NormalizedName = "Doctor" }
+                        new { Id = "1", ConcurrencyStamp = "2c99b4d0-431a-4205-a241-004245536333", Name = "Admin", NormalizedName = "Admin" },
+                        new { Id = "2", ConcurrencyStamp = "60ff0a91-817b-4dba-b302-91c12c1b7f2f", Name = "Client", NormalizedName = "Client" },
+                        new { Id = "3", ConcurrencyStamp = "e15e487b-8d37-4c32-9360-0e5624dc0ec8", Name = "Doctor", NormalizedName = "Doctor" }
                     );
                 });
 
@@ -518,7 +520,7 @@ namespace MYDoctor.Infrastructure.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "1", AccessFailedCount = 0, ConcurrencyStamp = "18b8b6f9-891d-497a-8fc1-94f35a425147", Email = "Admin@Admin.com", EmailConfirmed = false, LockoutEnabled = true, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEE10PZmxgpPcnG2eXZ1QJmOEAp3ugEVAvuTlVkOSY/xbkeeqAq4i0MeNxVGdHVn8bw==", PhoneNumberConfirmed = false, SecurityStamp = "a590e324-802c-4dc2-ba8d-ec9972413d3d", TwoFactorEnabled = false, UserName = "Admin@Admin.com" }
+                        new { Id = "1", AccessFailedCount = 0, ConcurrencyStamp = "375b6a30-da44-4b02-8378-70eac208973c", Email = "Admin@Admin.com", EmailConfirmed = false, LockoutEnabled = true, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEGhp3f6Uwcd+W7SO2cPT2534YuiExEDCuLjRZjqbJ2pzVT4GDJnbd8GEVfcytszSAw==", PhoneNumberConfirmed = false, SecurityStamp = "d5282a19-fe28-42b6-8a58-ed8b2e9594f3", TwoFactorEnabled = false, UserName = "Admin@Admin.com" }
                     );
                 });
 

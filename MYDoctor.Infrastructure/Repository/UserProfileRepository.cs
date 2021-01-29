@@ -16,6 +16,7 @@ namespace MYDoctor.Infrastructure.Repository
             await InsertAsync(new UserProfile { Name = email.Split('@')[0], Email = email, ImagePath = imagePath });
         }
         public async Task<UserProfileViewModel> GetUserProfileAsync(string userEmail) {
+            
             var user = await GetFirstAsync(a=>a.Email==userEmail);
             var posts = _context.Posts.Include(a=>a.User).Include(a=>a.Likes).Include(a=>a.DisLikes).OrderByDescending(a=>a.Id);
             var result = new UserProfileViewModel()
@@ -25,5 +26,6 @@ namespace MYDoctor.Infrastructure.Repository
             };
             return result;
         }
+        
     }
 }
