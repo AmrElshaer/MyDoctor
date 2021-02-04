@@ -39,6 +39,7 @@ namespace MyDoctor
             });
             //Inject Claim Factory
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, DoctorClaimsPrincipalFactory>();
+            services.AddMemoryCache();
 
             return services;
         }
