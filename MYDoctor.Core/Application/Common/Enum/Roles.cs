@@ -2,7 +2,7 @@
 {
     public  enum Roles
     {
-        Admin,Doctor,Client
+        Admin,Doctor,Client,CreatePost
        
 
     }

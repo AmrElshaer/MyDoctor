@@ -18,26 +18,19 @@ namespace MyDoctor.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly ITableTrackUserRepository _tableTrackUserRepository;
         private readonly IInboxMessageRepsitory _inboxMessageRepsitory;
-        private readonly IMemoryCache _memoryCache;
 
-        public DashBoardController(IMemoryCache memoryCache,IInboxMessageRepsitory inboxMessageRepsitory,ICategoryRepository categoryRepository,ITableTrackUserRepository tableTrackUserRepository)
+        public DashBoardController(IInboxMessageRepsitory inboxMessageRepsitory,ICategoryRepository categoryRepository,ITableTrackUserRepository tableTrackUserRepository)
         {
             _categoryRepository = categoryRepository;
             _tableTrackUserRepository = tableTrackUserRepository;
             _inboxMessageRepsitory = inboxMessageRepsitory;
-            _memoryCache = memoryCache;
 
 
         }
         public async Task<IActionResult>  Index()
         {
-            BaseViewModel res;
-            if (_memoryCache.TryGetValue("homeDash", out res))
-            {
-                return View(res);
-            }
+           
             var result = await _categoryRepository.GetBoardViewModel(4);
-            _memoryCache.Set<BaseViewModel>("homeDash",result,TimeSpan.FromMinutes(2));
             return View(result);
         }
         public async Task<IActionResult> GeneralSearch(string searchVal)

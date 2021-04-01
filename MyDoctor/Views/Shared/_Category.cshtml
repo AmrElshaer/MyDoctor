@@ -1,6 +1,11 @@
 ﻿@using MYDoctor.Core.Domain.Entities
 @inject IViewLocalizer ViewLocalizer
 @model IEnumerable<BeatyandHealthy>
+<style>
+    .img-fluid{
+        max-height:100px;
+    }
+</style>
 <div class="row">
     <div class="col-12 m-b-30">
         <h4 class="d-inline"><i class="icon-grid menu-icon"></i><span class="ml-2">@ViewLocalizer["Departments"]</span></h4>

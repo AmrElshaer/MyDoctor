@@ -26,6 +26,13 @@ namespace MYDoctor.Infrastructure.Configurations
                 Name = Roles.Doctor.ToString(),
                 NormalizedName = Roles.Doctor.ToString()
             }
+            ,
+            new IdentityRole()
+            {
+                Id = "4",
+                Name = Roles.CreatePost.ToString(),
+                NormalizedName = Roles.CreatePost.ToString()
+            }
 
 
             );

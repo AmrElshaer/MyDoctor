@@ -1,11 +1,17 @@
 ﻿@using MYDoctor.Core.Domain.Entities
 @inject IViewLocalizer ViewLocalizer
 @model IEnumerable<Disease>
+
 @{
 
     var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
     var random = new Random();
 }
+<style>
+    .img-fluid {
+        max-height: 100px;
+    }
+</style>
 <div class="row">
     <div class="col-12 m-b-30">
 

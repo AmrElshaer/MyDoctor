@@ -73,7 +73,11 @@ namespace MYDoctor.Infrastructure.Repository
         public async Task<BaseViewModel> GetCategoryAsync(int categoryId, int numberRelated)
         {
 
-            var cateogry = await GetByIdAsync(categoryId, c => c.Diseases, c => c.Medicins, c => c.Doctors, c => c.RelativeofBeatyandhealthies,c=>c.Posts);
+            var cateogry = await GetByIdAsync(categoryId, c => c.Diseases,
+                c => c.Medicins,
+                c => c.Doctors,
+                c => c.RelativeofBeatyandhealthies,
+                c=>c.Posts);
 
             var result = new BeatyandHealthViewModel()
             {

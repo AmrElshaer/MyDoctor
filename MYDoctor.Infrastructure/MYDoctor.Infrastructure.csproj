@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201202210637_UserProfile.cs" />
     <Compile Remove="Migrations\20201202210637_UserProfile.Designer.cs" />
+    <Compile Remove="Migrations\20210214185658_addCreatePostRole.cs" />
+    <Compile Remove="Migrations\20210214185658_addCreatePostRole.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

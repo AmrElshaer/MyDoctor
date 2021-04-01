@@ -43,11 +43,11 @@
                                 <div class="form-row">
                                     <div class="col-lg-4 col-md-6">
                                         <label for="createFrom">@ViewLocalizer["From"]</label>
-                                        <input type="date" class="form-control" id="createFrom" name="createFrom">
+                                        <input class="form-control" type="date" asp-for="SearchParamter.CreateFrom"/>
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="createTo">@ViewLocalizer["To"]</label>
-                                        <input type="date" class="form-control" id="createTo" name="createTo">
+                                        <input class="form-control" type="date" asp-for="SearchParamter.CreateTo" />
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="createTo">@ViewLocalizer["Disease Name"]</label>
