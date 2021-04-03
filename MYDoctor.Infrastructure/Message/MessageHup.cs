@@ -30,24 +30,7 @@ namespace MYDoctor.Infrastructure.Message
             var allMessages = await _inboxMessageRepsitory.GetMissMessages(toName);
             await this._hubContext.Clients.Group(toName).SendAsync("receiveMessage", allMessages);
         }
-        /// <summary>
-        /// The Main Signalr Method Calling From UI
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public async Task SendMessage(InboxMessageViewModel message)
-        {
-            if (message!=null)
-            {
-               message.FromName = Context.User.Identity.Name;
-               await  _inboxMessageRepsitory.InsertAsync(message);
-               await SendMissMessageAsync(message.ToName);
-
-
-            }
-            
-
-        }
+       
         public override Task OnConnectedAsync()
         {
             if (Context.User.Identity.IsAuthenticated)
