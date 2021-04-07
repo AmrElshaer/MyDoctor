@@ -34,6 +34,7 @@
                             <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#exampleModal"><img src="~/Content/img/plus.svg" style="max-width:25px" /></button>
 
                             <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToExcel" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><img src="~/Content/img/excel.png" style="max-width:25px" /></a>
+                            <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToPDF" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><i class="fas fa-file-pdf"></i></a>
 
                         </div>
                     </div>

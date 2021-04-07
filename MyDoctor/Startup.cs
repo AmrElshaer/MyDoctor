@@ -8,6 +8,7 @@ using MyDoctor.Services;
 using MYDoctor.Infrastructure;
 using MYDoctor.Infrastructure.Message;
 using MYDoctor.Infrastructure.Notification;
+using Rotativa.AspNetCore;
 
 namespace MyDoctor
 {
@@ -68,6 +69,7 @@ namespace MyDoctor
                
                 
             });
+            RotativaConfiguration.Setup(env);
         }
     }
 }

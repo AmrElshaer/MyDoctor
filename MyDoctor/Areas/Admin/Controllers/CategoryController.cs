@@ -9,6 +9,7 @@ using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
+using Rotativa.AspNetCore;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -79,7 +80,12 @@ namespace MyDoctor.Areas.Admin.Controllers
                 
             }
         }
-
+        public async Task<IActionResult> ExportToPDF(SearchParamter searchParamter)
+        {
+            var categories = await _categoryRepository.GetSearchHits(searchParamter).ToListAsync();
+            return new ViewAsPdf(categories);
+           
+        }
         public async Task<ActionResult>  Delete(int id)
         {
             try
