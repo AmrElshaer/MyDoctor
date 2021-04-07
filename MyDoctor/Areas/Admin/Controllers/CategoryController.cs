@@ -80,6 +80,7 @@ namespace MyDoctor.Areas.Admin.Controllers
                 
             }
         }
+        //export to pdf
         public async Task<IActionResult> ExportToPDF(SearchParamter searchParamter)
         {
             var categories = await _categoryRepository.GetSearchHits(searchParamter).ToListAsync();
