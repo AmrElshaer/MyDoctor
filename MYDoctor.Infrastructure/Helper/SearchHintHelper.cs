@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 namespace MYDoctor.Infrastructure.Helper
 {
     #region CategorySearch
+    /// <summary>
+    /// More specific immunitable parametless
+    /// </summary>
     public sealed class CategorySearchHint : Specification<BeatyandHealthy>
     {
         private readonly SearchHintBase searchHintBase;
