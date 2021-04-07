@@ -1,20 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Application.ViewModel;
 using MYDoctor.Core.Domain.Entities;
+using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
-using MYDoctor.Core.Application.Common;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MYDoctor.Infrastructure.Helper;
-using System.Collections.Generic;
-using MYDoctor.Core.Application.IHelper;
 
 namespace MYDoctor.Infrastructure.Repository
 {
-    public class CategoryRelativiesRepository:BaseRepository<RelativeofBeatyandhealthy>,ICategoryRelativiesRepository
+    public class CategoryRelativiesRepository : BaseRepository<RelativeofBeatyandhealthy>, ICategoryRelativiesRepository
     {
         private readonly ITableTrackNotification _tableTrackNotification;
         private readonly IDoctorHelper _doctorHelper;
@@ -22,6 +20,7 @@ namespace MYDoctor.Infrastructure.Repository
         private readonly IPostHelper _postHelper;
         private readonly IMedicinHelper _medicinHelper;
         private readonly IRelativeCategoryHelper _relativeCategoryHelper;
+
         public CategoryRelativiesRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper, ITableTrackNotification tableTrackNotification) : base(context)
         {
             _tableTrackNotification = tableTrackNotification;
@@ -42,26 +41,16 @@ namespace MYDoctor.Infrastructure.Repository
 
         public IQueryable<RelativeofBeatyandhealthy> SearchHits(SearchParamter searchParamter)
         {
-            return GetAll(
-                x =>
-                (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
-                && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
-                && (!searchParamter.IdRelated.HasValue || x.BeatyandHealthy.Id == searchParamter.IdRelated),
-                rc => rc.OrderByDescending(a => a.Id),
-                rc => rc.BeatyandHealthy
-
-                );
+            var searchExpresion = new CategoryRelativeSearchHint(searchParamter); 
+            return GetAll(searchExpresion.ToExpression(), rc => rc.OrderByDescending(a => a.Id), rc => rc.BeatyandHealthy);
         }
 
         public async Task CreateEdit(RelativeofBeatyandhealthy category)
         {
             if (category.Id != 0)
             {
-
                 category.ModiteDate = DateTime.Now.Date;
                 await UpdateAsync(category);
-
             }
             else
             {
@@ -69,16 +58,13 @@ namespace MYDoctor.Infrastructure.Repository
                 await InsertAsync(category);
                 await _tableTrackNotification.InsertAsync(category.Address, category.Subject, "RelativesCategory", "Details", category.ImageOrVideo, category.Id);
             }
-
-
-
         }
 
         public async Task<RelativeBeatyandhealthyViewModel> GetRelativeCategoryAsync(int id, int numberRelated)
         {
-            var relativeCategory = await _table.Include(r=>r.BeatyandHealthy).Include(r=>r.BeatyandHealthy.Doctors).Include(r=>r.BeatyandHealthy.Medicins)
-                .Include(r=>r.BeatyandHealthy.Diseases).Include(r=>r.BeatyandHealthy.RelativeofBeatyandhealthies)
-                .Include(c=>c.BeatyandHealthy.Posts).FirstOrDefaultAsync(r=>r.Id==id);
+            var relativeCategory = await _table.Include(r => r.BeatyandHealthy).Include(r => r.BeatyandHealthy.Doctors).Include(r => r.BeatyandHealthy.Medicins)
+                .Include(r => r.BeatyandHealthy.Diseases).Include(r => r.BeatyandHealthy.RelativeofBeatyandhealthies)
+                .Include(c => c.BeatyandHealthy.Posts).FirstOrDefaultAsync(r => r.Id == id);
 
             var result = new RelativeBeatyandhealthyViewModel()
             {
@@ -92,7 +78,5 @@ namespace MYDoctor.Infrastructure.Repository
             };
             return result;
         }
-
-       
     }
 }

@@ -56,11 +56,11 @@
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="">@ViewLocalizer["Address"]</label>
-                                        <input name="searchQuery" type="text" class="form-control" id="validationCustom01" value="@Model.SearchParamter.SearchQuery" placeholder="Search">
+                                        <input class="form-control" asp-for="SearchParamter.SearchQuery" placeholder="Search">
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="BeatyandHealthId">@ViewLocalizer["Category"]</label>
-                                        <select name="IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll().ToList(),"Id","Category",Model.SearchParamter.IdRelated))">
+                                        <select  asp-for="SearchParamter.IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll().ToList(),"Id","Category",Model.SearchParamter.IdRelated))">
                                         </select>
                                     </div>
 

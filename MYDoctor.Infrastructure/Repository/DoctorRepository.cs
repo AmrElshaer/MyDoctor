@@ -26,6 +26,7 @@ namespace MYDoctor.Infrastructure.Repository
             _userProfileRepository = userProfileRepository;
         }
         public async Task<IEnumerable<Doctor>> GetDoctorsAsync(DoctorSearch doctorSearch) {
+            var searchDoctorHint = new DoctorSearchHint(new SearchParamter() { SearchQuery=doctorSearch.Name});
             var doctors = await GetAll(
                d => (!doctorSearch.Categories.Any() || doctorSearch.Categories.Contains(d.CategoryId))
                && (!doctorSearch.Countries.Any() || doctorSearch.Countries.Contains(d.Country))
@@ -75,13 +76,8 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<Doctor> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = GetAll(
-                x =>
-                (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                && (searchParamter.IdRelated == null || x.CategoryId == searchParamter.IdRelated),
-                d => d.OrderByDescending(a => a.Id),
-                   d=>d.Category
-                );
+            var doctorSearch = new DoctorSearchHint(searchParamter);
+            var searchHits = GetAll(doctorSearch.ToExpression(), d => d.OrderByDescending(a => a.Id),d=>d.Category);
             var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }

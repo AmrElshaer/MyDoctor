@@ -62,12 +62,8 @@ namespace MYDoctor.Infrastructure.Repository
         
         public IQueryable<BeatyandHealthy> GetSearchHits(SearchParamter searchParamter)
         {
-            return GetAll(x =>
-                            (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Category.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                            && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
-                            && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
-                            , c => c.OrderByDescending(a => a.Id)
-                            );
+            var searchSpecification = new CategorySearchHint(searchParamter);
+            return GetAll( searchSpecification.ToExpression(), c => c.OrderByDescending(a => a.Id));
         }
 
         public async Task<BaseViewModel> GetCategoryAsync(int categoryId, int numberRelated)
