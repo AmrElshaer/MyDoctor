@@ -22,32 +22,22 @@ namespace MYDoctor.Infrastructure.Helper
         }
     }
     #endregion
-
     #region CategoryRelativeSearchHint
     public sealed class CategoryRelativeSearchHint : Specification<RelativeofBeatyandhealthy>
     {
         private readonly SearchHintBase searchHintBase;
-        private readonly SearchParamter searchParamter;
-
         public CategoryRelativeSearchHint(SearchParamter searchParamter)
         {
             searchHintBase = new SearchHintBase(searchParamter);
-            this.searchParamter = searchParamter;
-        }
-
-        private Func<int?, bool> RelatedIdPredicate()
-        {
-            return x => (!searchParamter.IdRelated.HasValue || x == searchParamter.IdRelated);
         }
 
         public override Expression<Func<RelativeofBeatyandhealthy, bool>> ToExpression()
         {
-            var relatedId = RelatedIdPredicate();
+            var relatedId =searchHintBase.RelatedIdPredicate();
             return x => searchHintBase.ApplySearch(x.Address, x.CreateDate) && relatedId(x.BeatyandHealthy.Id);
         }
     }
     #endregion
-
     #region DiseaseSearchHint
     public sealed class DiseaseSearchHint : Specification<Disease>
     {
@@ -69,22 +59,14 @@ namespace MYDoctor.Infrastructure.Helper
     public sealed class DoctorSearchHint : Specification<Doctor>
     {
         private readonly SearchHintBase searchHintBase;
-        private readonly SearchParamter searchParamter;
 
         public DoctorSearchHint(SearchParamter searchParamter)
         {
             searchHintBase = new SearchHintBase(searchParamter);
-            this.searchParamter = searchParamter;
         }
-
-        private Func<int?, bool> RelatedIdPredicate()
-        {
-            return x => (!searchParamter.IdRelated.HasValue || x == searchParamter.IdRelated);
-        }
-
         public override Expression<Func<Doctor, bool>> ToExpression()
         {
-            var relatedId = RelatedIdPredicate();
+            var relatedId =searchHintBase.RelatedIdPredicate();
             var searchQuery = searchHintBase.SearchQuery();
             return x => searchQuery(x.Name) && relatedId(x.Category.Id);
         }
@@ -109,10 +91,10 @@ namespace MYDoctor.Infrastructure.Helper
     #endregion
     internal class SearchHintBase
     {
-        private readonly SearchParamter SearchParamter;
+        private readonly SearchParamter searchParamter;
         public SearchHintBase(SearchParamter searchParamter)
         {
-            SearchParamter = searchParamter;
+           this.searchParamter = searchParamter;
         }
 
         
@@ -125,16 +107,20 @@ namespace MYDoctor.Infrastructure.Helper
         }
         public Func<DateTime?, bool> FromPredicate()
         {
-            return (createDate) => (!SearchParamter.CreateFrom.HasValue || createDate >= SearchParamter.CreateFrom);
+            return (createDate) => (!searchParamter.CreateFrom.HasValue || createDate >= searchParamter.CreateFrom);
         }
 
         public Func<string, bool> SearchQuery()
         {
-            return x => (string.IsNullOrEmpty(this.SearchParamter.SearchQuery) || x.ToLower().Contains(SearchParamter.SearchQuery.ToLower()));
+            return x => (string.IsNullOrEmpty(this.searchParamter.SearchQuery) || x.ToLower().Contains(searchParamter.SearchQuery.ToLower()));
         }
         public Func<DateTime?, bool> ToPredicate()
         {
-            return (createDate) => (!SearchParamter.CreateTo.HasValue || createDate <= SearchParamter.CreateTo);
+            return (createDate) => (!searchParamter.CreateTo.HasValue || createDate <= searchParamter.CreateTo);
+        }
+        public Func<int?, bool> RelatedIdPredicate()
+        {
+            return x => (!this.searchParamter.IdRelated.HasValue || x == searchParamter.IdRelated);
         }
     }
 }
