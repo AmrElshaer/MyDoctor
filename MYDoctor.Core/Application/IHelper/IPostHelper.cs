@@ -8,6 +8,6 @@ namespace MYDoctor.Core.Application.IHelper
 {
     public  interface IPostHelper
     {
-        Task<IEnumerable<Post>> GetRelativesPosts(ICollection<Post> posts, int numberRelated, Expression<Func<Post, bool>> expression);
+        Task<IEnumerable<Post>> GetRelativesPosts(ICollection<Post> posts, int numberRelated,int categoryId);
     }
 }

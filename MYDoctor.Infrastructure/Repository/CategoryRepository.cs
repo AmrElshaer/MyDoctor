@@ -21,14 +21,16 @@ namespace MYDoctor.Infrastructure.Repository
         private readonly IPostHelper _postHelper;
         private readonly IMedicinHelper _medicinHelper;
         private readonly IRelativeCategoryHelper _relativeCategoryHelper;
+        private readonly ICategoryHelper _categoryHelper;
 
-        public CategoryRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper) : base(context)
+        public CategoryRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper, ICategoryHelper categoryHelper = null) : base(context)
         {
             _doctorHelper = doctorHelper;
             _diseaseHelper = diseaseHelper;
             _postHelper = postHelper;
             _relativeCategoryHelper = relativeCategoryHelper;
             _medicinHelper = medicinHelper;
+            _categoryHelper = categoryHelper;
         }
         public async Task<IEnumerable<BeatyandHealthy>> GetAdminBoard() {
             var board = await _context.BeatyandHealthy.Include(c=>c.RelativeofBeatyandhealthies)
@@ -74,17 +76,13 @@ namespace MYDoctor.Infrastructure.Repository
                 c => c.Doctors,
                 c => c.RelativeofBeatyandhealthies,
                 c=>c.Posts);
-
-            var result = new BeatyandHealthViewModel()
-            {
-                BeatyandHealthy = cateogry,
-                Categories = await GetAll(a => a.Id != categoryId).ToListAsync(),
-                Doctors = await _doctorHelper.GetRelativesDoctors(cateogry.Doctors, numberRelated, d => d.CategoryId != cateogry.Id),
-                Medicins = await _medicinHelper.GetRelativesMedicins(cateogry.Medicins, numberRelated, d => d.BeatyandHealthyId != cateogry.Id),
-                Diseases = await _diseaseHelper.GetRelativesDiseases(cateogry.Diseases, numberRelated, d => d.BeatyandHealthyId != cateogry.Id),
-                RelativeCategories = await _relativeCategoryHelper.GetRelativesCategory(cateogry.RelativeofBeatyandhealthies, numberRelated, d => d.BeatyandHealthId != cateogry.Id),
-                Posts = await _postHelper.GetRelativesPosts(cateogry.Posts, numberRelated, p => p.CategoryId != cateogry.Id)
-            };
+            var result = new BeatyandHealthViewModel(cateogry, numberRelated)
+                .WithMedicin(this._medicinHelper, categoryId)
+                .WithRelativeCategory(this._relativeCategoryHelper, categoryId)
+                .WithDisease(this._diseaseHelper, categoryId)
+                .WithDoctors(this._doctorHelper, categoryId)
+                .WithPosts(this._postHelper, categoryId)
+                .WithCategories(this._categoryHelper, categoryId).Build();
             return result;
         }
         public async Task<BaseViewModel> GetBoardViewModel(int pageSize)

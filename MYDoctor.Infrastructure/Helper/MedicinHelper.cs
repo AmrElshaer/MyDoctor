@@ -21,11 +21,11 @@ namespace MYDoctor.Infrastructure.Helper
             _context = context;
         }
 
-        public async Task<IEnumerable<Medicin>> GetRelativesMedicins(ICollection<Medicin> medicins, int numberRelated, Expression<Func<Medicin, bool>> expression)
+        public async Task<IEnumerable<Medicin>> GetRelativesMedicins(ICollection<Medicin> medicins, int numberRelated, int categoryId)
         {
             if ((medicins.Any(), medicins.Count() >= numberRelated) == (true, true))
                 return medicins;
-            var meds = await _context.Medicin.Include(d => d.BeatyandHealthy).Where(expression).OrderByDescending(m => m.Id).Take(numberRelated - medicins.Count()).ToListAsync();
+            var meds = await _context.Medicin.Include(d => d.BeatyandHealthy).Where(m=>m.BeatyandHealthyId!=categoryId).OrderByDescending(m => m.Id).Take(numberRelated - medicins.Count()).ToListAsync();
             return medicins.AppendData(meds);
         }
     }

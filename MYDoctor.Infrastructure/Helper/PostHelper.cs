@@ -22,11 +22,11 @@ namespace MYDoctor.Infrastructure.Helper
         }
 
 
-        public async Task<IEnumerable<Post>> GetRelativesPosts(ICollection<Post> posts, int numberRelated, Expression<Func<Post, bool>> expression)
+        public async Task<IEnumerable<Post>> GetRelativesPosts(ICollection<Post> posts, int numberRelated, int categoryId)
         {
             if ((posts.Any(), posts.Count() >= numberRelated) == (true, true))
                 return posts;
-            var pos = await _context.Posts.Include(d => d.Category).Include(p => p.User).Where(expression).OrderByDescending(c => c.Id).Take(numberRelated - posts.Count()).ToListAsync();
+            var pos = await _context.Posts.Include(d => d.Category).Include(p => p.User).Where(a=>a.CategoryId!=categoryId).OrderByDescending(c => c.Id).Take(numberRelated - posts.Count()).ToListAsync();
             return posts.AppendData(pos);
         }
     }

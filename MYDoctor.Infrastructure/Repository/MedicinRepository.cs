@@ -24,8 +24,9 @@ namespace MYDoctor.Infrastructure.Repository
         private readonly IPostHelper _postHelper;
         private readonly IMedicinHelper _medicinHelper;
         private readonly IRelativeCategoryHelper _relativeCategoryHelper;
+        private readonly ICategoryHelper _categoryHelper;
 
-        public MedicinRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper,IRelativeCategoryHelper relativeCategoryHelper,IDiseaseHelper diseaseHelper,IDoctorHelper doctorHelper,ITableTrackNotification tableTrackNotification) : base(context)
+        public MedicinRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper, ITableTrackNotification tableTrackNotification, ICategoryHelper categoryHelper) : base(context)
         {
             _tableTrackNotification = tableTrackNotification;
             _doctorHelper = doctorHelper;
@@ -33,6 +34,7 @@ namespace MYDoctor.Infrastructure.Repository
             _postHelper = postHelper;
             _relativeCategoryHelper = relativeCategoryHelper;
             _medicinHelper = medicinHelper;
+            _categoryHelper = categoryHelper;
         }
 
         public SearchResult<Medicin> GetSearchResult(SearchParamter searchParamter)
@@ -120,16 +122,14 @@ namespace MYDoctor.Infrastructure.Repository
                 Include(m=>m.BeatyandHealthy.RelativeofBeatyandhealthies)
                 .Include(m=>m.DiseaseMedicins).ThenInclude(dm=>dm.Disease).FirstOrDefaultAsync(m=>m.Id==id);
 
-            var result = new MedicinViewModel()
-            {
-                Medicin = medicin,
-                Categories = await _context.BeatyandHealthy.Where(a => a.Id != medicin.BeatyandHealthyId).OrderByDescending(a => a.Id).Take(numberRelated).ToListAsync(),
-                Doctors = await _doctorHelper.GetRelativesDoctors(medicin.BeatyandHealthy.Doctors,numberRelated, d => d.CategoryId != medicin.BeatyandHealthyId),
-                Medicins = await _medicinHelper.GetRelativesMedicins(medicin.BeatyandHealthy.Medicins,numberRelated, d => d.BeatyandHealthyId != medicin.BeatyandHealthyId),
-                Diseases = await _diseaseHelper.GetRelativesDiseases(medicin.BeatyandHealthy.Diseases,numberRelated, d => d.BeatyandHealthyId != medicin.BeatyandHealthyId),
-                RelativeCategories = await _relativeCategoryHelper.GetRelativesCategory(medicin.BeatyandHealthy.RelativeofBeatyandhealthies,numberRelated, d => d.BeatyandHealthId != medicin.BeatyandHealthyId),
-                Posts=await _postHelper.GetRelativesPosts(medicin.BeatyandHealthy.Posts,numberRelated,p=>p.CategoryId!=medicin.BeatyandHealthyId)
-            };
+            var categoryId = medicin.BeatyandHealthyId;
+            var result = new MedicinViewModel(medicin, numberRelated)
+                .WithMedicin(this._medicinHelper, categoryId)
+                .WithRelativeCategory(this._relativeCategoryHelper, categoryId)
+                .WithDisease(this._diseaseHelper, categoryId)
+                .WithDoctors(this._doctorHelper, categoryId)
+                .WithPosts(this._postHelper, categoryId)
+                .WithCategories(this._categoryHelper, categoryId).Build();
             return result;
         }
        

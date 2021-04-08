@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MYDoctor.Core.Application.IHelper
 {
-    public interface IDiseaseHelper
+    public interface ICategoryHelper
     {
-         Task<IEnumerable<Disease>> GetRelativesDiseases(ICollection<Disease> diseases, int numberRelated,int categoryId);
+        Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated, int categoryId);
     }
 }

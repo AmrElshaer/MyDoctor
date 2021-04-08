@@ -20,11 +20,12 @@ namespace MYDoctor.Infrastructure.Helper
         {
             _context = context;
         }
-        public async Task<IEnumerable<Doctor>> GetRelativesDoctors(ICollection<Doctor> doctors,int numberRelated,Expression<Func<Doctor,bool>> expression){
+        public async Task<IEnumerable<Doctor>> GetRelativesDoctors(ICollection<Doctor> doctors,int numberRelated, int categoryId)
+        {
             
                     if ((doctors.Any(), doctors.Count() >= numberRelated) == (true, true))
                             return doctors;
-                     var doc=await _context.Doctor.Include(d => d.Category).Where(expression).OrderByDescending(a => a.Id).Take(numberRelated - doctors.Count()).ToListAsync();
+                     var doc=await _context.Doctor.Include(d => d.Category).Where(d=>d.CategoryId!=categoryId).OrderByDescending(a => a.Id).Take(numberRelated - doctors.Count()).ToListAsync();
                      return doctors.AppendData(doc);
 
       

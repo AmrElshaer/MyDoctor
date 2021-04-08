@@ -44,6 +44,7 @@ namespace MYDoctor.Infrastructure
             services.AddTransient<IDiseaseHelper,DiseaseHelper>();
             services.AddTransient<IPostHelper, PostHelper>();
             services.AddTransient<IMedicinHelper, MedicinHelper>();
+            services.AddTransient<ICategoryHelper,CategoryHelper>();
             services.AddTransient<IRelativeCategoryHelper, RelativeCategoryHelper>();
             services.AddSingleton<IValidatorResource, ValidatorResource>();
             services.AddSingleton<IExcelHelper, ExcelHelper>();

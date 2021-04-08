@@ -19,11 +19,11 @@ namespace MYDoctor.Infrastructure.Helper
         {
             _context = context;
         }
-        public async Task<IEnumerable<Disease>> GetRelativesDiseases(ICollection<Disease> diseases, int numberRelated, Expression<Func<Disease, bool>> expression)
+        public async Task<IEnumerable<Disease>> GetRelativesDiseases(ICollection<Disease> diseases, int numberRelated, int categoryId)
         {
             if ((diseases.Any(), diseases.Count() >= numberRelated) == (true, true))
                 return diseases;
-            var dis = await _context.Disease.Include(d => d.BeatyandHealthy).Where(expression).OrderByDescending(o => o.Id).Take(numberRelated - diseases.Count()).ToListAsync();
+            var dis = await _context.Disease.Include(d => d.BeatyandHealthy).Where(a=>a.BeatyandHealthyId!=categoryId).OrderByDescending(o => o.Id).Take(numberRelated - diseases.Count()).ToListAsync();
             return diseases.AppendData(dis);
         }
     }

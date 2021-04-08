@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace MYDoctor.Core.Application.Common
 {
-    public abstract class BaseViewModel
+    public abstract  class BaseViewModel
     {
          protected BaseViewModel()
          {

@@ -96,11 +96,7 @@ namespace MYDoctor.Infrastructure.Repository
             var doctor = await GetFirstAsync(d=>d.Id==id, d => d.Category);
             var posts = await _context.Posts.Include(p=>p.Likes).Include(p=>p.DisLikes)
                 .Include(p=>p.Category).Include(p=>p.User).Where(a => a.User.Email == doctor.Email).ToListAsync();
-            var doctorVM = new DoctorViewModel()
-            {
-                Doctor=doctor,
-                Posts=posts
-            };
+            var doctorVM = new DoctorViewModel(doctor, posts);
             return doctorVM;
         }
         public async Task CreateEdit(Doctor doctor)

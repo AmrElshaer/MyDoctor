@@ -20,11 +20,11 @@ namespace MYDoctor.Infrastructure.Helper
         {
             _context = context;
         }
-        public async Task<IEnumerable<RelativeofBeatyandhealthy>> GetRelativesCategory(ICollection<RelativeofBeatyandhealthy> relativeofBeatyandhealthies, int numberRelated, Expression<Func<RelativeofBeatyandhealthy, bool>> expression)
+        public async Task<IEnumerable<RelativeofBeatyandhealthy>> GetRelativesCategory(ICollection<RelativeofBeatyandhealthy> relativeofBeatyandhealthies, int numberRelated, int categoryId)
         {
             if ((relativeofBeatyandhealthies.Any(), relativeofBeatyandhealthies.Count() >= numberRelated) == (true, true))
                 return relativeofBeatyandhealthies;
-            var rels = await _context.RelativeofBeatyandhealthy.Include(d => d.BeatyandHealthy).Where(expression).OrderByDescending(c => c.Id).Take(numberRelated - relativeofBeatyandhealthies.Count()).ToListAsync(); ;
+            var rels = await _context.RelativeofBeatyandhealthy.Include(d => d.BeatyandHealthy).Where(a=>a.BeatyandHealthId!=categoryId).OrderByDescending(c => c.Id).Take(numberRelated - relativeofBeatyandhealthies.Count()).ToListAsync(); ;
             return relativeofBeatyandhealthies.AppendData(rels);
         }
     }

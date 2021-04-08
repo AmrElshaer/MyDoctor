@@ -3,5 +3,6 @@ namespace MYDoctor.Core.Application.ViewModel
 {
     public class DashBoardViewModel:BaseViewModel
     {
+
     }
 }
