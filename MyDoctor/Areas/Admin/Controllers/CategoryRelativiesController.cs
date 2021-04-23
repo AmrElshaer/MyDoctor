@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyDoctor.Services;
 using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
 using Rotativa.AspNetCore;
+using static MyDoctor.Services.RenderRazorService;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -55,6 +57,22 @@ namespace MyDoctor.Areas.Admin.Controllers
             return new ViewAsPdf(categories);
 
         }
+        [NoDirectAccess]
+        public async Task<IActionResult> CreateEdit(int id = 0)
+        {
+            if (id == 0)
+                return View("_CreateEdit", new RelativeofBeatyandhealthy());
+            else
+            {
+                var categoryRelative = await _categoryRelativiesRepository.GetByIdAsync(id);
+                if (categoryRelative == null)
+                {
+                    return NotFound();
+                }
+                return View("_CreateEdit", categoryRelative);
+            }
+        }
+        [HttpPost]
         public async Task<IActionResult> CreateEdit(RelativeofBeatyandhealthy relativeCategory)
         {
             if (ModelState.IsValid)
@@ -62,18 +80,19 @@ namespace MyDoctor.Areas.Admin.Controllers
                 try
                 {
                     await _categoryRelativiesRepository.CreateEdit(relativeCategory);
-                    AddMessage("Relative Category Save Success-full", true);
                 }
                 catch (Exception)
                 {
-                    AddMessage("Error When Save Relative Category");
+                    throw;
                 }
+                return Json(new
+                {
+                    isValid = true,
+                    html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
+                   _categoryRelativiesRepository.GetSearchResult(new SearchParamter() { PageSize = 5, Page = 1 }))
+                });
             }
-            else {
-                AddError(ModelState);
-            }
-
-            return RedirectToAction(nameof(Index));
+            return Json(new { isValid = false, html = RenderRazorService.RenderRazorViewToString(this, "_CreateEdit", relativeCategory) });
         }
 
         public async Task<ActionResult> Delete(int id)
@@ -81,14 +100,17 @@ namespace MyDoctor.Areas.Admin.Controllers
             try
             {
                 await _categoryRelativiesRepository.DeleteAsync(id);
-                AddMessage("Relative Category Delete Success", true);
             }
             catch (Exception)
             {
-                AddMessage("Relative Category Delete Failed");
+                throw;
             }
-
-            return RedirectToAction(nameof(Index));
+            return Json(new
+            {
+                isValid = true,
+                html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
+                              _categoryRelativiesRepository.GetSearchResult(new SearchParamter() { PageSize = 5, Page = 1 }))
+            });
         }
     }
 }

@@ -20,7 +20,6 @@
     <!-- row -->
 
     <div class="container-fluid">
-        @await Html.PartialAsync("_Message")
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -28,9 +27,9 @@
 
                         <div class="outline-button">
 
-                            <button type="button" class="btn mb-1 btn-flat btn-outline-primary" data-toggle="modal" data-target="#exampleModal"><img src="~/Content/img/plus.svg" style="max-width:25px" /></button>
-                            <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToExcel" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><img src="~/Content/img/excel.png" style="max-width:25px" /></a>
-                            <a class="btn mb-1 btn-flat btn-outline-success" asp-action="ExportToPDF" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><i class="fas fa-file-pdf"></i></a>
+                            <button type="button" class="btn" onclick="showInPopup('@Url.Action("CreateEdit","CategoryRelativies",null,Context.Request.Scheme)','Create Relative Department')"><img src="~/Content/img/plus.svg" style="max-width:25px" /></button>
+                            <a class="btn" asp-action="ExportToExcel" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><img src="~/Content/img/excel.png" style="max-width:25px" /></a>
+                            <a class="btn" asp-action="ExportToPDF" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" target="_blank"><i class="fas fa-file-pdf"></i></a>
 
 
                         </div>
@@ -48,7 +47,7 @@
                                 <div class="form-row">
                                     <div class="col-lg-4 col-md-6">
                                         <label for="createFrom">@ViewLocalizer["From"]</label>
-                                        <input class="form-control" type="date" asp-for="SearchParamter.CreateFrom"/>
+                                        <input class="form-control" type="date" asp-for="SearchParamter.CreateFrom" />
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="createTo">@ViewLocalizer["To"]</label>
@@ -60,7 +59,7 @@
                                     </div>
                                     <div class="col-lg-4 col-md-6">
                                         <label for="BeatyandHealthId">@ViewLocalizer["Category"]</label>
-                                        <select  asp-for="SearchParamter.IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll().ToList(),"Id","Category",Model.SearchParamter.IdRelated))">
+                                        <select asp-for="SearchParamter.IdRelated" class="form-control" asp-items="@(new SelectList(CategoryRepository.GetAll().ToList(),"Id","Category",Model.SearchParamter.IdRelated))">
                                         </select>
                                     </div>
 
@@ -76,86 +75,8 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="active-member">
-                            <div class="table-responsive">
-                                <table class="table table-xs mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                @ViewLocalizer["Address"]
-                                            </th>
-
-                                            <th>
-                                                @ViewLocalizer["Category"]
-                                            </th>
-                                            <th>
-                                                @ViewLocalizer["Content"] 
-                                            </th>
-                                            <th>
-                                                @ViewLocalizer["CreateDate"]   
-                                            </th>
-                                            <th>
-                                                @ViewLocalizer["ModifiyDate"] 
-                                            </th>
-                                            <th></th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.ItemsList)
-                                        {
-                                            <tr>
-                                                <td><img src="@item.ImageOrVideo" class=" rounded-circle mr-3" alt="">@item.Address</td>
-
-                                                <td>
-                                                    @item.BeatyandHealthy.Category
-                                                </td>
-                                                <td>
-
-                                                    @item.Subject.MaxString(100,"See More")
-
-
-                                                </td>
-                                                <td>
-                                                    @if (item.CreateDate.HasValue)
-                                                    {
-                                                        @item.CreateDate.Value.ToShortDateString()
-                                                    }
-
-                                                </td>
-                                                <td>
-                                                    @if (item.ModiteDate.HasValue)
-                                                    {
-                                                        @item.ModiteDate.Value.ToShortDateString()
-                                                    }
-                                                </td>
-                                                <td>
-
-                                                    <button class="btn btn-outline-light" onclick="editCategory({ Id:@item.Id, ImageOrVideo: '@item.ImageOrVideo', CreateDate: '@item.CreateDate', Address: '@item.Address.ToString()', Subject: '@item.Subject', BeatyandHealthId: '@item.BeatyandHealthId' })"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
-                                                    <form asp-action="Delete" id="deleteCategory" style="display: inline-block">
-                                                        <input name="id" value="@item.Id" style="display: none" />
-                                                        <button class="btn btn-outline-light" type="submit"><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
-                                                    </form>
-
-                                                </td>
-
-                                            </tr>
-
-
-                                        }
-
-                                    </tbody>
-                                </table>
-                                <p><pager class="pager-container" list="@new StaticPagedList<RelativeofBeatyandhealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" asp-route-beatyandHealthId="@Model.SearchParamter.IdRelated" /></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row" id="view-all">
+            @await Html.PartialAsync("_ViewAll", Model)
         </div>
     </div>
     <!-- #/ container -->
@@ -163,40 +84,24 @@
 <!--**********************************
     Content body end
 ***********************************-->
-<section>
-    @await Html.PartialAsync("_CreateEdit", new RelativeofBeatyandhealthy())
-</section>
+<div class="modal" tabindex="-1" role="dialog" id="form-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts
 {
-    <script>
-        "use strict";
-
-        function editCategory(relativecategory) {
-            console.log(relativecategory);
-            $('#Id').val(relativecategory.Id);
-            $('#ImageOrVideo').val(relativecategory.ImageOrVideo);
-            $('#Address').val(relativecategory.Address);
-            $('#BeatyandHealthId').val(relativecategory.BeatyandHealthId);
-            $('#CreateDate').val(relativecategory.CreateDate);
-            $('#Subject').val(relativecategory.Subject);
-            $("#BeatyandHealthId option").each(function () {
-                if ($(this).val() == relativecategory.BeatyandHealthId) {
-                    $(this).attr("selected", "selected");
-                }
-
-            });
-            $('#exampleModal').modal('show');
-        }
-
-        $('#deleteCategory').submit(function (e) {
-            var r = confirm("Are You Sure You Want To Delete");
-            if (r === false) e.preventDefault();
-
-        });
-
-
-    </script>
-    <script src="/js/NotifiyDelete.js"></script>
-    <script src="/js/ClearModal.js"></script>
-    <script src="/js/FormsValidation.js"></script>
+    <script src="~/js/site.js"></script>
 }
