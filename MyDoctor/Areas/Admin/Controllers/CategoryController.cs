@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyDoctor.Services;
 using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Core.Domain.Entities;
+using NToastNotify;
 using Rotativa.AspNetCore;
+using static MyDoctor.Services.RenderRazorService;
 
 namespace MyDoctor.Areas.Admin.Controllers
 {
@@ -33,7 +36,21 @@ namespace MyDoctor.Areas.Admin.Controllers
             
             return View(model);
         }
-       
+        [NoDirectAccess]
+        public async Task<IActionResult> CreateEdit(int id = 0)
+        {
+            if (id == 0)
+                return View("_CreateEdit", new BeatyandHealthy());
+            else
+            {
+                var category = await _categoryRepository.GetByIdAsync(id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+                return View("_CreateEdit",category);
+            }
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async  Task<ActionResult> CreateEdit(BeatyandHealthy healthBeatyandHealthy)
@@ -44,23 +61,17 @@ namespace MyDoctor.Areas.Admin.Controllers
                 try
                 {
                     await _categoryRepository.CreateEdit(healthBeatyandHealthy);
-                    AddMessage("Category Save Success-full", isSuccess: true);
-
                 }
                 catch (Exception)
                 {
-                    AddMessage("Error When Save Category");
+                   throw;
                 }
+                return Json(new { isValid = true, html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
+                    _categoryRepository.GetSearchResult(new SearchParamter() { PageSize=5,Page=1})) });
+            }
+            return Json(new { isValid = false, html = RenderRazorService.RenderRazorViewToString(this, "_CreateEdit", healthBeatyandHealthy) });
 
 
-            }
-            else {
-                AddError(ModelState);
-            }
-            
-            return RedirectToAction(nameof(Index));
-           
-            
         }
 
         public async Task<IActionResult> ExportToExcel(SearchParamter searchParamter)
@@ -92,17 +103,17 @@ namespace MyDoctor.Areas.Admin.Controllers
             try
             {  
                  await _categoryRepository.DeleteAsync(id);
-                 AddMessage("Category Delete Success",true);
-                
-
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                AddMessage("Category Delete Failed");
-
-                
+                throw;
             }
-            return RedirectToAction(nameof(Index));
+            return Json(new
+            {
+                isValid = true,
+                html = RenderRazorService.RenderRazorViewToString(this, "_ViewAll",
+                     _categoryRepository.GetSearchResult(new SearchParamter() { PageSize = 5, Page = 1 }))
+            });
         }
 
        

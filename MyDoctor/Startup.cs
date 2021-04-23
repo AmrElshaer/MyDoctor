@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -24,19 +23,15 @@ namespace MyDoctor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
             services.AddApplication();
             services.AddInfrastructure(Configuration);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public  void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-             
             if (env.IsDevelopment())
             {
-               
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -52,7 +47,6 @@ namespace MyDoctor
             app.UseAuthentication();
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
-            // will remember to write the cookie 
             app.UseRequestLocalizationCookies();
             app.UseSignalR(routes =>
             {
@@ -66,8 +60,6 @@ namespace MyDoctor
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=DashBoard}/{action=Index}/{id?}");
-               
-                
             });
             RotativaConfiguration.Setup(env);
         }

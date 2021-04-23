@@ -1,0 +1,73 @@
+﻿@using MYDoctor.Core.Domain.Entities
+@using MYDoctor.Core.Application.Common.Search
+@model SearchResult<BeatyandHealthy>
+@inject IViewLocalizer ViewLocalizer
+@{
+    Layout = null;
+}
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="active-member">
+                <div class="table-responsive">
+                    <table class="table table-xs mb-0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @ViewLocalizer["Category"]
+                                </th>
+                                <th>
+                                    @ViewLocalizer["CreateDate"]
+                                </th>
+                                <th>
+                                    @ViewLocalizer["ModifiyDate"]
+                                </th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ItemsList)
+                            {
+                                <tr>
+                                    <td><img src="@item.Image" class=" rounded-circle mr-3" alt="">@item.Category</td>
+
+                                    <td>
+                                        <span>
+                                            @if (item.CreateDate.HasValue)
+                                            {
+                                                @item.CreateDate.Value.ToShortDateString()
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            @if (item.CreateDate.HasValue)
+                                            {
+                                                @item.CreateDate.Value.ToShortDateString()
+                                            }
+                                        </span>
+                                    </td>
+                                    <td>
+
+                                        <button class="btn btn-outline-light" onclick="showInPopup('@Url.Action("CreateEdit","Category",new {id=item.Id},Context.Request.Scheme)','Update Category')"><img src="~/Content/img/edit.png" style="max-width:20px" /></button>
+                                        <form asp-action="Delete"  onsubmit="return jQueryAjaxDelete(this);" style="display: inline-block">
+                                            <input name="id" value="@item.Id" style="display: none" />
+                                            <button class="btn btn-outline-light" ><img src="~/Content/img/delete.png" style="max-width:20px" /></button>
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+
+                            }
+
+                        </tbody>
+                    </table>
+                    <p><pager class="pager-container" list="@new StaticPagedList<BeatyandHealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" /></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

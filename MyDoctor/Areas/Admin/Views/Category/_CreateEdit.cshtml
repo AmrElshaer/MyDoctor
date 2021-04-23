@@ -1,40 +1,72 @@
 ﻿@model BeatyandHealthy
 @inject IViewLocalizer ViewLocalizer
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["Category"]</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="post" asp-action="CreateEdit" id="CreateEdit">
-                    <div class="form-group" style="display: none">
-                        <label for="id-name" class="col-form-label">id</label>
-                        <input name="Id" type="text" class="form-control" id="id-name" value="@Model.Id">
-                    </div>
-                    <div class="form-group" style="display: none">
+@{
+    Layout = null;
+}
 
-                        <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">@ViewLocalizer["Name"]</label>
-                        <input name="Category" value="@Model.Category" type="text" class="form-control" id="category-name">
-                    </div>
-                    <div class="form-group">
-                        <label for="image-name" class="col-form-label">@ViewLocalizer["Image Url"]</label>
-                        <input name="Image" value="@Model.Image" type="text" class="form-control" id="image-name">
-                    </div>
-                </form>
+        <form asp-action="CreateEdit" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <div class="input-group">
+                  
+                    <input asp-for="Category" class="form-control" />
+                </div>
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <div class="input-group">
+                   
+                    <input asp-for="Image" class="form-control" />
+                </div>
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+        </form>
+
+<script src="/Content/plugins/common/common.min.js"></script>
+@*<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@ViewLocalizer["Category"]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" asp-action="CreateEdit" id="CreateEdit">
+                        <div class="form-group" style="display: none">
+                            <label for="id-name" class="col-form-label">id</label>
+                            <input name="Id" type="text" class="form-control" id="id-name" value="@Model.Id">
+                        </div>
+                        <div class="form-group" style="display: none">
+
+                            <input name="CreateDate" type="text" class="form-control" id="CreateDate" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">@ViewLocalizer["Name"]</label>
+                            <input name="Category" value="@Model.Category" type="text" class="form-control" id="category-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="image-name" class="col-form-label">@ViewLocalizer["Image Url"]</label>
+                            <input name="Image" value="@Model.Image" type="text" class="form-control" id="image-name">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@ViewLocalizer["Close"]</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('CreateEdit').submit()">@ViewLocalizer["Save"]</button>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
 

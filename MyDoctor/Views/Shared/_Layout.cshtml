@@ -29,7 +29,7 @@
     <link href="/Content/css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="~/toastr.js/toastr.min.css"/>
 </head>
 
 <body>
@@ -205,7 +205,7 @@
                 <ul class="metismenu" id="menu">
                     @if (User.Identity.IsAuthenticated && User.IsInRole(Roles.Admin.ToString()))
                     {
-                    <li class="nav-label">@ViewLocalizer["Dashboard"]</li>
+                        <li class="nav-label">@ViewLocalizer["Dashboard"]</li>
                         <li>
                             <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                                 <i class="icon-speedometer menu-icon"></i><span class="nav-text">@ViewLocalizer["Dashboard"]</span>
@@ -316,6 +316,7 @@
     <script src="~/js/Notification.js"></script>
     <script src="~/js/ReciveMessage.js"></script>
     <script src="~/js/UpdateMessage.js"></script>
+    <script src="~/toastr.js/toastr.min.js"></script>
     @if (requestCulture.RequestCulture.UICulture.Name == "ar")
     {
 
