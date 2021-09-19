@@ -65,7 +65,7 @@
 
                         </tbody>
                     </table>
-                    <p><pager class="pager-container" list="@new StaticPagedList<BeatyandHealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" /></p>
+                    <p><pager class="pager-container" list="@new StaticPagedList<BeatyandHealthy>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.Bootstrap4Full" asp-action="Index" asp-controller="Category" asp-route-SearchQuery="@Model.SearchParamter.SearchQuery" asp-route-CreateFrom="@Model.SearchParamter.CreateFrom" asp-route-CreateTo="@Model.SearchParamter.CreateTo" /></p>
                 </div>
             </div>
         </div>

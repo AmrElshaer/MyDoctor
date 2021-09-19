@@ -129,7 +129,7 @@
 
                                     </tbody>
                                 </table>
-                                <p><pager class="pager-container" list="@new StaticPagedList<Doctor>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.TwitterBootstrapPager4" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" /></p>
+                                <p><pager class="pager-container" list="@new StaticPagedList<Doctor>(Model.ItemsList,Model.SearchParamter.Page.Value,Model.SearchParamter.PageSize, Model.SearchParamter.TotalCount)" options="@PagedListRenderOptions.Bootstrap4Full" asp-action="Index" asp-controller="Category" asp-route-query="@Model.SearchParamter.SearchQuery" asp-route-createFrom="@Model.SearchParamter.CreateFrom" asp-route-createTo="@Model.SearchParamter.CreateTo" /></p>
                             </div>
                         </div>
                     </div>

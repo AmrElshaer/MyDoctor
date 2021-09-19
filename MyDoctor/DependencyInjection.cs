@@ -21,7 +21,7 @@ namespace MyDoctor
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-    .AddDataAnnotationsLocalization().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>()).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+    .AddDataAnnotationsLocalization().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CategoryValidator>());
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.Configure<RequestLocalizationOptions>(options =>
             {

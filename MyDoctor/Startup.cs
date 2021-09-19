@@ -33,7 +33,6 @@ namespace MyDoctor
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -43,23 +42,26 @@ namespace MyDoctor
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseRouting();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseAuthorization();
             var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
             app.UseRequestLocalizationCookies();
-            app.UseSignalR(routes =>
+            
+            app.UseEndpoints(routes =>
             {
+                routes.MapControllerRoute(name: "adminarea", 
+                    pattern: "{area:exists}/{controller=Diseases}/{action=Index}/{id?}");
+
+                routes.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=DashBoard}/{action=Index}/{id?}");
                 routes.MapHub<TablesTrackerHup>("/tablesTrackerHup");
                 routes.MapHub<MessageHup>("/messageHup");
-            });
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "adminarea", template: "{area:exists}/{controller=Diseases}/{action=Index}/{id?}");
+                routes.MapRazorPages();
 
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=DashBoard}/{action=Index}/{id?}");
             });
             RotativaConfiguration.Setup(env);
         }
