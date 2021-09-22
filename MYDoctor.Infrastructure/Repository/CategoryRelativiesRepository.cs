@@ -7,6 +7,7 @@ using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,16 +36,26 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter)
         {
-            IQueryable<RelativeofBeatyandhealthy> searchHits = SearchHits(searchParamter);
-
+            var searchHits = Search(searchParamter);
             var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
-
-        public IQueryable<RelativeofBeatyandhealthy> SearchHits(SearchParamter searchParamter)
+        public async Task<IEnumerable<RelativeofBeatyandhealthy> >SearchHits(SearchParamter searchParamter)
         {
-            var searchExpresion = new CategoryRelativeSearchHint(searchParamter); 
-            return GetAll(searchExpresion.ToExpression(), rc => rc.OrderByDescending(a => a.Id), rc => rc.BeatyandHealthy);
+            return await Search(searchParamter).ToListAsync();
+        }
+        private IQueryable<RelativeofBeatyandhealthy> Search(SearchParamter searchParamter)
+        {
+            return GetAll(
+                 x =>
+                 (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                 && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
+                 && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
+                 && (!searchParamter.IdRelated.HasValue || x.BeatyandHealthy.Id == searchParamter.IdRelated),
+                 rc => rc.OrderByDescending(a => a.Id),
+                 rc => rc.BeatyandHealthy
+
+                 );
         }
 
         public async Task CreateEdit(RelativeofBeatyandhealthy category)

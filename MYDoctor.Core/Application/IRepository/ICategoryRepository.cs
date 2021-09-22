@@ -16,6 +16,6 @@ namespace MYDoctor.Core.Application.IRepository
         Task<BaseViewModel> GetBoardViewModel(int pageSize);
         Task<IEnumerable<GeneralSearchResult>> GeneralSearchAsync(string searchval);
         Task<IEnumerable<BeatyandHealthy>> GetAdminBoard();
-        IQueryable<BeatyandHealthy> GetSearchHits(SearchParamter searchParamter);
+        Task<IEnumerable<BeatyandHealthy>> GetSearchHits(SearchParamter searchParamter);
     }
 }

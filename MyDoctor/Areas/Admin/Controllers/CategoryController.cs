@@ -76,7 +76,7 @@ namespace MyDoctor.Areas.Admin.Controllers
 
         public async Task<IActionResult> ExportToExcel(SearchParamter searchParamter)
         {
-            var categories =await _categoryRepository.GetSearchHits(searchParamter).ToListAsync();
+            var categories =await _categoryRepository.GetSearchHits(searchParamter);
             using (var workbook=new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("Category");
@@ -94,7 +94,7 @@ namespace MyDoctor.Areas.Admin.Controllers
         //export to pdf
         public async Task<IActionResult> ExportToPDF(SearchParamter searchParamter)
         {
-            var categories = await _categoryRepository.GetSearchHits(searchParamter).ToListAsync();
+            var categories =await  _categoryRepository.GetSearchHits(searchParamter);
             return new ViewAsPdf(categories);
            
         }

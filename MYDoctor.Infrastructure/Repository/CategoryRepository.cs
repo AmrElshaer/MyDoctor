@@ -54,19 +54,26 @@ namespace MYDoctor.Infrastructure.Repository
             return resuilt;
 
         }
+        private IQueryable<BeatyandHealthy> Search(SearchParamter searchParamter)
+        {
+            var searchHits = GetAll(x =>
+              (string.IsNullOrEmpty(searchParamter.SearchQuery) ||
+              x.Category.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+              && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
+              && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
+              , c => c.OrderByDescending(a => a.Id)
+              );
+            return searchHits;
+        }
         public SearchResult<BeatyandHealthy> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = GetSearchHits(searchParamter);
+            var searchHits = Search(searchParamter);
             var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
 
         
-        public IQueryable<BeatyandHealthy> GetSearchHits(SearchParamter searchParamter)
-        {
-            var searchSpecification = new CategorySearchHint(searchParamter);
-            return GetAll( searchSpecification.ToExpression(), c => c.OrderByDescending(a => a.Id));
-        }
+       
 
         public async Task<BaseViewModel> GetCategoryAsync(int categoryId, int numberRelated)
         {
@@ -118,5 +125,11 @@ namespace MYDoctor.Infrastructure.Repository
             
 
         }
+
+        public async Task<IEnumerable<BeatyandHealthy>> GetSearchHits(SearchParamter searchParamter)
+        {
+            return await Search(searchParamter).ToListAsync();
+        }
+       
     }
 }

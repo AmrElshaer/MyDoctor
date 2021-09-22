@@ -37,7 +37,7 @@ namespace MyDoctor.Areas.Admin.Controllers
 
         public async Task<IActionResult> ExportToExcel(SearchParamter searchParamter)
         {
-            var relativescategories =await _categoryRelativiesRepository.SearchHits(searchParamter).ToListAsync();
+            var relativescategories =await _categoryRelativiesRepository.SearchHits(searchParamter);
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("RelativeCategory");
@@ -53,7 +53,7 @@ namespace MyDoctor.Areas.Admin.Controllers
         }
         public async Task<IActionResult> ExportToPDF(SearchParamter searchParamter)
         {
-            var categories = await _categoryRelativiesRepository.SearchHits(searchParamter).ToListAsync();
+            var categories = await _categoryRelativiesRepository.SearchHits(searchParamter);
             return new ViewAsPdf(categories);
 
         }

@@ -11,25 +11,25 @@ namespace MYDoctor.Infrastructure.Validation
         public CategoryValidator(ICategoryRepository categoryRepository,IValidatorResource validatorResource)
         {
             _categoryRepository = categoryRepository;
-            RuleFor(b => b.Category).NotEmpty().WithMessage(d=>validatorResource.GetResource("NotEmpty",nameof(d.Category)))
-                .Must(UniqueName).WithMessage(d=>validatorResource.GetResource("IsExit",nameof(d.Category)));
+            RuleFor(b => b.Category).NotNull().NotEmpty().
+               WithMessage(d => validatorResource.GetResource("NotEmpty", nameof(d.Category)));
+             RuleFor(b=>b).Must(UniqueName).WithMessage(d=>validatorResource.GetResource("IsExit",nameof(d.Category)));
             RuleFor(b=>b.Image).NotEmpty().WithMessage(d=>validatorResource.GetResource("NotEmpty",nameof(d.Image)));
             
         }
 
         private readonly ICategoryRepository _categoryRepository;
 
-        private bool UniqueName(string name)
+        private bool UniqueName(BeatyandHealthy category)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (category.Category==null)
             {
-                var category=  _categoryRepository.GetAll(x => x.Category.ToLower() == name.ToLower()).FirstOrDefault();
-                if (category == null) return true;
                 return false;
             }
 
-            return true;
-                
+            return _categoryRepository.GetAll(x => 
+            x.Category.ToLower()== category.Category.ToLower()&&(category.Id==0||x.Id!=category.Id))
+                .FirstOrDefault() == null;
         }
     }
 }

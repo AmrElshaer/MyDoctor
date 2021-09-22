@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MYDoctor.Core.Application.Common.Search;
@@ -14,6 +15,6 @@ namespace MYDoctor.Core.Application.IRepository
         Task CreateEdit(RelativeofBeatyandhealthy category);
        
         Task<RelativeBeatyandhealthyViewModel> GetRelativeCategoryAsync(int id, int numberRelated);
-        IQueryable<RelativeofBeatyandhealthy> SearchHits(SearchParamter searchParamter);
+        Task<IEnumerable<RelativeofBeatyandhealthy>> SearchHits(SearchParamter searchParamter);
     }
 }

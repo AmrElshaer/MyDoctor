@@ -21,7 +21,8 @@ namespace MYDoctor.Infrastructure.Helper
 
         public override Expression<Func<BeatyandHealthy, bool>> ToExpression()
         {
-            return x => searchHintBase.ApplySearch(x.Category, x.CreateDate);
+            Expression<Func<BeatyandHealthy, bool>> xp = x => searchHintBase.ApplySearch(x.Category, x.CreateDate);
+            return xp;
         }
     }
     #endregion
