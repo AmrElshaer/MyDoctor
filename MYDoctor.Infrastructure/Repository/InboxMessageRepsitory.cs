@@ -64,17 +64,11 @@ namespace MYDoctor.Infrastructure.Repository
 
         }
         public async Task<IEnumerable<InboxMessageViewModel>> GetALLMessagesAsync(string name) {
-            var watch = new Stopwatch();
-            watch.Start();
-            Debug.WriteLine("*********************************************************************");
-            var messages =await _context.InboxMessages.Include(m => m.ToUserProfile).Include(m => m.UserProfile).Where(
+                      var messages =await _context.InboxMessages.Include(m => m.ToUserProfile).Include(m => m.UserProfile).Where(
                 m=> m.ToUserProfile.Email == name).GroupBy(m=>m.UserProfileId).Select(m=>new InboxMessageViewModel() { 
                     FromName=m.FirstOrDefault().UserProfile.Email,
                     FromImage = $"/images/{m.FirstOrDefault().UserProfile.ImagePath ?? "Defulat.jpg"}",
                 }).ToListAsync();
-            watch.Stop();
-            Debug.WriteLine("*********************************************************************");
-            Debug.WriteLine( watch.ElapsedMilliseconds); 
             return messages;
         }
         public async Task MakeMessagesSeeAsync(string name)

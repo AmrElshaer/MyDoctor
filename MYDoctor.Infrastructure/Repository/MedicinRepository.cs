@@ -39,10 +39,13 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<Medicin> GetSearchResult(SearchParamter searchParamter)
         {
-            var medicinSearchHint = new MedicinSearchHint(searchParamter);
-            var searchHits = GetAll(medicinSearchHint.ToExpression(), m => m.OrderByDescending(a => a.Id),
-                m=>m.BeatyandHealthy,
-                m=>m.DiseaseMedicins
+            var searchHits = GetAll(x =>
+               (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+               && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
+               && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
+                , m => m.OrderByDescending(a => a.Id),
+                m => m.BeatyandHealthy,
+                m => m.DiseaseMedicins
                 ).Select(m => new Medicin()
                 {
                     Name = m.Name,
@@ -56,8 +59,8 @@ namespace MYDoctor.Infrastructure.Repository
                     CreateDate = m.CreateDate
 
                 });
-             
-            var searchResult = PagingHelper.PagingModel(searchHits,searchParamter);
+
+            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
 

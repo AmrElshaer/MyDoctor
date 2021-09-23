@@ -74,9 +74,12 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<Disease> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHint = new DiseaseSearchHint(searchParamter);
-            var searchHits = GetAll(searchHint.ToExpression() , d => d.OrderByDescending(a => a.Id) 
-            , d=>d.BeatyandHealthy);
+            var searchHits = GetAll(x =>
+               (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.DiseaseName.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+               && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
+               && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
+               , d => d.OrderByDescending(a => a.Id)
+               , d => d.BeatyandHealthy);
             var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }

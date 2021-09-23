@@ -76,8 +76,13 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<Doctor> GetSearchResult(SearchParamter searchParamter)
         {
-            var doctorSearch = new DoctorSearchHint(searchParamter);
-            var searchHits = GetAll(doctorSearch.ToExpression(), d => d.OrderByDescending(a => a.Id),d=>d.Category);
+            var searchHits = GetAll(
+                 x =>
+                 (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                 && (searchParamter.IdRelated == null || x.CategoryId == searchParamter.IdRelated),
+                 d => d.OrderByDescending(a => a.Id),
+                    d => d.Category
+                 );
             var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
             return searchResult;
         }
