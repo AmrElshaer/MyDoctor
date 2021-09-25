@@ -4,6 +4,9 @@ using MYDoctor.Core.Application.IHelper;
 
 namespace MYDoctor.Infrastructure
 {
+    /// <summary>
+    /// concrete factory
+    /// </summary>
     public class ServiceBuilder : IServiceBuilder
     {
         private readonly IDoctorHelper _doctorHelper;
