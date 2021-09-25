@@ -6,8 +6,7 @@ using System.Text;
 
 namespace MYDoctor.Core.Application.ViewModel
 {
-    public class UserProfileViewModel:BaseViewModel
+    public class UserProfileViewModel:BaseViewModel<UserProfile>
     {
-        public UserProfile  UserProfile { get; set; }
     }
 }

@@ -5,57 +5,54 @@ using MYDoctor.Core.Domain.Entities;
 using System.Collections.Generic;
 namespace MYDoctor.Core.Application.ViewModel
 {
-    public class MedicinViewModel:BaseViewModel
+    public class MedicinViewModel:ViewModel<Medicin>
     {
-        public Medicin Medicin { get; private set; }
+        
         public MedicinSearch MedicinSearch { get; set; }
-        private readonly int _numberTake;
         public MedicinViewModel(IEnumerable<Medicin> medicins, MedicinSearch medicinSearch)
+            :base(0,null,null)
         {
             this.Medicins = medicins;
             this.MedicinSearch = medicinSearch;
         }
        
-        public MedicinViewModel(Medicin medicin, int numberTake)
+        public MedicinViewModel(Medicin medicin, int numberTake,int categoryId):base(numberTake,medicin, categoryId)
         {
-            this.Medicin = medicin;
-            this._numberTake = numberTake;
         }
-        public MedicinViewModel WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper, int categoryId)
+        public override ViewModel<Medicin> WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper)
         {
-            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(this.Medicin.BeatyandHealthy.RelativeofBeatyandhealthies,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(Model.BeatyandHealthy.RelativeofBeatyandhealthies,
+                NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public MedicinViewModel WithMedicin(IMedicinHelper medicinHelper, int categoryId)
+        public override ViewModel<Medicin> WithMedicin(IMedicinHelper medicinHelper)
         {
-            this.Medicins = medicinHelper.GetRelativesMedicins(this.Medicin.BeatyandHealthy.Medicins,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Medicins = medicinHelper.GetRelativesMedicins(Model.BeatyandHealthy.Medicins,
+                NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public MedicinViewModel WithDisease(IDiseaseHelper diseaseHelper, int categoryId)
+        public override ViewModel<Medicin> WithDisease(IDiseaseHelper diseaseHelper)
         {
-            this.Diseases = diseaseHelper.GetRelativesDiseases(this.Medicin.BeatyandHealthy.Diseases,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Diseases = diseaseHelper.GetRelativesDiseases(Model.BeatyandHealthy.Diseases,
+                NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public MedicinViewModel WithPosts(IPostHelper postHelper, int categoryId)
+        public override ViewModel<Medicin> WithPosts(IPostHelper postHelper)
         {
-            this.Posts = postHelper.GetRelativesPosts(this.Medicin.BeatyandHealthy.Posts,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Posts = postHelper.GetRelativesPosts(Model.BeatyandHealthy.Posts,
+                NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public MedicinViewModel WithDoctors(IDoctorHelper doctorHelper, int categoryId)
+        public override ViewModel<Medicin> WithDoctors(IDoctorHelper doctorHelper)
         {
-            this.Doctors = doctorHelper.GetRelativesDoctors(this.Medicin.BeatyandHealthy.Doctors,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Doctors = doctorHelper.GetRelativesDoctors(Model.BeatyandHealthy.Doctors,
+                NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public MedicinViewModel WithCategories(ICategoryHelper categoryHelper, int categoryId)
+        public override ViewModel<Medicin> WithCategories(ICategoryHelper categoryHelper)
         {
-            this.Categories = categoryHelper.GetRelativesCategories(this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Categories = categoryHelper.GetRelativesCategories(NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public MedicinViewModel Build() => this;
     }
 }

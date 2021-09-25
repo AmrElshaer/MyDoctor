@@ -9,6 +9,7 @@ namespace MYDoctor.Core.Application.IHelper
 {
     public interface ICategoryHelper
     {
-        Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated, int categoryId);
+        Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated, int? categoryId);
+        Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated);
     }
 }

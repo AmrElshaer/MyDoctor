@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Domain.Entities;
 using MYDoctor.Infrastructure.Identity;
@@ -19,10 +20,15 @@ namespace MYDoctor.Infrastructure.Helper
         {
             _context = context;
         }
-        public async Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated, int categoryId)
+        public async Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated, int? categoryId)
         {
-           var categories= await _context.BeatyandHealthy.Where(a => a.Id != categoryId).OrderByDescending(a => a.Id).Take(numberRelated).ToListAsync();
+           var categories= await _context.BeatyandHealthy.Where(a => a.Id != categoryId)
+                .OrderByDescending(a => a.Id).Take(numberRelated).ToListAsync();
             return categories;
+        }
+        public async Task<IEnumerable<BeatyandHealthy>> GetRelativesCategories(int numberRelated)
+{
+            return await _context.BeatyandHealthy.Take(numberRelated).ToListAsync();
         }
     }
 }

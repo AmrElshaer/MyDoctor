@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MYDoctor.Core.Application;
+using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
@@ -16,22 +18,12 @@ namespace MYDoctor.Infrastructure.Repository
     public class CategoryRelativiesRepository : BaseRepository<RelativeofBeatyandhealthy>, ICategoryRelativiesRepository
     {
         private readonly ITableTrackNotification _tableTrackNotification;
-        private readonly IDoctorHelper _doctorHelper;
-        private readonly IDiseaseHelper _diseaseHelper;
-        private readonly IPostHelper _postHelper;
-        private readonly ICategoryHelper _categoryHelper;
-        private readonly IMedicinHelper _medicinHelper;
-        private readonly IRelativeCategoryHelper _relativeCategoryHelper;
+        private readonly IServiceBuilder serviceBuilder;
 
-        public CategoryRelativiesRepository(ApplicationDbContext context,ICategoryHelper categoryHelper ,IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper, ITableTrackNotification tableTrackNotification) : base(context)
+        public CategoryRelativiesRepository(ApplicationDbContext context,IServiceBuilder serviceBuilder, ITableTrackNotification tableTrackNotification) : base(context)
         {
             _tableTrackNotification = tableTrackNotification;
-            _doctorHelper = doctorHelper;
-            _diseaseHelper = diseaseHelper;
-            _postHelper = postHelper;
-            _relativeCategoryHelper = relativeCategoryHelper;
-            _categoryHelper = categoryHelper;
-            _medicinHelper = medicinHelper;
+            this.serviceBuilder = serviceBuilder;
         }
 
         public SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter)
@@ -73,20 +65,16 @@ namespace MYDoctor.Infrastructure.Repository
             }
         }
 
-        public async Task<RelativeBeatyandhealthyViewModel> GetRelativeCategoryAsync(int id, int numberRelated)
+        public async Task<BaseViewModel<RelativeofBeatyandhealthy>> GetRelativeCategoryAsync(int id, int numberRelated)
         {
             var relativeCategory = await _table.Include(r => r.BeatyandHealthy)
                 .Include(r => r.BeatyandHealthy.Doctors).Include(r => r.BeatyandHealthy.Medicins)
                 .Include(r => r.BeatyandHealthy.Diseases).Include(r => r.BeatyandHealthy.RelativeofBeatyandhealthies)
                 .Include(c => c.BeatyandHealthy.Posts).FirstOrDefaultAsync(r => r.Id == id);
-            var result = new RelativeBeatyandhealthyViewModel(relativeCategory, numberRelated)
-                .WithMedicin(this._medicinHelper, relativeCategory.BeatyandHealthId)
-                .WithRelativeCategory(this._relativeCategoryHelper, relativeCategory.BeatyandHealthId)
-                .WithDisease(this._diseaseHelper,  relativeCategory.BeatyandHealthId)
-                .WithDoctors(this._doctorHelper,  relativeCategory.BeatyandHealthId)
-                .WithPosts(this._postHelper,relativeCategory.BeatyandHealthId)
-                .WithCategories(this._categoryHelper, relativeCategory.BeatyandHealthId).Build();
-            return result;
+               return  this.serviceBuilder.BuildViewModel(
+                   new RelativeBeatyandhealthyViewModel(relativeCategory,numberRelated,
+                   relativeCategory?.BeatyandHealthId));
+            
         }
     }
 }

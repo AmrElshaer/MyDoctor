@@ -1,9 +1,10 @@
 ﻿@inject ICategoryRepository categoryRepository
 @inject IUserProfileRepository userProfileRepository
 @inject IViewLocalizer ViewLocalizer
-@model DoctorViewModel
-@{ 
-    var user =await userProfileRepository.GetFirstAsync(a=>a.Email==User.Identity.Name);
+@using MYDoctor.Core.Application.Common
+@model BaseViewModel<Doctor>
+@{
+    var user = await userProfileRepository.GetFirstAsync(a => a.Email == User.Identity.Name);
     var categories = categoryRepository.GetAll().ToList();
 }
 <!--**********************************
@@ -26,40 +27,40 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="media align-items-center mb-4">
-                            <img class="mr-3" src="~/images/@Model.Doctor.ImagePath" width="80" height="80" alt="">
+                            <img class="mr-3" src="~/images/@Model.Model.ImagePath" width="80" height="80" alt="">
                             <div class="media-body">
-                                <h3 class="mb-0">@Model.Doctor.Name</h3>
-                                <p class="text-muted mb-0">@Model.Doctor.Country</p>
+                                <h3 class="mb-0">@Model.Model.Name</h3>
+                                <p class="text-muted mb-0">@Model.Model.Country</p>
                             </div>
                         </div>
-                        @if (User.Identity.Name != Model.Doctor.Email)
+                        @if (User.Identity.Name != Model.Model.Email)
                         {
                             <div class="row mb-5">
 
                                 <div class="col-12 text-center">
-                                    <a class="btn btn-danger px-5" asp-action="MessageDetail" asp-controller="Messages" asp-route-fromName="@Model.Doctor.Email">@ViewLocalizer["Message"]</a>
+                                    <a class="btn btn-danger px-5" asp-action="MessageDetail" asp-controller="Messages" asp-route-fromName="@Model.Model.Email">@ViewLocalizer["Message"]</a>
                                 </div>
                             </div>
                         }
 
 
-                    <h4>@ViewLocalizer["About Me"]</h4>
-                        <p class="text-muted">@Model.Doctor.Others</p>
+                        <h4>@ViewLocalizer["About Me"]</h4>
+                        <p class="text-muted">@Model.Model.Others</p>
                         <ul class="card-profile__info">
-                            <li class="mb-1"><strong class="text-dark mr-4">@ViewLocalizer["Mobile"]</strong> <span>@Model.Doctor.Telephone</span></li>
-                            <li><strong class="text-dark mr-4">@ViewLocalizer["Email"]</strong> <span>@Model.Doctor.Email</span></li>
-                            <li><strong class="text-dark mr-4">@ViewLocalizer["Department"]</strong> <span>@Model.Doctor.Category.Category</span></li>
+                            <li class="mb-1"><strong class="text-dark mr-4">@ViewLocalizer["Mobile"]</strong> <span>@Model.Model.Telephone</span></li>
+                            <li><strong class="text-dark mr-4">@ViewLocalizer["Email"]</strong> <span>@Model.Model.Email</span></li>
+                            <li><strong class="text-dark mr-4">@ViewLocalizer["Department"]</strong> <span>@Model.Model.Category.Category</span></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-lg-8 col-xl-9">
-                @if (User.Identity.Name == Model.Doctor.Email)
+                @if (User.Identity.Name == Model.Model.Email)
                 {
                     <div class="card">
                         <div class="card-body">
                             <form asp-controller="Post" asp-action="Create" method="post" class="form-profile">
-                                <input name="UserProfileId" style="display:none" value="@user.Id"/>
+                                <input name="UserProfileId" style="display:none" value="@user.Id" />
                                 <div class="form-group">
                                     <select class="form-control" name="CategoryId" asp-items="@(new SelectList(categories,"Id","Category"))"></select>
                                 </div>
@@ -82,10 +83,10 @@
                         @foreach (var post in Model.Posts)
                         {
                             <div class="media media-reply">
-                                <img class="mr-3 circle-rounded" src="~/images/@Model.Doctor.ImagePath" width="50" height="50" alt="@Model.Doctor.Name">
+                                <img class="mr-3 circle-rounded" src="~/images/@Model.Model.ImagePath" width="50" height="50" alt="@Model.Model.Name">
                                 <div class="media-body">
                                     <div class="d-sm-flex justify-content-between mb-2">
-                                        <h5 class="mb-sm-0">@Model.Doctor.Name</h5>
+                                        <h5 class="mb-sm-0">@Model.Model.Name</h5>
                                         <div class="media-reply__link">
                                             <button class="btn btn-transparent p-0 mr-3"><span class="badge badge-pill gradient-2 mr-1" id="LikeNumber">@post.Likes.Count()</span><i style="@(post.Likes.FirstOrDefault(l=>l.UserProfileId==user.Id)!=null?"color:red":"")" onclick="addLike(@post.Id)" class="fa fa-thumbs-up"></i></button>
                                             <button class="btn btn-transparent p-0 mr-3"><span class="badge gradient-3 badge-pill gradient-1 mr-1" id="DisLikeNumber">@post.DisLikes.Count()</span><i style="@(post.DisLikes.FirstOrDefault(l=>l.UserProfileId==user.Id)!=null?"color:red":"")" onclick="addDisLike(@post.Id)" class="fa fa-thumbs-down"></i></button>
@@ -106,8 +107,8 @@
     </div>
     <!-- #/ container -->
 </div>
-@section Scripts{ 
-   <script src="~/js/LikeDisLike.js"></script>
+@section Scripts{
+    <script src="~/js/LikeDisLike.js"></script>
 
 }
 <!--**********************************

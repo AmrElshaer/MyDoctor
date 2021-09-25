@@ -21,7 +21,7 @@ namespace MYDoctor.Infrastructure.Repository
             var posts = _context.Posts.Include(a=>a.User).Include(a=>a.Likes).Include(a=>a.DisLikes).OrderByDescending(a=>a.Id);
             var result = new UserProfileViewModel()
             {
-                UserProfile = user,
+                Model = user,
                 Posts=posts
             };
             return result;

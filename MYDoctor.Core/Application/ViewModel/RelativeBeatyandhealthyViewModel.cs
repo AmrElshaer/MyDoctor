@@ -7,50 +7,48 @@ using System.Linq.Expressions;
 
 namespace MYDoctor.Core.Application.ViewModel
 {
-    public  class RelativeBeatyandhealthyViewModel : BaseViewModel
+    public  class RelativeBeatyandhealthyViewModel : ViewModel<RelativeofBeatyandhealthy>
     {
-        private readonly int _numberTake;
-        public RelativeofBeatyandhealthy  RelativeofBeatyandhealthy { get;private set; }
-        public RelativeBeatyandhealthyViewModel(RelativeofBeatyandhealthy relativeofBeatyandhealthy,int numberTake)
+  
+        public RelativeBeatyandhealthyViewModel(RelativeofBeatyandhealthy relativeofBeatyandhealthy,int numberTake,int? categoryId)
+            :base(numberTake,relativeofBeatyandhealthy, categoryId)
         {
-            this.RelativeofBeatyandhealthy = relativeofBeatyandhealthy;
-            this._numberTake = numberTake;
+          
         }
-        public  RelativeBeatyandhealthyViewModel WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper, int categoryId)
+        public override  ViewModel<RelativeofBeatyandhealthy> WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper)
         {
-           this.RelativeCategories= relativeCategoryHelper.GetRelativesCategory(this.RelativeofBeatyandhealthy.BeatyandHealthy.RelativeofBeatyandhealthies,
-               this._numberTake, categoryId).GetAwaiter().GetResult();
+           this.RelativeCategories= relativeCategoryHelper.GetRelativesCategory(this.Model.BeatyandHealthy.RelativeofBeatyandhealthies,
+               this.NumberTake, this.CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public RelativeBeatyandhealthyViewModel WithMedicin(IMedicinHelper medicinHelper, int categoryId)
+        public override ViewModel<RelativeofBeatyandhealthy> WithMedicin(IMedicinHelper medicinHelper)
         {
-            this.Medicins = medicinHelper.GetRelativesMedicins(this.RelativeofBeatyandhealthy.BeatyandHealthy.Medicins,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Medicins = medicinHelper.GetRelativesMedicins(this.Model.BeatyandHealthy.Medicins,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public RelativeBeatyandhealthyViewModel WithDisease(IDiseaseHelper diseaseHelper, int categoryId)
+        public override ViewModel<RelativeofBeatyandhealthy> WithDisease(IDiseaseHelper diseaseHelper)
         {
-            this.Diseases = diseaseHelper.GetRelativesDiseases(this.RelativeofBeatyandhealthy.BeatyandHealthy.Diseases,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Diseases = diseaseHelper.GetRelativesDiseases(this.Model.BeatyandHealthy.Diseases,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public RelativeBeatyandhealthyViewModel WithPosts(IPostHelper postHelper,int categoryId)
+        public override ViewModel<RelativeofBeatyandhealthy> WithPosts(IPostHelper postHelper)
         {
-            this.Posts = postHelper.GetRelativesPosts(this.RelativeofBeatyandhealthy.BeatyandHealthy.Posts,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Posts = postHelper.GetRelativesPosts(this.Model.BeatyandHealthy.Posts,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public RelativeBeatyandhealthyViewModel WithDoctors(IDoctorHelper doctorHelper,int categoryId)
+        public override ViewModel<RelativeofBeatyandhealthy> WithDoctors(IDoctorHelper doctorHelper)
         {
-            this.Doctors = doctorHelper.GetRelativesDoctors(this.RelativeofBeatyandhealthy.BeatyandHealthy.Doctors,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Doctors = doctorHelper.GetRelativesDoctors(this.Model.BeatyandHealthy.Doctors,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public RelativeBeatyandhealthyViewModel WithCategories(ICategoryHelper  categoryHelper, int categoryId)
+        public override ViewModel<RelativeofBeatyandhealthy> WithCategories(ICategoryHelper  categoryHelper)
         {
-            this.Categories = categoryHelper.GetRelativesCategories(this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Categories = categoryHelper.GetRelativesCategories(this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public RelativeBeatyandhealthyViewModel Build() => this;
     }
 }

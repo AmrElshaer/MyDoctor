@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MYDoctor.Core.Application;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IHelper;
@@ -18,22 +19,11 @@ namespace MYDoctor.Infrastructure.Repository
     public class DiseasesRepository:BaseRepository<Disease>,IDiseasesRepository
     {
         private readonly ITableTrackNotification _tableTrackNotification;
-        private readonly IDoctorHelper _doctorHelper;
-        private readonly IMedicinHelper _medicinHelper;
-        private readonly IPostHelper _postHelper;
-        private readonly IDiseaseHelper _diseaseHelper;
-        private readonly IRelativeCategoryHelper _relativeCategoryHelper;
-        private readonly ICategoryHelper _categoryHelper;
-
-        public DiseasesRepository(ApplicationDbContext context, IDiseaseHelper diseaseHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IMedicinHelper medicinHelper, IDoctorHelper doctorHelper, ITableTrackNotification tableTrackNotification, ICategoryHelper categoryHelper) : base(context)
+        private readonly IServiceBuilder serviceBuilder;
+        public DiseasesRepository(ApplicationDbContext context,IServiceBuilder serviceBuilder ,ITableTrackNotification tableTrackNotification) : base(context)
         {
             _tableTrackNotification = tableTrackNotification;
-            _doctorHelper = doctorHelper;
-            _medicinHelper = medicinHelper;
-            _postHelper = postHelper;
-            _diseaseHelper = diseaseHelper;
-            _relativeCategoryHelper = relativeCategoryHelper;
-            _categoryHelper = categoryHelper;
+            this.serviceBuilder = serviceBuilder;
         }
 
         public async Task CreateEdit(Disease disease)
@@ -53,7 +43,7 @@ namespace MYDoctor.Infrastructure.Repository
 
         }
 
-        public async Task<BaseViewModel> GetDiseaseAsync(int id, int numberRelated)
+        public async Task<BaseViewModel<Disease>> GetDiseaseAsync(int id, int numberRelated)
         {
             var disease = await _context.Disease.Include(m => m.BeatyandHealthy)
                   .ThenInclude(c => c.Doctors).Include(m => m.BeatyandHealthy.Medicins)
@@ -61,15 +51,9 @@ namespace MYDoctor.Infrastructure.Repository
                 Include(m => m.BeatyandHealthy.RelativeofBeatyandhealthies)
                 .Include(m => m.DiseaseMedicins).ThenInclude(dm => dm.Disease)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            var categoryId = disease.BeatyandHealthyId.Value;
-            var result = new DiseaseViewModel(disease, numberRelated)
-                .WithMedicin(this._medicinHelper, categoryId)
-                .WithRelativeCategory(this._relativeCategoryHelper, categoryId)
-                .WithDisease(this._diseaseHelper, categoryId)
-                .WithDoctors(this._doctorHelper, categoryId)
-                .WithPosts(this._postHelper, categoryId)
-                .WithCategories(this._categoryHelper, categoryId).Build();
-            return result;
+            return serviceBuilder.BuildViewModel(new DiseaseViewModel(disease.BeatyandHealthyId.Value, 
+                disease,numberRelated));
+          
         }
 
         public SearchResult<Disease> GetSearchResult(SearchParamter searchParamter)

@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Infrastructure.Identity;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace MYDoctor.Infrastructure.Helper
 {
@@ -21,12 +22,16 @@ namespace MYDoctor.Infrastructure.Helper
             _context = context;
         }
 
-        public async Task<IEnumerable<Medicin>> GetRelativesMedicins(ICollection<Medicin> medicins, int numberRelated, int categoryId)
+        public async Task<IEnumerable<Medicin>> GetRelativesMedicins(ICollection<Medicin> medicins, int numberRelated, int? categoryId)
         {
             if ((medicins.Any(), medicins.Count() >= numberRelated) == (true, true))
                 return medicins;
             var meds = await _context.Medicin.Include(d => d.BeatyandHealthy).Where(m=>m.BeatyandHealthyId!=categoryId).OrderByDescending(m => m.Id).Take(numberRelated - medicins.Count()).ToListAsync();
             return medicins.AppendData(meds);
+        }
+        public async Task<IEnumerable<Medicin>> GetRelativesMedicins(int numberRelated)
+{
+           return await _context.Medicin.Include(rc => rc.BeatyandHealthy).Take(numberRelated).ToListAsync(); 
         }
     }
 }

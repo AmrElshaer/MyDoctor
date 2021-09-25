@@ -3,50 +3,48 @@ using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Domain.Entities;
 namespace MYDoctor.Core.Application.ViewModel
 {
-    public class DiseaseViewModel:BaseViewModel
+    public class DiseaseViewModel:ViewModel<Disease>
     {
-        public Disease Disease { get;private set; }
-        private readonly int _numberTake;
-        public DiseaseViewModel(Disease disease, int numberTake)
+        
+
+        public DiseaseViewModel(int categoryId,Disease disease, int numberTake):base(numberTake,disease,categoryId)
         {
-            this.Disease = disease;
-            this._numberTake = numberTake;
+            
         }
-        public DiseaseViewModel WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper, int categoryId)
+        public override ViewModel<Disease> WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper)
         {
-            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(this.Disease.BeatyandHealthy.RelativeofBeatyandhealthies,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(this.Model.BeatyandHealthy.RelativeofBeatyandhealthies,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public DiseaseViewModel WithMedicin(IMedicinHelper medicinHelper, int categoryId)
+        public override ViewModel<Disease> WithMedicin(IMedicinHelper medicinHelper)
         {
-            this.Medicins = medicinHelper.GetRelativesMedicins(this.Disease.BeatyandHealthy.Medicins,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Medicins = medicinHelper.GetRelativesMedicins(this.Model.BeatyandHealthy.Medicins,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public DiseaseViewModel WithDisease(IDiseaseHelper diseaseHelper, int categoryId)
+        public override ViewModel<Disease> WithDisease(IDiseaseHelper diseaseHelper)
         {
-            this.Diseases = diseaseHelper.GetRelativesDiseases(this.Disease.BeatyandHealthy.Diseases,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Diseases = diseaseHelper.GetRelativesDiseases(this.Model.BeatyandHealthy.Diseases,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public DiseaseViewModel WithPosts(IPostHelper postHelper, int categoryId)
+        public override ViewModel<Disease> WithPosts(IPostHelper postHelper)
         {
-            this.Posts = postHelper.GetRelativesPosts(this.Disease.BeatyandHealthy.Posts,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Posts = postHelper.GetRelativesPosts(this.Model.BeatyandHealthy.Posts,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public DiseaseViewModel WithDoctors(IDoctorHelper doctorHelper, int categoryId)
+        public override ViewModel<Disease> WithDoctors(IDoctorHelper doctorHelper)
         {
-            this.Doctors = doctorHelper.GetRelativesDoctors(this.Disease.BeatyandHealthy.Doctors,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Doctors = doctorHelper.GetRelativesDoctors(this.Model.BeatyandHealthy.Doctors,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public DiseaseViewModel WithCategories(ICategoryHelper categoryHelper, int categoryId)
+        public override ViewModel<Disease> WithCategories(ICategoryHelper categoryHelper)
         {
-            this.Categories = categoryHelper.GetRelativesCategories(this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Categories = categoryHelper.GetRelativesCategories(this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public DiseaseViewModel Build() => this;
     }
 }

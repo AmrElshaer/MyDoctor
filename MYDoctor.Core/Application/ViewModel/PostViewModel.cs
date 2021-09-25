@@ -3,50 +3,47 @@ using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Domain.Entities;
 namespace MYDoctor.Core.Application.ViewModel
 {
-    public class PostViewModel:BaseViewModel
+    public class PostViewModel:ViewModel<Post>
     {
-        public Post Post { get; private set; }
-        private readonly int _numberTake;
-        public PostViewModel(Post post, int numberTake)
+        public PostViewModel(Post post, int numberTake,int categoryId):base(numberTake,post,categoryId)
         {
-            this.Post = post;
-            this._numberTake = numberTake;
+           
         }
-        public PostViewModel WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper, int categoryId)
+        public override ViewModel<Post> WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper)
         {
-            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(this.Post.Category.RelativeofBeatyandhealthies,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(Model.Category.RelativeofBeatyandhealthies,
+                NumberTake,CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public PostViewModel WithMedicin(IMedicinHelper medicinHelper, int categoryId)
+        public override ViewModel<Post> WithMedicin(IMedicinHelper medicinHelper)
         {
-            this.Medicins = medicinHelper.GetRelativesMedicins(this.Post.Category.Medicins,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Medicins = medicinHelper.GetRelativesMedicins(Model.Category.Medicins,
+               NumberTake,CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public PostViewModel WithDisease(IDiseaseHelper diseaseHelper, int categoryId)
+        public override ViewModel<Post> WithDisease(IDiseaseHelper diseaseHelper)
         {
-            this.Diseases = diseaseHelper.GetRelativesDiseases(this.Post.Category.Diseases,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Diseases = diseaseHelper.GetRelativesDiseases(Model.Category.Diseases,
+               NumberTake,CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public PostViewModel WithPosts(IPostHelper postHelper, int categoryId)
+        public override ViewModel<Post> WithPosts(IPostHelper postHelper)
         {
-            this.Posts = postHelper.GetRelativesPosts(this.Post.Category.Posts,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Posts = postHelper.GetRelativesPosts(Model.Category.Posts,
+               NumberTake,CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public PostViewModel WithDoctors(IDoctorHelper doctorHelper, int categoryId)
+        public override ViewModel<Post> WithDoctors(IDoctorHelper doctorHelper)
         {
-            this.Doctors = doctorHelper.GetRelativesDoctors(this.Post.Category.Doctors,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Doctors = doctorHelper.GetRelativesDoctors(Model.Category.Doctors,
+               NumberTake,CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public PostViewModel WithCategories(ICategoryHelper categoryHelper, int categoryId)
+        public override ViewModel<Post> WithCategories(ICategoryHelper categoryHelper)
         {
-            this.Categories = categoryHelper.GetRelativesCategories(this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Categories = categoryHelper.GetRelativesCategories(NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public PostViewModel Build() => this;
+       
     }
 }

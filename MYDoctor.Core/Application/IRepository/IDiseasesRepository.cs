@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
+using MYDoctor.Core.Application.ViewModel;
 using MYDoctor.Core.Domain.Entities;
 
 namespace MYDoctor.Core.Application.IRepository
@@ -10,6 +11,6 @@ namespace MYDoctor.Core.Application.IRepository
     {
         Task CreateEdit(Disease disease);
         SearchResult<Disease> GetSearchResult(SearchParamter searchParamter);
-        Task<BaseViewModel> GetDiseaseAsync(int id, int numberRelated);
+        Task<BaseViewModel<Disease>> GetDiseaseAsync(int id, int numberRelated);
     }
 }

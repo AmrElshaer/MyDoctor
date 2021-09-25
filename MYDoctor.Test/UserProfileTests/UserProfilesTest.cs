@@ -27,7 +27,7 @@ namespace MYDoctor.Test.UserProfileTests
             // act
             var user =await userProfileRepository.GetUserProfileAsync("Test@gmail.com");
             //assert
-            Assert.Equal("Test", user.UserProfile.Name);
+            Assert.Equal("Test", user.Model.Name);
         }
     }
 }

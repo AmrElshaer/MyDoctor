@@ -1,5 +1,5 @@
-﻿@using MYDoctor.Core.Application.ViewModel
-@model MedicinViewModel
+﻿@using MYDoctor.Core.Application.Common
+@model BaseViewModel<Medicin>
 @{
 
     var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
@@ -14,7 +14,7 @@
         <div class="col p-md-0">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Medicin.Name</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Model.Name</a></li>
             </ol>
         </div>
     </div>
@@ -28,23 +28,23 @@
             <div class="col-md-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">@Model.Medicin.Name<span class="ml-3"><img style="max-width: 17px" src="~/Content/img/price-tag.svg" /><small class="ml-2 text-muted">@Model.Medicin.Price</small></span></h4>
+                        <h4 class="card-title">@Model.Model.Name<span class="ml-3"><img style="max-width: 17px" src="~/Content/img/price-tag.svg" /><small class="ml-2 text-muted">@Model.Model.Price</small></span></h4>
                         <div class="basic-list-group">
                             <div class="list-group">
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                    <img class="img-fluid" src="@Model.Medicin.Image" />
+                                    <img class="img-fluid" src="@Model.Model.Image" />
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">Indications</h5><small class="text-muted">@Model.Medicin.CreateDate.Value.ToShortDateString()</small>
+                                        <h5 class="mb-1">Indications</h5><small class="text-muted">@Model.Model.CreateDate.Value.ToShortDateString()</small>
                                     </div>
-                                    <p class="mb-1">@Model.Medicin.Indications.</p>
+                                    <p class="mb-1">@Model.Model.Indications.</p>
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">Affects</h5>
                                     </div>
-                                    <p class="mb-1">@Model.Medicin.Affects.</p>
+                                    <p class="mb-1">@Model.Model.Affects.</p>
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
@@ -52,7 +52,7 @@
                                     </div>
                                     <p class="mb-1">
                                         <ul>
-                                            @foreach (var diseasemedicin in Model.Medicin.DiseaseMedicins)
+                                            @foreach (var diseasemedicin in Model.Model.DiseaseMedicins)
                                             {
                                                 <li>@diseasemedicin.Disease.DiseaseName</li>
                                             }

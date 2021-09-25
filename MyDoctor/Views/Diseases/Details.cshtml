@@ -1,5 +1,5 @@
-﻿@using MYDoctor.Core.Application.ViewModel
-@model DiseaseViewModel
+﻿@using MYDoctor.Core.Application.Common
+@model BaseViewModel<Disease>
 @inject IViewLocalizer ViewLocalizer
 @{
 
@@ -15,7 +15,7 @@
         <div class="col p-md-0">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["MyDoctor"]</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Disease.DiseaseName</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Model.DiseaseName</a></li>
             </ol>
         </div>
     </div>
@@ -29,29 +29,29 @@
             <div class="col-md-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">@Model.Disease.DiseaseName</h4>
+                        <h4 class="card-title">@Model.Model.DiseaseName</h4>
                         <div class="basic-list-group">
                             <div class="list-group">
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                    <img class="img-fluid" src="@Model.Disease.Image" />
+                                    <img class="img-fluid" src="@Model.Model.Image" />
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">Subject</h5><small class="text-muted">@Model.Disease.CreateDate.Value.ToShortDateString()</small>
+                                        <h5 class="mb-1">Subject</h5><small class="text-muted">@Model.Model.CreateDate.Value.ToShortDateString()</small>
                                     </div>
-                                    <p class="mb-1">@Model.Disease.Subject.</p>
+                                    <p class="mb-1">@Model.Model.Subject.</p>
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">Protection</h5>
                                     </div>
-                                    <p class="mb-1">@Model.Disease.Protection.</p>
+                                    <p class="mb-1">@Model.Model.Protection.</p>
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">Reasons</h5>
                                     </div>
-                                    <p class="mb-1">@Model.Disease.Reasons.</p>
+                                    <p class="mb-1">@Model.Model.Reasons.</p>
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
@@ -59,7 +59,7 @@
                                     </div>
                                     <p class="mb-1">
                                         <ul>
-                                            @foreach (var diseasemedicin in Model.Disease.DiseaseMedicins)
+                                            @foreach (var diseasemedicin in Model.Model.DiseaseMedicins)
                                             {
                                                 <li>@diseasemedicin.Disease.DiseaseName</li>
                                             }

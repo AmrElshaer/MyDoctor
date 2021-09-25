@@ -1,5 +1,5 @@
-﻿@using MYDoctor.Core.Application.ViewModel
-@model  BeatyandHealthViewModel
+﻿@using MYDoctor.Core.Application.Common
+@model  BaseViewModel<BeatyandHealthy>
 @inject IViewLocalizer ViewLocalizer
 @{
 
@@ -15,7 +15,7 @@
         <div class="col p-md-0">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewLocalizer["MyDoctor"]</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.BeatyandHealthy.Category</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Model.Category</a></li>
             </ol>
         </div>
     </div>
@@ -28,9 +28,9 @@
         <div class="row">
             <div class="col-md-12 col-lg-6">
                 <div class="card">
-                    <img class="img-fluid" src="@Model.BeatyandHealthy.Image" />
+                    <img class="img-fluid" src="@Model.Model.Image" />
                     <div class="card-body">
-                        <h4 class="card-title mb-0">@Model.BeatyandHealthy.Category</h4>
+                        <h4 class="card-title mb-0">@Model.Model.Category</h4>
 
                     </div>
                 </div>

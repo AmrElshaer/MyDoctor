@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.EntityFrameworkCore;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
@@ -20,7 +21,7 @@ namespace MYDoctor.Infrastructure.Helper
         {
             _context = context;
         }
-        public async Task<IEnumerable<Doctor>> GetRelativesDoctors(ICollection<Doctor> doctors,int numberRelated, int categoryId)
+        public async Task<IEnumerable<Doctor>> GetRelativesDoctors(ICollection<Doctor> doctors,int numberRelated, int? categoryId)
         {
             
                     if ((doctors.Any(), doctors.Count() >= numberRelated) == (true, true))
@@ -29,6 +30,13 @@ namespace MYDoctor.Infrastructure.Helper
                      return doctors.AppendData(doc);
 
       
+        }
+        public async Task<IEnumerable<Doctor>> GetRelativesDoctors(int numberRelated)
+        {
+
+           return await _context.Doctor.Include(rc => rc.Category).Take(numberRelated).ToListAsync();
+
+
         }
     }
 }

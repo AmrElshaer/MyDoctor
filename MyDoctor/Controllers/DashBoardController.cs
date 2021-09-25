@@ -27,10 +27,10 @@ namespace MyDoctor.Controllers
 
 
         }
-        public async Task<IActionResult>  Index()
+        public  IActionResult  Index()
         {
            
-            var result = await _categoryRepository.GetBoardViewModel(4);
+            var result =  _categoryRepository.GetBoardViewModel(4);
             return View(result);
         }
         public async Task<IActionResult> GeneralSearch(string searchVal)

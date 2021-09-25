@@ -1,7 +1,7 @@
-﻿@using MYDoctor.Core.Application.ViewModel
+﻿@using MYDoctor.Core.Application.Common
 @using MYDoctor.Core.Application.IRepository
 @inject IUserProfileRepository userProfileRepository
-@model PostViewModel
+@model BaseViewModel<Post>
 @{
     var user = await userProfileRepository.GetFirstAsync(a => a.Email == User.Identity.Name);
     var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
@@ -31,18 +31,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="media media-reply">
-                            <img class="mr-3 circle-rounded" src="~/images/@Model.Post.User.ImagePath" width="50" height="50" alt="@Model.Post.User.Name">
+                            <img class="mr-3 circle-rounded" src="~/images/@Model.Model.User.ImagePath" width="50" height="50" alt="@Model.Model.User.Name">
                             <div class="media-body">
                                 <div class="d-sm-flex justify-content-between mb-2">
-                                    <h5 class="mb-sm-0">@Model.Post.User.Name<small class="text-muted ml-3">@Model.Post.CreateDate.ToShortTimeString()</small></h5>
+                                    <h5 class="mb-sm-0">@Model.Model.User.Name<small class="text-muted ml-3">@Model.Model.CreateDate.ToShortTimeString()</small></h5>
                                     <div class="media-reply__link">
                                         <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-up"></i></button>
                                         <button class="btn btn-transparent p-0 mr-3"><i class="fa fa-thumbs-down"></i></button>
-                                        <button class="btn btn-transparent p-0 ml-3 font-weight-bold">@Model.Post.Category.Category</button>
+                                        <button class="btn btn-transparent p-0 ml-3 font-weight-bold">@Model.Model.Category.Category</button>
                                     </div>
                                 </div>
 
-                                <p>@Model.Post.Content</p>
+                                <p>@Model.Model.Content</p>
                             </div>
                         </div>
                     </div>

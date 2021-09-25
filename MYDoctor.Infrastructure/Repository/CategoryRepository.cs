@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MYDoctor.Core.Application;
 using MYDoctor.Core.Application.Common;
 using MYDoctor.Core.Application.Common.Search;
 using MYDoctor.Core.Application.IHelper;
@@ -16,21 +17,14 @@ namespace MYDoctor.Infrastructure.Repository
 {
     public class CategoryRepository:BaseRepository<BeatyandHealthy>,ICategoryRepository
     {
-        private readonly IDoctorHelper _doctorHelper;
-        private readonly IDiseaseHelper _diseaseHelper;
-        private readonly IPostHelper _postHelper;
-        private readonly IMedicinHelper _medicinHelper;
-        private readonly IRelativeCategoryHelper _relativeCategoryHelper;
-        private readonly ICategoryHelper _categoryHelper;
+      
+        private readonly IServiceBuilder serviceBuilder;
 
-        public CategoryRepository(ApplicationDbContext context, IMedicinHelper medicinHelper, IPostHelper postHelper, IRelativeCategoryHelper relativeCategoryHelper, IDiseaseHelper diseaseHelper, IDoctorHelper doctorHelper, ICategoryHelper categoryHelper = null) : base(context)
+        public CategoryRepository(ApplicationDbContext context,IServiceBuilder serviceBuilder) : base(context)
         {
-            _doctorHelper = doctorHelper;
-            _diseaseHelper = diseaseHelper;
-            _postHelper = postHelper;
-            _relativeCategoryHelper = relativeCategoryHelper;
-            _medicinHelper = medicinHelper;
-            _categoryHelper = categoryHelper;
+          
+            this.serviceBuilder = serviceBuilder;
+          
         }
         public async Task<IEnumerable<BeatyandHealthy>> GetAdminBoard() {
             var board = await _context.BeatyandHealthy.Include(c=>c.RelativeofBeatyandhealthies)
@@ -67,15 +61,14 @@ namespace MYDoctor.Infrastructure.Repository
         }
         public SearchResult<BeatyandHealthy> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = Search(searchParamter);
-            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
-            return searchResult;
+           return PagingHelper.PagingModel(Search(searchParamter), searchParamter);
+            
         }
 
         
        
 
-        public async Task<BaseViewModel> GetCategoryAsync(int categoryId, int numberRelated)
+        public async Task<BaseViewModel<BeatyandHealthy>> GetCategoryAsync(int categoryId, int numberRelated)
         {
 
             var cateogry = await GetByIdAsync(categoryId, c => c.Diseases,
@@ -83,27 +76,11 @@ namespace MYDoctor.Infrastructure.Repository
                 c => c.Doctors,
                 c => c.RelativeofBeatyandhealthies,
                 c=>c.Posts);
-            var result = new BeatyandHealthViewModel(cateogry, numberRelated)
-                .WithMedicin(this._medicinHelper, categoryId)
-                .WithRelativeCategory(this._relativeCategoryHelper, categoryId)
-                .WithDisease(this._diseaseHelper, categoryId)
-                .WithDoctors(this._doctorHelper, categoryId)
-                .WithPosts(this._postHelper, categoryId)
-                .WithCategories(this._categoryHelper, categoryId).Build();
-            return result;
+            return serviceBuilder.BuildViewModel( new BeatyandHealthViewModel(cateogry, numberRelated,categoryId));
         }
-        public async Task<BaseViewModel> GetBoardViewModel(int pageSize)
+        public  BaseViewModel<BeatyandHealthy> GetBoardViewModel(int pageSize)
         {
-            var result = new DashBoardViewModel()
-            {
-                Categories = await GetAll().Take(pageSize).ToListAsync(),
-                Doctors = await _context.Doctor.Include(rc => rc.Category).Take(pageSize).ToListAsync(),
-                Medicins = await _context.Medicin.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync(),
-                Diseases = await _context.Disease.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync(),
-                RelativeCategories = await _context.RelativeofBeatyandhealthy.Include(rc => rc.BeatyandHealthy).Take(pageSize).ToListAsync(),
-                Posts=await _context.Posts.Include(p=>p.Likes).Include(p=>p.DisLikes).Include(p=>p.Category).Include(p=>p.User).OrderByDescending(a=>a.Id).Take(pageSize).ToListAsync()
-            };
-            return result;
+            return serviceBuilder.BuildViewModel(new DashBoardViewModel(pageSize));
         }
         public async Task CreateEdit(BeatyandHealthy category)
         {

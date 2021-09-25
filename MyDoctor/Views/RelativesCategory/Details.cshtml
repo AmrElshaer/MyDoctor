@@ -1,5 +1,5 @@
-﻿@using MYDoctor.Core.Application.ViewModel
-@model RelativeBeatyandhealthyViewModel
+﻿@using MYDoctor.Core.Application.Common
+@model BaseViewModel<RelativeofBeatyandhealthy>
 @{
 
     var badges = new string[] { "badge-dark", "badge-secondary", "badge-info", "badge-light" };
@@ -14,7 +14,7 @@
         <div class="col p-md-0">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">MyDoctor</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.RelativeofBeatyandhealthy.Address</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">@Model.Model.Address</a></li>
             </ol>
         </div>
     </div>
@@ -28,17 +28,17 @@
             <div class="col-md-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">@Model.RelativeofBeatyandhealthy.Address</h4>
+                        <h4 class="card-title">@Model.Model.Address</h4>
                         <div class="basic-list-group">
                             <div class="list-group">
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                    <img class="img-fluid" src="@Model.RelativeofBeatyandhealthy.ImageOrVideo" />
+                                    <img class="img-fluid" src="@Model.Model.ImageOrVideo" />
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">Indications</h5><small class="text-muted">@Model.RelativeofBeatyandhealthy.CreateDate.Value.ToShortDateString()</small>
+                                        <h5 class="mb-1">Indications</h5><small class="text-muted">@Model.Model.CreateDate.Value.ToShortDateString()</small>
                                     </div>
-                                    <p class="mb-1">@Model.RelativeofBeatyandhealthy.Subject.</p>
+                                    <p class="mb-1">@Model.Model.Subject.</p>
                                 </a>
                             </div>
                         </div>

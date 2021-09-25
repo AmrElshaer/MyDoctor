@@ -4,50 +4,49 @@ using MYDoctor.Core.Domain.Entities;
 
 namespace MYDoctor.Core.Application.ViewModel
 {
-    public class BeatyandHealthViewModel:BaseViewModel
+    public class BeatyandHealthViewModel: ViewModel<BeatyandHealthy>
     {
-        public BeatyandHealthy BeatyandHealthy { get;private set; }
-        private readonly int _numberTake;
-        public BeatyandHealthViewModel(BeatyandHealthy beatyandHealthy, int numberTake)
+        
+
+        public BeatyandHealthViewModel(BeatyandHealthy beatyandHealthy, int numberTake,int categoryId)
+            :base(numberTake,beatyandHealthy,categoryId)
         {
-            this.BeatyandHealthy = beatyandHealthy;
-            this._numberTake = numberTake;
+            
         }
-        public BeatyandHealthViewModel WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper, int categoryId)
+        public override ViewModel<BeatyandHealthy>  WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper)
         {
-            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(this.BeatyandHealthy.RelativeofBeatyandhealthies,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.RelativeCategories = relativeCategoryHelper.GetRelativesCategory(this.Model.RelativeofBeatyandhealthies,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public BeatyandHealthViewModel WithMedicin(IMedicinHelper medicinHelper, int categoryId)
+        public override ViewModel<BeatyandHealthy> WithMedicin(IMedicinHelper medicinHelper)
         {
-            this.Medicins = medicinHelper.GetRelativesMedicins(this.BeatyandHealthy.Medicins,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Medicins = medicinHelper.GetRelativesMedicins(this.Model.Medicins,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public BeatyandHealthViewModel WithDisease(IDiseaseHelper diseaseHelper, int categoryId)
+        public override ViewModel<BeatyandHealthy> WithDisease(IDiseaseHelper diseaseHelper)
         {
-            this.Diseases = diseaseHelper.GetRelativesDiseases(this.BeatyandHealthy.Diseases,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Diseases = diseaseHelper.GetRelativesDiseases(this.Model.Diseases,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public BeatyandHealthViewModel WithPosts(IPostHelper postHelper, int categoryId)
+        public override ViewModel<BeatyandHealthy> WithPosts(IPostHelper postHelper)
         {
-            this.Posts = postHelper.GetRelativesPosts(this.BeatyandHealthy.Posts,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Posts = postHelper.GetRelativesPosts(this.Model.Posts,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public BeatyandHealthViewModel WithDoctors(IDoctorHelper doctorHelper, int categoryId)
+        public override ViewModel<BeatyandHealthy> WithDoctors(IDoctorHelper doctorHelper)
         {
-            this.Doctors = doctorHelper.GetRelativesDoctors(this.BeatyandHealthy.Doctors,
-                this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Doctors = doctorHelper.GetRelativesDoctors(this.Model.Doctors,
+                this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public BeatyandHealthViewModel WithCategories(ICategoryHelper categoryHelper, int categoryId)
+        public override ViewModel<BeatyandHealthy> WithCategories(ICategoryHelper categoryHelper)
         {
-            this.Categories = categoryHelper.GetRelativesCategories(this._numberTake, categoryId).GetAwaiter().GetResult();
+            this.Categories = categoryHelper.GetRelativesCategories(this.NumberTake, CategoryId).GetAwaiter().GetResult();
             return this;
         }
-        public BeatyandHealthViewModel Build() => this;
     }
 }

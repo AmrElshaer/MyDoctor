@@ -9,6 +9,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MYDoctor.Infrastructure.Identity;
+using DocumentFormat.OpenXml.Wordprocessing;
+
 namespace MYDoctor.Infrastructure.Helper
 {
     internal class DiseaseHelper : IDiseaseHelper
@@ -19,12 +21,16 @@ namespace MYDoctor.Infrastructure.Helper
         {
             _context = context;
         }
-        public async Task<IEnumerable<Disease>> GetRelativesDiseases(ICollection<Disease> diseases, int numberRelated, int categoryId)
+        public async Task<IEnumerable<Disease>> GetRelativesDiseases(ICollection<Disease> diseases, int numberRelated, int? categoryId)
         {
             if ((diseases.Any(), diseases.Count() >= numberRelated) == (true, true))
                 return diseases;
             var dis = await _context.Disease.Include(d => d.BeatyandHealthy).Where(a=>a.BeatyandHealthyId!=categoryId).OrderByDescending(o => o.Id).Take(numberRelated - diseases.Count()).ToListAsync();
             return diseases.AppendData(dis);
+        }
+        public async Task<IEnumerable<Disease>> GetRelativesDiseases(int numberRelated)
+{
+            return await _context.Disease.Include(rc => rc.BeatyandHealthy).Take(numberRelated).ToListAsync();
         }
     }
 }

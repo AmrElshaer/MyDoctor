@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MYDoctor.Core.Application;
 using MYDoctor.Core.Application.IHelper;
 using MYDoctor.Core.Application.IRepository;
 using MYDoctor.Infrastructure.File;
@@ -38,16 +39,17 @@ namespace MYDoctor.Infrastructure
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IDisLikeRepository, DisLikeRepository>();
-            services.AddTransient<IFileConfig, FileConfig>();
+            services.AddScoped<IFileConfig, FileConfig>();
             //Inject Helper
-            services.AddTransient<IDoctorHelper, DoctorHelper>();
-            services.AddTransient<IDiseaseHelper,DiseaseHelper>();
-            services.AddTransient<IPostHelper, PostHelper>();
-            services.AddTransient<IMedicinHelper, MedicinHelper>();
-            services.AddTransient<ICategoryHelper,CategoryHelper>();
-            services.AddTransient<IRelativeCategoryHelper, RelativeCategoryHelper>();
-            services.AddSingleton<IValidatorResource, ValidatorResource>();
-            services.AddSingleton<IExcelHelper, ExcelHelper>();
+            services.AddScoped<IDoctorHelper, DoctorHelper>();
+            services.AddScoped<IDiseaseHelper,DiseaseHelper>();
+            services.AddScoped<IPostHelper, PostHelper>();
+            services.AddScoped<IMedicinHelper, MedicinHelper>();
+            services.AddScoped<ICategoryHelper,CategoryHelper>();
+            services.AddScoped<IRelativeCategoryHelper, RelativeCategoryHelper>();
+            services.AddScoped<IValidatorResource, ValidatorResource>();
+            services.AddScoped<IExcelHelper, ExcelHelper>();
+            services.AddScoped<IServiceBuilder, ServiceBuilder>();
             //SignalR Config
             services.AddSignalR();
             return services;
