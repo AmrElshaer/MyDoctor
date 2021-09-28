@@ -8,8 +8,8 @@ namespace MYDoctor.Core.Application.ViewModel
     {
         
 
-        public BeatyandHealthViewModel(BeatyandHealthy beatyandHealthy, int numberTake,int categoryId)
-            :base(numberTake,beatyandHealthy,categoryId)
+        public BeatyandHealthViewModel(BeatyandHealthy beatyandHealthy, int numberTake)
+            :base(numberTake,beatyandHealthy,beatyandHealthy?.Id)
         {
             
         }

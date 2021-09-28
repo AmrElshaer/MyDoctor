@@ -16,7 +16,7 @@ namespace MYDoctor.Core.Application.ViewModel
             this.MedicinSearch = medicinSearch;
         }
        
-        public MedicinViewModel(Medicin medicin, int numberTake,int categoryId):base(numberTake,medicin, categoryId)
+        public MedicinViewModel(Medicin medicin, int numberTake):base(numberTake,medicin, medicin?.BeatyandHealthyId)
         {
         }
         public override ViewModel<Medicin> WithRelativeCategory(IRelativeCategoryHelper relativeCategoryHelper)

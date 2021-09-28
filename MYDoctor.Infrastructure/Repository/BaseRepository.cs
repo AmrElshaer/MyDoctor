@@ -27,27 +27,11 @@ namespace MYDoctor.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public  IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null,params Expression<Func<T, object>>[] includes)
-        {
-            var result = _table.AsNoTracking();
-            if (includes != null)
-                includes.ToList().ForEach(a =>result= result.Include(a));
-            if (expression!=null)
-                 result= result.Where(expression);
-            if (orderBy != null)
-                result = orderBy(result);
-            
-            return  result;
-        }
-
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression = null)
         {
             var result = _table.AsNoTracking();
             if (expression != null)
                 result = result.Where(expression);
-            if (orderBy != null)
-                result = orderBy(result);
-
             return result;
         }
 

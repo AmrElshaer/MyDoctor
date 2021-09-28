@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,22 +20,24 @@ namespace MYDoctor.Infrastructure.Repository
         {
 
         }
-        public async Task<IEnumerable<InboxMessageViewModel>> MessagesDetails(string fromName, string name) {
-            var messages =GetAll(
-                m => (m.UserProfile.Email == fromName && m.ToUserProfile.Email == name) || (m.UserProfile.Email == name && m.ToUserProfile.Email == fromName),
-                m=>m.OrderBy(a=>a.CreateDate),
-                m => m.ToUserProfile, m => m.UserProfile);
-            return  await ConvertToInboxMessageVM(messages);
+        public async Task<IEnumerable<InboxMessageViewModel>> MessagesDetails(string fromName, string name)
+        {
+            var messages = GetAll(ApplySearch(fromName, name)).Include(m => m.ToUserProfile).Include(m => m.UserProfile).OrderBy(a => a.CreateDate);
+            return await ConvertToInboxMessageVM(messages);
 
         }
+
+        private static Expression<Func<InboxMessage, bool>> ApplySearch(string fromName, string name)
+        {
+            return
+                            m => (m.UserProfile.Email == fromName && m.ToUserProfile.Email == name) ||
+                            (m.UserProfile.Email == name && m.ToUserProfile.Email == fromName);
+        }
+
         public async Task<IEnumerable<InboxMessageViewModel>> GetMissMessages(string toName)
         {
-            var misMessage =GetAll(
-                m => !m.IsSee && m.ToUserProfile.Email == toName,
-                m => m.OrderByDescending(o => o.Id),
-                m => m.ToUserProfile,
-                m => m.UserProfile
-                );
+            var misMessage =GetAll(m => !m.IsSee && m.ToUserProfile.Email == toName)
+                .Include(m => m.ToUserProfile).Include( m => m.UserProfile).OrderByDescending(o => o.Id);
             return await ConvertToInboxMessageVM(misMessage);
         }
 
@@ -55,7 +58,7 @@ namespace MYDoctor.Infrastructure.Repository
                 });
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
@@ -64,8 +67,8 @@ namespace MYDoctor.Infrastructure.Repository
 
         }
         public async Task<IEnumerable<InboxMessageViewModel>> GetALLMessagesAsync(string name) {
-                      var messages =await _context.InboxMessages.Include(m => m.ToUserProfile).Include(m => m.UserProfile).Where(
-                m=> m.ToUserProfile.Email == name).GroupBy(m=>m.UserProfileId).Select(m=>new InboxMessageViewModel() { 
+                var messages =await GetAll(m=> m.ToUserProfile.Email == name).Include(m => m.ToUserProfile)
+                .Include(m => m.UserProfile).GroupBy(m=>m.UserProfileId).Select(m=>new InboxMessageViewModel() { 
                     FromName=m.FirstOrDefault().UserProfile.Email,
                     FromImage = $"/images/{m.FirstOrDefault().UserProfile.ImagePath ?? "Defulat.jpg"}",
                 }).ToListAsync();
@@ -73,7 +76,7 @@ namespace MYDoctor.Infrastructure.Repository
         }
         public async Task MakeMessagesSeeAsync(string name)
         {
-            await _context.InboxMessages.Include(m => m.ToUserProfile).Where(m => !m.IsSee && m.ToUserProfile.Email == name).ForEachAsync(m => m.IsSee = true);
+            await GetAll(m => !m.IsSee && m.ToUserProfile.Email == name).Include(m => m.ToUserProfile).ForEachAsync(m => m.IsSee = true);
             await _context.SaveChangesAsync();
         }
          private async Task<IEnumerable<InboxMessageViewModel>> ConvertToInboxMessageVM(IQueryable<InboxMessage> messages) { 

@@ -9,8 +9,8 @@ using MYDoctor.Helper.Infrastructure;
 using MYDoctor.Infrastructure.Helper;
 using MYDoctor.Infrastructure.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MYDoctor.Infrastructure.Repository
@@ -28,14 +28,9 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<Medicin> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = GetAll(x =>
-               (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-               && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
-               && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo)
-                , m => m.OrderByDescending(a => a.Id),
-                m => m.BeatyandHealthy,
-                m => m.DiseaseMedicins
-                ).Select(m => new Medicin()
+            var searchHits = GetAll(ApplyFiliter(searchParamter))
+                .Include(m => m.BeatyandHealthy).Include(m => m.DiseaseMedicins).OrderByDescending(a => a.Id)
+                .Select(m => new Medicin()
                 {
                     Name = m.Name,
                     Affects = m.Affects,
@@ -48,8 +43,15 @@ namespace MYDoctor.Infrastructure.Repository
                     CreateDate = m.CreateDate
                 });
 
-            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
-            return searchResult;
+            return PagingHelper.PagingModel(searchHits, searchParamter);
+        }
+
+        private static Expression<Func<Medicin, bool>> ApplyFiliter(SearchParamter searchParamter)
+        {
+            return x =>
+                           (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                           && (searchParamter.CreateFrom == null || x.CreateDate >= searchParamter.CreateFrom)
+                           && (searchParamter.CreateTo == null || x.CreateDate <= searchParamter.CreateTo);
         }
 
         public async Task CreateEdit(Medicin medicin)
@@ -84,34 +86,43 @@ namespace MYDoctor.Infrastructure.Repository
             }
         }
 
-        public async Task<IEnumerable<Medicin>> GEtMedicinsAsync(MedicinSearch medicinSearch)
+        public async Task<MedicinViewModel> GEtMedicinsAsync(MedicinSearch medicinSearch)
         {
-            var medicins = await GetAll(
-              d => (!medicinSearch.Categories.Any() || medicinSearch.Categories.Contains(d.BeatyandHealthyId))
-              && (string.IsNullOrEmpty(medicinSearch.Name) || d.Name.ToLower().Contains(medicinSearch.Name.ToLower()))
-              && (!medicinSearch.Price.HasValue || d.Price <= medicinSearch.Price.Value)
-               , d => d.OrderByDescending(o => o.Id), d => d.BeatyandHealthy).ToListAsync();
-            var pricerange = PriceRange();
-            medicinSearch.MinPrice = pricerange.minprice;
-            medicinSearch.MaxPrice = pricerange.maxprice;
-            return medicins;
+            var medicins = await GetAll(MedicinFiliter(medicinSearch)).Include(d => d.BeatyandHealthy).OrderByDescending(o => o.Id).ToListAsync();
+            medicinSearch.MinPrice = GetMinPrice();
+            medicinSearch.MaxPrice = GetMaxPrice();
+            return new MedicinViewModel(medicins, medicinSearch);
         }
 
-        public (decimal minprice, decimal maxprice) PriceRange()
+        private static Expression<Func<Medicin, bool>> MedicinFiliter(MedicinSearch medicinSearch)
         {
-            var maxprice = _context.Medicin.Max(m => m.Price);
-            var minprice = _context.Medicin.Min(m => m.Price);
-            return (minprice, maxprice);
+            return
+                          d => (!medicinSearch.Categories.Any() || medicinSearch.Categories.Contains(d.BeatyandHealthyId))
+                          && (string.IsNullOrEmpty(medicinSearch.Name) || d.Name.ToLower().Contains(medicinSearch.Name.ToLower()))
+                          && (!medicinSearch.Price.HasValue || d.Price <= medicinSearch.Price.Value);
+        }
+
+        private decimal GetMinPrice()
+        {
+            return _context.Medicin.Min(m => m.Price);
+        }
+
+        private decimal GetMaxPrice()
+        {
+            return _context.Medicin.Max(m => m.Price);
         }
 
         public async Task<BaseViewModel<Medicin>> GetMedicinAsync(int id, int numberRelated)
         {
-            var medicin = await _context.Medicin.Include(m => m.BeatyandHealthy).
+            return serviceBuilder.BuildViewModel(new MedicinViewModel(await GetMedicin(id), numberRelated));
+        }
+
+        private async Task<Medicin> GetMedicin(int id)
+        {
+            return await _context.Medicin.Include(m => m.BeatyandHealthy).
                 ThenInclude(c => c.Doctors).Include(m => m.BeatyandHealthy.Posts).
                 Include(m => m.BeatyandHealthy.RelativeofBeatyandhealthies)
                 .Include(m => m.DiseaseMedicins).ThenInclude(dm => dm.Disease).FirstOrDefaultAsync(m => m.Id == id);
-
-            return serviceBuilder.BuildViewModel(new MedicinViewModel(medicin, numberRelated, medicin.BeatyandHealthyId));
         }
     }
 }

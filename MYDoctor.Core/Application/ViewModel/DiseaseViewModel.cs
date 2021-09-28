@@ -7,7 +7,8 @@ namespace MYDoctor.Core.Application.ViewModel
     {
         
 
-        public DiseaseViewModel(int categoryId,Disease disease, int numberTake):base(numberTake,disease,categoryId)
+        public DiseaseViewModel(Disease disease, int numberTake)
+            :base(numberTake,disease, disease.BeatyandHealthyId)
         {
             
         }

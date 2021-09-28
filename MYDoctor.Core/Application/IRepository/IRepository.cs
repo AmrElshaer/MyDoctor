@@ -7,8 +7,7 @@ namespace MYDoctor.Core.Application.IRepository
 {
     public interface IRepository<T> where  T:BaseEntity
     {
-        IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null,params Expression<Func<T, object>>[] includes);
-        IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null,Func<IQueryable<T>, IOrderedQueryable<T>> orderBy=null);
+        IQueryable<T> GetAll(Expression<Func<T, bool>> expression=null);
         Task<T> GetByIdAsync(int id);
         Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
         Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate);

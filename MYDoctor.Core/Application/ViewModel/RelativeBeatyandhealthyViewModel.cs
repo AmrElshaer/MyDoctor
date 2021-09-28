@@ -10,8 +10,8 @@ namespace MYDoctor.Core.Application.ViewModel
     public  class RelativeBeatyandhealthyViewModel : ViewModel<RelativeofBeatyandhealthy>
     {
   
-        public RelativeBeatyandhealthyViewModel(RelativeofBeatyandhealthy relativeofBeatyandhealthy,int numberTake,int? categoryId)
-            :base(numberTake,relativeofBeatyandhealthy, categoryId)
+        public RelativeBeatyandhealthyViewModel(RelativeofBeatyandhealthy relativeofBeatyandhealthy,int numberTake)
+            :base(numberTake,relativeofBeatyandhealthy, relativeofBeatyandhealthy?.BeatyandHealthId)
         {
           
         }

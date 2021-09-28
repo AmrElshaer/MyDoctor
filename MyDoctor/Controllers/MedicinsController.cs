@@ -14,9 +14,7 @@ namespace MyDoctor.Controllers
             _medicinRepository = medicinRepository;
         }
         public async Task<IActionResult> Index(MedicinSearch medicinSearch) {
-            var medicins = await _medicinRepository.GEtMedicinsAsync(medicinSearch);
-            return View(new MedicinViewModel(medicins, medicinSearch));
-
+            return View( await _medicinRepository.GEtMedicinsAsync(medicinSearch));
         }
         public async Task<IActionResult> Details(int? id) {
             if (id == null)

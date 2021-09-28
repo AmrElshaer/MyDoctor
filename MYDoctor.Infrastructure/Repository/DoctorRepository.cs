@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,17 +27,20 @@ namespace MYDoctor.Infrastructure.Repository
             _tableTrackNotification = tableTrackNotification;
             _userProfileRepository = userProfileRepository;
         }
-        public async Task<IEnumerable<Doctor>> GetDoctorsAsync(DoctorSearch doctorSearch) {
-            var searchDoctorHint = new DoctorSearchHint(new SearchParamter() { SearchQuery=doctorSearch.Name});
-            var doctors = await GetAll(
-               d => (!doctorSearch.Categories.Any() || doctorSearch.Categories.Contains(d.CategoryId))
-               && (!doctorSearch.Countries.Any() || doctorSearch.Countries.Contains(d.Country))
-               && (!doctorSearch.Cities.Any() || doctorSearch.Cities.Contains(d.City))
-               && (string.IsNullOrEmpty(doctorSearch.Name) || d.Name.ToLower().Contains(doctorSearch.Name.ToLower()))
-                , d => d.OrderByDescending(o => o.Id), d => d.Category).ToListAsync();
-            return doctors;
-
+        public async Task<IEnumerable<Doctor>> GetDoctorsAsync(DoctorSearch doctorSearch)
+        {
+            return await GetAll(ApplyFiliter(doctorSearch)).Include(d => d.Category).OrderByDescending(o => o.Id).ToListAsync();
         }
+
+        private static Expression<Func<Doctor, bool>> ApplyFiliter(DoctorSearch doctorSearch)
+        {
+            return
+                           d => (!doctorSearch.Categories.Any() || doctorSearch.Categories.Contains(d.CategoryId))
+                           && (!doctorSearch.Countries.Any() || doctorSearch.Countries.Contains(d.Country))
+                           && (!doctorSearch.Cities.Any() || doctorSearch.Cities.Contains(d.City))
+                           && (string.IsNullOrEmpty(doctorSearch.Name) || d.Name.ToLower().Contains(doctorSearch.Name.ToLower()));
+        }
+
         private async Task RegisterDoctor(Doctor doctor)
         {
             
@@ -76,16 +81,18 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<Doctor> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = GetAll(
-                 x =>
-                 (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                 && (searchParamter.IdRelated == null || x.CategoryId == searchParamter.IdRelated),
-                 d => d.OrderByDescending(a => a.Id),
-                    d => d.Category
-                 );
-            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
-            return searchResult;
+            var searchHits = GetAll(ApplySearch(searchParamter)).Include(d => d.Category).OrderByDescending(a => a.Id);
+            return PagingHelper.PagingModel(searchHits, searchParamter);
         }
+
+        private  Expression<Func<Doctor, bool>> ApplySearch(SearchParamter searchParamter)
+        {
+            return
+                             x =>
+                             (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Name.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                             && (searchParamter.IdRelated == null || x.CategoryId == searchParamter.IdRelated);
+        }
+
         public async Task DeleteDoctorAsync(int id)
         {
             var doctor =await GetByIdAsync(id);

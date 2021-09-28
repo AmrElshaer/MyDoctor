@@ -23,8 +23,7 @@ namespace MyDoctor.Controllers
         public async Task<IActionResult> Index(string diseaseName)
         {
             var disease = await _diseasesRepository.GetAll(m=>string.IsNullOrEmpty(diseaseName)||m.DiseaseName.ToLower().Contains(diseaseName.ToLower())
-            ,m=>m.OrderByDescending(a=>a.Id),
-            d=>d.BeatyandHealthy).ToListAsync();
+           ).Include( d=>d.BeatyandHealthy).OrderByDescending(a=>a.Id).ToListAsync();
             return View((disease,diseaseName));
         }
       

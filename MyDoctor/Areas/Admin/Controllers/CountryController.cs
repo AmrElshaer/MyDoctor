@@ -18,7 +18,7 @@ namespace MyDoctor.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var countries = await _countryRepository.GetAll(null,null,c=>c.Cities).ToListAsync();
+            var countries = await _countryRepository.GetAll().Include(c=>c.Cities).ToListAsync();
             return View(countries);
         }
         public async Task<IActionResult> CreateEdit(Country country) {

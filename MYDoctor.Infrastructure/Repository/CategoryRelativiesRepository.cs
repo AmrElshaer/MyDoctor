@@ -11,6 +11,7 @@ using MYDoctor.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MYDoctor.Infrastructure.Repository
@@ -28,9 +29,7 @@ namespace MYDoctor.Infrastructure.Repository
 
         public SearchResult<RelativeofBeatyandhealthy> GetSearchResult(SearchParamter searchParamter)
         {
-            var searchHits = Search(searchParamter);
-            var searchResult = PagingHelper.PagingModel(searchHits, searchParamter);
-            return searchResult;
+            return PagingHelper.PagingModel(Search(searchParamter), searchParamter);
         }
         public async Task<IEnumerable<RelativeofBeatyandhealthy> >SearchHits(SearchParamter searchParamter)
         {
@@ -38,16 +37,18 @@ namespace MYDoctor.Infrastructure.Repository
         }
         private IQueryable<RelativeofBeatyandhealthy> Search(SearchParamter searchParamter)
         {
-            return GetAll(
-                 x =>
-                 (string.IsNullOrEmpty(searchParamter.SearchQuery) || x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
-                 && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
-                 && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
-                 && (!searchParamter.IdRelated.HasValue || x.BeatyandHealthy.Id == searchParamter.IdRelated),
-                 rc => rc.OrderByDescending(a => a.Id),
-                 rc => rc.BeatyandHealthy
+            return GetAll(ApplyFiliter(searchParamter)).Include(rc => rc.BeatyandHealthy).OrderByDescending(a => a.Id);
+        }
 
-                 );
+        private  Expression<Func<RelativeofBeatyandhealthy, bool>> ApplyFiliter(SearchParamter searchParamter)
+        {
+            return
+                             x =>
+                             (string.IsNullOrEmpty(searchParamter.SearchQuery) ||
+                             x.Address.ToLower().Contains(searchParamter.SearchQuery.ToLower()))
+                             && (!searchParamter.CreateFrom.HasValue || x.CreateDate >= searchParamter.CreateFrom)
+                             && (!searchParamter.CreateTo.HasValue || x.CreateDate <= searchParamter.CreateTo)
+                             && (!searchParamter.IdRelated.HasValue || x.BeatyandHealthy.Id == searchParamter.IdRelated);
         }
 
         public async Task CreateEdit(RelativeofBeatyandhealthy category)
@@ -67,14 +68,19 @@ namespace MYDoctor.Infrastructure.Repository
 
         public async Task<BaseViewModel<RelativeofBeatyandhealthy>> GetRelativeCategoryAsync(int id, int numberRelated)
         {
-            var relativeCategory = await _table.Include(r => r.BeatyandHealthy)
+            
+            return this.serviceBuilder.BuildViewModel(
+                new RelativeBeatyandhealthyViewModel(await GetRelatCategory(id), numberRelated)
+                );
+
+        }
+
+        private async Task<RelativeofBeatyandhealthy> GetRelatCategory(int id)
+        {
+            return await GetAll().Include(r => r.BeatyandHealthy)
                 .Include(r => r.BeatyandHealthy.Doctors).Include(r => r.BeatyandHealthy.Medicins)
                 .Include(r => r.BeatyandHealthy.Diseases).Include(r => r.BeatyandHealthy.RelativeofBeatyandhealthies)
                 .Include(c => c.BeatyandHealthy.Posts).FirstOrDefaultAsync(r => r.Id == id);
-               return  this.serviceBuilder.BuildViewModel(
-                   new RelativeBeatyandhealthyViewModel(relativeCategory,numberRelated,
-                   relativeCategory?.BeatyandHealthId));
-            
         }
     }
 }
